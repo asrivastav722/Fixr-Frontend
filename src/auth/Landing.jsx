@@ -1,28 +1,63 @@
-import { Card, Button } from "antd";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
-export default function Landing() {
+export default function UserTypeSelection() {
+  const { user, loading } = useAuth();
   const navigate = useNavigate();
 
-  const handleSelect = (role) => {
-    if (role === "customer") navigate("/c/signup?role=customer");
-    else navigate("/t/signup?role=technician");
-  };
+  useEffect(() => {
+    if (!loading && user) {
+      navigate(`/${user.role === "customer" ? "c" : "t"}/profile`, { replace: true });
+    }
+  }, [user, loading, navigate]);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-gray-600 text-lg">Loading...</div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-blue-100 to-indigo-200">
-      <Card className="shadow-xl rounded-2xl text-center p-10 w-96">
-        <h1 className="text-3xl font-bold mb-6">Welcome to Fixr!</h1>
-        <p className="text-gray-700 mb-8">Are you a customer looking for services or a technician looking for jobs?</p>
-        <div className="flex flex-col space-y-4">
-          <Button type="primary" size="large" block onClick={() => handleSelect("customer")}>
-            I am a Customer
-          </Button>
-          <Button type="default" size="large" block onClick={() => handleSelect("technician")}>
-            I am a Technician
-          </Button>
+    <div className="flex justify-center items-center min-h-screen animated-gradient">
+      <div className="bg-white backdrop-blur-md shadow-2xl rounded-xl px-10 py-12 w-[90%] max-w-md text-center">
+        {/* Logo */}
+        <div className="mb-6">
+          <img
+            src="/logo192.png"
+            alt="Fixr Logo"
+            className="mx-auto w-20 h-20 rounded-full shadow-md ring-2 ring-yellow-400"
+          />
         </div>
-      </Card>
+
+        {/* Title */}
+        <h1 className="text-3xl text-black mb-2 roboto">Welcome to Fixr</h1>
+        <p className="text-black poppins text-xs mb-8 font-thin">
+          Connecting skilled professionals with customers — choose your role to get started.
+        </p>
+
+        {/* Buttons */}
+        <div className="space-y-4">
+          <button
+            onClick={() => navigate("/c/signup?role=customer")}
+            className="w-full py-3 font-normal roboto rounded-md border-violet-950 border-2 hover:bg-violet-950 text-violet-950 hover:text-white tracking-wide shadow-md 
+                    transition-transform transform hover:-translate-y-1 hover:shadow-lg"
+          >
+            I’m a Customer
+          </button>
+
+          <button
+            onClick={() => navigate("/t/signup?role=technician")}
+            className="w-full py-3 font-normal roboto rounded-md border-gray-950 border-2 hover:bg-gray-950 text-gray-950 hover:text-white tracking-wide 
+                      shadow-md transition-transform transform hover:-translate-y-1 hover:shadow-lg"
+          >
+            I’m a Technician
+          </button>
+        </div>
+       
+      </div>
     </div>
   );
 }

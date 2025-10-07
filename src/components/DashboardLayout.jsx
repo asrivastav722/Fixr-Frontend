@@ -1,6 +1,7 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { useAuth } from "../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const { Header, Content, Sider } = Layout;
 
@@ -10,8 +11,9 @@ export default function DashboardLayout({ children }) {
 
   const handleLogout = () => {
     logout();
-    if (user.role === "customer") navigate("/login");
+    if (user.role === "customer") navigate("/c/login");
     else navigate("/t/login");
+    toast.success("Logged Out Successfull");
   };
 
   // Define role-specific menu items
@@ -19,14 +21,14 @@ export default function DashboardLayout({ children }) {
     { key: "profile", label: <Link to="/c/profile">Profile</Link> },
     { key: "book", label: <Link to="/c/book-service">Book Service</Link> },
     { key: "history", label: <Link to="/c/service-history">Service History</Link> },
-    { key: "logout", label: <span onClick={handleLogout}>Logout</span> },
+    { key: "logout", label: <Button onClick={handleLogout}>Logout</Button> },
   ];
 
   const technicianMenu = [
     { key: "profile", label: <Link to="/t/profile">Profile</Link> },
     { key: "jobs", label: <Link to="/t/jobs">Assigned Jobs</Link> },
     { key: "earnings", label: <Link to="/t/earnings">Earnings</Link> },
-    { key: "logout", label: <span onClick={handleLogout}>Logout</span> },
+    { key: "logout", label: <Button onClick={handleLogout}>Logout</Button> ,},
   ];
 
   const menuItems = user.role === "customer" ? customerMenu : technicianMenu;

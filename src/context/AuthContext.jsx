@@ -1,32 +1,30 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { getCustomerProfile } from "../api/customer";
 import { getTechnicianProfile } from "../api/technician";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);   // will include role
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const customerToken = localStorage.getItem("token");
-      const techToken = localStorage.getItem("techToken");
-
-      if (!customerToken && !techToken) {
-        setLoading(false);
-        return;
-      }
-
+    const initAuth = async () => {
       try {
+        const customerToken = localStorage.getItem("token");
+        const techToken = localStorage.getItem("techToken");
+
         if (customerToken) {
-          const { data } = await getCustomerProfile();
-          setUser({ ...data.customer, role: "customer" });
+          // Fetch customer profile
+          const res = await getCustomerProfile();
+          setUser({ ...res.data, role: "customer" });
         } else if (techToken) {
-          const { data } = await getTechnicianProfile();
-          setUser({ ...data, role: "technician" });
+          // Fetch technician profile
+          const res = await getTechnicianProfile();
+          setUser({ ...res.data, role: "technician" });
         }
-      } catch {
+      } catch (err) {
+        console.error("Auto-login failed:", err);
         localStorage.removeItem("token");
         localStorage.removeItem("techToken");
       } finally {
@@ -34,7 +32,7 @@ export const AuthProvider = ({ children }) => {
       }
     };
 
-    fetchUser();
+    initAuth();
   }, []);
 
   const logout = () => {

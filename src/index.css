@@ -1,0 +1,106 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Bootstrap (after Tailwind to avoid reset conflicts) */
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.poppins {
+  font-family: "Poppins", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+.roboto {
+  font-family: "Roboto Condensed", sans-serif;
+}
+label{
+    font-family: "Roboto Condensed", sans-serif;
+    font-weight: 400;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+input{
+    font-family: "Roboto Condensed", sans-serif !important;
+    font-size: 14px !important;
+    padding: 8px 10px !important;
+}
+.ant-form-item-explain-error{
+    font-family: "Roboto Condensed", sans-serif !important;
+    text-align: left;
+    padding: 2px 0px !important;
+    font-size: 12px !important;
+}
+.ant-select-item{
+  font-family: "Roboto Condensed", sans-serif !important;
+  text-align: left;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+}
+.ant-select-selection-overflow{
+  padding: 5px !important;
+}
+.ant-select-selection-item{
+  background-color: black !important;
+  color: white !important;
+}
+.anticon-close{
+  color:white
+}
+.ant-input-password,.ant-select-selector{
+  margin: 0px !important;
+  padding: 0px !important;
+  padding-right: 8px !important;
+  text-align: left !important;
+  font-family: "Roboto Condensed", sans-serif !important;
+}
+.ant-form-item-label{
+  margin: 0px !important;
+  padding: 0px !important;
+  padding-bottom: 2px !important;
+}
+
+
+/* Success toast */
+.toast-success {
+    font-family: "Roboto Condensed", sans-serif;
+    border-radius: 5px !important;
+    font-weight: 300 !important;
+    font-size: 14px !important;
+    margin: 0px !important;
+    padding: 5px !important;
+    background-color: rgba(0, 0, 0, 1) !important;
+    color:white !important;
+    margin-bottom: 10vh !important;
+    animation: toast-slide-up 0.4s ease-out;
+
+}
+/* Animated Gradient Background */
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animated-gradient {
+  background: linear-gradient(270deg, #facc15, #fb923c, #f97316); /* yellow → orange shades */
+  background-size: 600% 600%;
+  animation: gradientBG 5s ease infinite;
+}
+
+
+@keyframes toast-slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
