@@ -1,7 +1,8 @@
 import axios from "axios";
+import constants from "../utils/constants";
 
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_BASE_URL || "http://localhost:5000/api",
+  baseURL: constants.BASE_URL,
 });
 
 // Add JWT automatically for protected routes
@@ -11,6 +12,6 @@ API.interceptors.request.use((req) => {
   return req;
 });
 
-export const registerTechnician = (data) => API.post("/technicians/register", data);
-export const loginTechnician = (data) => API.post("/technicians/login", data);
-export const getTechnicianProfile = () => API.get("/technicians/profile");
+export const registerTechnician = (data) => API.post("technicians/register", data);
+export const loginTechnician = (data) => API.post("technicians/login", data);
+export const getTechnicianProfile = () => API.get("technicians/profile");

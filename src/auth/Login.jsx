@@ -30,7 +30,9 @@ export default function Login({ role }) {
   };
 
   const handleStartOver = () => {
+    
     navigate("/"); // Go back to UserTypeSelection
+    
   };
 
   return (
