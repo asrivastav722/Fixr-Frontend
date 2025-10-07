@@ -4,11 +4,14 @@ function App() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:5000/')
+    fetch('https://fixr-backend-9u8z.onrender.com/health')
       .then(res => res.text())
       .then(data => setMessage(data))
       .catch(err => console.error('Error:', err));
   }, []);
+
+
+
 
   return (
     <div style={{ textAlign: 'center', marginTop: '100px' }}>
