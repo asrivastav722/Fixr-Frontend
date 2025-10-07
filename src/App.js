@@ -1,24 +1,37 @@
-import React, { useEffect, useState } from 'react';
+import { Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import RoleProtectedRoute from "./components/RoleProtectedRoutes";
+import DashboardLayout from "./components/DashboardLayout";
+
+import { publicRoutes, customerRoutes, technicianRoutes } from "./routes";
+import Landing from "./auth/Landing";
 
 function App() {
-  const [message, setMessage] = useState('');
-
-  useEffect(() => {
-    fetch('https://fixr-backend-9u8z.onrender.com/health')
-      .then(res => res.text())
-      .then(data => setMessage(data))
-      .catch(err => console.error('Error:', err));
-  }, []);
-
-
-
-
   return (
-    <div style={{ textAlign: 'center', marginTop: '100px' }}>
-      <h1>Fixr Frontend</h1>
-      <p>V 1.0</p>
-      <p>{message ? message : 'Connecting to backend...'}</p>
-    </div>
+    <AuthProvider>
+      <Routes>
+
+        <Route path="/" element={<Landing />} />
+        {/* Public Routes */}
+        {publicRoutes.map(({ path, element }) => (
+          <Route key={path} path={path} element={element} />
+        ))}
+
+        {/* Customer Routes */}
+        <Route element={<RoleProtectedRoute role="customer"><DashboardLayout /></RoleProtectedRoute>}>
+          {customerRoutes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
+        </Route>
+
+        {/* Technician Routes */}
+        <Route element={<RoleProtectedRoute role="technician"><DashboardLayout /></RoleProtectedRoute>}>
+          {technicianRoutes.map(({ path, element }) => (
+            <Route key={path} path={path} element={element} />
+          ))}
+        </Route>
+      </Routes>
+    </AuthProvider>
   );
 }
 
