@@ -1,15 +1,22 @@
-import { Form, Input, Button, Card, message } from "antd";
+import { Form, Input, Button } from "antd";
 import { loginCustomer } from "../api/customer";
 import { loginTechnician } from "../api/technician";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
+import { useState } from "react";
 
 export default function Login({ role }) {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const [loading, setLoading] = useState(false);
+
+  const handleStartOver = () => {
+    navigate("/");
+  };
 
   const onFinish = async (values) => {
+    setLoading(true);
     try {
       let data;
       if (role === "customer") {
@@ -17,7 +24,7 @@ export default function Login({ role }) {
         localStorage.setItem("token", data.token);
         setUser({ ...data, role: "customer" });
         navigate("/c/profile");
-      } else if (role === "technician") {
+      } else {
         data = (await loginTechnician(values)).data;
         localStorage.setItem("techToken", data.token);
         setUser({ ...data, role: "technician" });
@@ -26,61 +33,74 @@ export default function Login({ role }) {
       toast.success("Login successful!");
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleStartOver = () => {
-    
-    navigate("/"); // Go back to UserTypeSelection
-    
+  const handleSubmit = (values) => {
+    // Custom validation instead of Ant Design built-in
+    if (!values.email) return toast.error("Email is required");
+    if (!/\S+@\S+\.\S+/.test(values.email))
+      return toast.error("Please enter a valid email address");
+    if (!values.password) return toast.error("Password is required");
+
+    onFinish(values);
   };
 
   return (
     <div className="flex justify-center items-center min-h-screen animated-gradient">
-  <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-6 py-6 w-[90%] max-w-md text-center">
-    <p className="text-left roboto font-medium text-lg text-black mb-4">
-      {role === "customer" ? "Customer Login" : "Technician Login"}
-    </p>
-
-    <Form layout="vertical" onFinish={onFinish} className="m-0 p-0 flex flex-col gap-4">
-      <Form.Item
-        label="Email"
-        name="email"
-        rules={[{ required: true }, { type: "email", message: "Invalid email" }]}
-        className="m-0 p-0"
-      >
-        <Input placeholder="Enter your email" />
-      </Form.Item>
-
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[{ required: true }]}
-        className="m-0 p-0"
-      >
-        <Input.Password placeholder="Enter your password" />
-      </Form.Item>
-
-      <div className="flex flex-col gap-3">
-        <Button type="primary" htmlType="submit" className="roboto h-11 text-white bg-black">
-          Login
-        </Button>        
-
-        <p className="text-sm text-center text-black roboto m-0 p-0 ">
-          New here?{" "}
-          <a
-            href={role === "customer" ? "/c/signup" : "/t/signup"}
-            className="text-blue-900 hover:underline"
-          >
-            Sign Up
-          </a>
+      <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-6 py-6 w-[90%] max-w-md text-center">
+        <p className="text-left roboto font-medium text-lg text-black mb-4">
+          {role === "customer" ? "Customer Login" : "Technician Login"}
         </p>
-        <button onClick={handleStartOver} className="text-black roboto m-0 p-0 pt-3 h-fit">Go Back </button>
 
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          className="m-0 p-0 flex flex-col gap-4"
+          // disable built-in validation visuals
+          requiredMark={false}
+          validateTrigger={false}
+        >
+          <Form.Item label="Email" name="email" className="m-0 p-0">
+            <Input placeholder="Enter your email" />
+          </Form.Item>
+
+          <Form.Item label="Password" name="password" className="m-0 p-0">
+            <Input.Password placeholder="Enter your password" />
+          </Form.Item>
+
+          <div className="flex flex-col gap-3">
+            <Button
+              loading={loading}
+              type="primary"
+              htmlType="submit"
+              className="roboto h-11 text-white bg-black"
+            >
+              {loading ? "Logging In" : "Login"}
+            </Button>
+
+            <p className="text-sm text-center text-black roboto m-0 p-0">
+              New here?{" "}
+              <a
+                href={role === "customer" ? "/c/signup" : "/t/signup"}
+                className="text-blue-900 hover:underline"
+              >
+                Sign Up
+              </a>
+            </p>
+
+            <button
+              type="button"
+              onClick={handleStartOver}
+              className="text-black roboto m-0 p-0 pt-3 h-fit hover:underline"
+            >
+              Go Back
+            </button>
+          </div>
+        </Form>
       </div>
-    </Form>
-  </div>
-</div>
-
+    </div>
   );
 }
