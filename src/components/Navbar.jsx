@@ -8,8 +8,8 @@ export default function NavBar() {
 
   const handleLogout = () => {
     logout();
-    if (user.role === "customer") navigate("/c/login");
-    else navigate("/t/login");
+    if (user.role === "customer") navigate("/login?role=customer");
+    else navigate("/login?role=technician");
   };
 
   return (
@@ -21,10 +21,10 @@ export default function NavBar() {
       <div className="flex items-center space-x-4">
         {!user && (
           <>
-            <Link to="/c/login" className="text-gray-700 hover:text-blue-600">Customer Login</Link>
-            <Link to="/c/signup" className="text-gray-700 hover:text-blue-600">Customer Signup</Link>
-            <Link to="/t/login" className="text-gray-700 hover:text-blue-600">Technician Login</Link>
-            <Link to="/t/signup" className="text-gray-700 hover:text-blue-600">Technician Signup</Link>
+            <Link to="/login?role=customer" className="text-gray-700 hover:text-blue-600">Customer Login</Link>
+            <Link to="/signup?role=customer" className="text-gray-700 hover:text-blue-600">Customer Signup</Link>
+            <Link to="/login?role=technician" className="text-gray-700 hover:text-blue-600">Technician Login</Link>
+            <Link to="/signup?role=technician" className="text-gray-700 hover:text-blue-600">Technician Signup</Link>
           </>
         )}
 

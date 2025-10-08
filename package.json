@@ -12,6 +12,7 @@
     "bootstrap": "^5.3.8",
     "cross-env": "^10.1.0",
     "dayjs": "^1.11.18",
+    "framer-motion": "^12.23.22",
     "port": "^0.8.1",
     "puppeteer": "^24.23.0",
     "react": "^19.2.0",

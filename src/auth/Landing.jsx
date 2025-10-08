@@ -2,13 +2,13 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
-export default function UserTypeSelection() {
+export default function Landing() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (!loading && user) {
-      navigate(`/${user.role === "customer" ? "c" : "t"}/profile`, { replace: true });
+      navigate(`/login?role=${user.role === "customer" ? "customer" : "technician"}`, { replace: true });
     }
   }, [user, loading, navigate]);
 
@@ -21,7 +21,6 @@ export default function UserTypeSelection() {
   }
 
   return (
-    <div className="flex justify-center items-center min-h-screen animated-gradient">
       <div className="bg-white backdrop-blur-md shadow-2xl rounded-xl px-10 py-12 w-[90%] max-w-md text-center">
         {/* Logo */}
         <div className="mb-6">
@@ -41,7 +40,7 @@ export default function UserTypeSelection() {
         {/* Buttons */}
         <div className="space-y-4">
           <button
-            onClick={() => navigate("/c/signup?role=customer")}
+            onClick={() => navigate("/signup?role=customer")}
             className="w-full py-3 font-normal roboto rounded-md border-violet-950 border-2 hover:bg-violet-950 text-violet-950 hover:text-white tracking-wide shadow-md 
                     transition-transform transform hover:-translate-y-1 hover:shadow-lg"
           >
@@ -49,7 +48,7 @@ export default function UserTypeSelection() {
           </button>
 
           <button
-            onClick={() => navigate("/t/signup?role=technician")}
+            onClick={() => navigate("/signup?role=technician")}
             className="w-full py-3 font-normal roboto rounded-md border-gray-950 border-2 hover:bg-gray-950 text-gray-950 hover:text-white tracking-wide 
                       shadow-md transition-transform transform hover:-translate-y-1 hover:shadow-lg"
           >
@@ -58,6 +57,5 @@ export default function UserTypeSelection() {
         </div>
        
       </div>
-    </div>
   );
 }

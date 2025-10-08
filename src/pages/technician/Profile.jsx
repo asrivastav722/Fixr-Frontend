@@ -10,8 +10,8 @@ export default function Profile() {
 
   const handleLogout = () => {
     logout();
-    if (user.role === "customer") navigate("/c/login");
-    else navigate("/t/login");
+    if (user.role === "customer") navigate("/login?role=customer");
+    else navigate("/login?role=technician");
   };
 
   return (

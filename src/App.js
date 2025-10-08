@@ -3,19 +3,16 @@ import { AuthProvider } from "./context/AuthContext";
 import RoleProtectedRoute from "./components/RoleProtectedRoutes";
 import DashboardLayout from "./components/DashboardLayout";
 
-import { publicRoutes, customerRoutes, technicianRoutes } from "./routes";
-import Landing from "./auth/Landing";
+import {  customerRoutes, technicianRoutes } from "./routes";
+import AuthRoute from "./auth/AuthRoute";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
+        <Route path="/" element={<AuthRoute />} />
+        <Route path="/:id" element={<AuthRoute />} />
 
-        <Route path="/" element={<Landing />} />
-        {/* Public Routes */}
-        {publicRoutes.map(({ path, element }) => (
-          <Route key={path} path={path} element={element} />
-        ))}
 
         {/* Customer Routes */}
         <Route element={<RoleProtectedRoute role="customer"><DashboardLayout /></RoleProtectedRoute>}>

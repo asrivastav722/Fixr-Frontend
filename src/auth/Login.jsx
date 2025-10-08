@@ -1,12 +1,14 @@
 import { Form, Input, Button } from "antd";
 import { loginCustomer } from "../api/customer";
 import { loginTechnician } from "../api/technician";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 import { useState } from "react";
 
-export default function Login({ role }) {
+export default function Login() {
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get("role"); // returns 'technician' or 'customer'
   const navigate = useNavigate();
   const { setUser } = useAuth();
   const [loading, setLoading] = useState(false);
@@ -23,12 +25,12 @@ export default function Login({ role }) {
         data = (await loginCustomer(values)).data;
         localStorage.setItem("token", data.token);
         setUser({ ...data, role: "customer" });
-        navigate("/c/profile");
+        navigate("/profile?role=customer");
       } else {
         data = (await loginTechnician(values)).data;
         localStorage.setItem("techToken", data.token);
         setUser({ ...data, role: "technician" });
-        navigate("/t/profile");
+        navigate("/profile?=technician");
       }
       toast.success("Login successful!");
     } catch (err) {
@@ -49,7 +51,7 @@ export default function Login({ role }) {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen animated-gradient">
+    
       <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-6 py-6 w-[90%] max-w-md text-center">
         <p className="text-left roboto font-medium text-lg text-black mb-4">
           {role === "customer" ? "Customer Login" : "Technician Login"}
@@ -84,7 +86,7 @@ export default function Login({ role }) {
             <p className="text-sm text-center text-black roboto m-0 p-0">
               New here?{" "}
               <a
-                href={role === "customer" ? "/c/signup" : "/t/signup"}
+                href={role === "customer" ? "/signup?role=customer" : "/signup?role=technician"}
                 className="text-blue-900 hover:underline"
               >
                 Sign Up
@@ -101,6 +103,6 @@ export default function Login({ role }) {
           </div>
         </Form>
       </div>
-    </div>
+
   );
 }

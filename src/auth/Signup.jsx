@@ -1,13 +1,15 @@
 import { Form, Input, Button, Select, InputNumber } from "antd";
 import { registerCustomer } from "../api/customer";
 import { registerTechnician } from "../api/technician";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import toast from "react-hot-toast";
 
 const { Option } = Select;
 
-export default function Signup({ role }) {
+export default function Signup() {
+  const [searchParams] = useSearchParams();
+  const role = searchParams.get("role"); // returns 'technician' or 'customer'
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
@@ -56,7 +58,6 @@ export default function Signup({ role }) {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen animated-gradient">
       <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 w-[90%] max-w-md text-center">
         <p className="text-left roboto font-medium text-lg text-black mb-4">
           {role === "customer" ? "Customer Signup" : "Technician Signup"}
@@ -123,7 +124,7 @@ export default function Signup({ role }) {
             <p className="text-sm text-center text-black roboto m-0 p-0">
               Already have an account?{" "}
               <a
-                href={role === "customer" ? "/c/login" : "/t/login"}
+                href={role === "customer" ? "/login?role=customer" : "/login?role=technician"}
                 className="text-blue-900 hover:underline"
               >
                 Login
@@ -140,6 +141,5 @@ export default function Signup({ role }) {
           </div>
         </Form>
       </div>
-    </div>
   );
 }

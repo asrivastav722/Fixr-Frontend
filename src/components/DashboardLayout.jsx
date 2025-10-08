@@ -11,8 +11,8 @@ export default function DashboardLayout({ children }) {
 
   const handleLogout = () => {
     logout();
-    if (user.role === "customer") navigate("/c/login");
-    else navigate("/t/login");
+    if (user.role === "customer") navigate("/login?role=customer");
+    else navigate("/login?role=technician");
     toast.success("Logged Out Successfull");
   };
 
