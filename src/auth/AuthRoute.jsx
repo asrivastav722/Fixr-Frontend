@@ -1,42 +1,44 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import Landing from "./Landing";
 import Signup from "./Signup";
 import Login from "./Login";
-import "./authSlide.css";
+import "./authSlide.css"; // We'll define CSS transitions here
 
-const ROUTE_ORDER = ["landing", "signup", "login"];
+const slides = ["landing", "signup", "login"];
 
 const AuthRoute = () => {
-  const [route, setRoute] = useState("landing");
   const [role, setRole] = useState("customer");
-  const [direction, setDirection] = useState(1);
-  const prevRoute = useRef("landing");
+  const [current, setCurrent] = useState(0);
 
-  useEffect(() => {
-    const prevIndex = ROUTE_ORDER.indexOf(prevRoute.current || "landing");
-    const newIndex = ROUTE_ORDER.indexOf(route || "landing");
+  const goTo = (target) => {
+    const index = slides.indexOf(target);
+    if (index !== -1) setCurrent(index);
+  };
 
-    setDirection(newIndex > prevIndex ? 1 : -1);
-    prevRoute.current = route;
-  }, [route]);
-
-  const getComponent = () => {
-    if (route === "signup")
-      return <Signup setRoute={setRoute} role={role} setRole={setRole} />;
-    if (route === "login")
-      return <Login setRoute={setRoute} role={role} setRole={setRole} />;
-    return <Landing setRoute={setRoute} role={role} setRole={setRole} />;
+  const getComponent = (index) => {
+    switch (slides[index]) {
+      case "landing":
+        return <Landing setRoute={goTo} role={role} setRole={setRole} />;
+      case "signup":
+        return <Signup setRoute={goTo} role={role} setRole={setRole} />;
+      case "login":
+        return <Login setRoute={goTo} role={role} setRole={setRole} />;
+      default:
+        return <Landing setRoute={goTo} role={role} setRole={setRole} />;
+    }
   };
 
   return (
-    <div className="relative overflow-hidden min-h-screen flex justify-center items-center animated-gradient">
+    <div className="auth-container">
       <div
-        key={route}
-        className={`absolute top-0 left-0 w-full h-full flex justify-center items-center slide-card ${
-          direction === 1 ? "slide-left" : "slide-right"
-        }`}
+        className="slides-wrapper"
+        style={{ transform: `translateX(-${current * 100}%)` }}
       >
-        {getComponent()}
+        {slides.map((_, idx) => (
+          <div className="slide" key={idx}>
+            {getComponent(idx)}
+          </div>
+        ))}
       </div>
     </div>
   );

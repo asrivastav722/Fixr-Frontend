@@ -24,7 +24,7 @@ export default function Landing({ setRoute, role, setRole }) {
   }
 
   return (
-    <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-10 py-12 w-[90%] max-w-md text-center transform transition-all duration-500 hover:scale-[1.02]">
+    <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-10 py-12 w-full max-w-md text-center transform transition-all duration-500 hover:scale-[1.02]">
       {/* Logo */}
       <div className="mb-6">
         <img

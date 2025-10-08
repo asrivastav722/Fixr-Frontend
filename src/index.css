@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "swiper/css";
+@import "swiper/css/effect-coverflow";
+@import "swiper/css/pagination";
+
+
 /* Bootstrap (after Tailwind to avoid reset conflicts) */
 @import "bootstrap/dist/css/bootstrap.min.css";
 

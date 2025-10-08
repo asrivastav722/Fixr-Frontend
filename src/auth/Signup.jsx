@@ -56,7 +56,7 @@ export default function Signup({setRoute, role, setRole}) {
   };
 
   return (
-      <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 w-[90%] max-w-md text-center">
+      <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 w-full max-w-md text-center">
         <p className="text-left roboto font-medium text-lg text-black mb-4">
           {role === "customer" ? "Customer Signup" : "Technician Signup"}
         </p>
@@ -133,7 +133,7 @@ export default function Signup({setRoute, role, setRole}) {
 
             <button
               type="button"
-              onClick={() => setRoute("/")}
+              onClick={() => setRoute("landing")}
               className="text-black roboto m-0 p-0 h-fit hover:underline"
             >
               Go Back
