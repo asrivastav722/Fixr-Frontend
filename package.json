@@ -13,6 +13,7 @@
     "cross-env": "^10.1.0",
     "dayjs": "^1.11.18",
     "port": "^0.8.1",
+    "puppeteer": "^24.23.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hot-toast": "^2.6.0",
