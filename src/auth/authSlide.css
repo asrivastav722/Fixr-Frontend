@@ -1,0 +1,39 @@
+.slide-card {
+  will-change: transform, opacity;
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  animation-fill-mode: both;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.slide-left {
+  animation-name: slideLeft;
+}
+
+.slide-right {
+  animation-name: slideRight;
+}
+
+/* --- GPU accelerated animations --- */
+@keyframes slideLeft {
+  from {
+    transform: translate3d(80%, 0, 0) scale(0.98);
+    opacity: 0.85;
+  }
+  to {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRight {
+  from {
+    transform: translate3d(-80%, 0, 0) scale(0.98);
+    opacity: 0.85;
+  }
+  to {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 1;
+  }
+}

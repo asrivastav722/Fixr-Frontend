@@ -1,52 +1,43 @@
-import { useParams } from "react-router-dom";
-import { AnimatePresence, motion } from "framer-motion";
+import { useState, useRef, useEffect } from "react";
 import Landing from "./Landing";
 import Signup from "./Signup";
 import Login from "./Login";
+import "./authSlide.css";
 
-const slideVariants = {
-  initial: {
-    x: "100%",
-  },
-  animate: {
-    x: 0,
-    transition: {
-      duration: 0.5,
-      ease: "easeInOut",
-    },
-  },
-  exit: {
-    x: "-100%",
-    transition: {
-      duration: 0.4,
-      ease: "easeInOut",
-    },
-  },
-};
+const ROUTE_ORDER = ["landing", "signup", "login"];
 
 const AuthRoute = () => {
-  const { id } = useParams();
+  const [route, setRoute] = useState("landing");
+  const [role, setRole] = useState("customer");
+  const [direction, setDirection] = useState(1);
+  const prevRoute = useRef("landing");
+
+  useEffect(() => {
+    const prevIndex = ROUTE_ORDER.indexOf(prevRoute.current || "landing");
+    const newIndex = ROUTE_ORDER.indexOf(route || "landing");
+
+    setDirection(newIndex > prevIndex ? 1 : -1);
+    prevRoute.current = route;
+  }, [route]);
 
   const getComponent = () => {
-    if (id === "signup") return <Signup />;
-    if (id === "login") return <Login />;
-    return <Landing />;
+    if (route === "signup")
+      return <Signup setRoute={setRoute} role={role} setRole={setRole} />;
+    if (route === "login")
+      return <Login setRoute={setRoute} role={role} setRole={setRole} />;
+    return <Landing setRoute={setRoute} role={role} setRole={setRole} />;
   };
 
   return (
     <div className="relative overflow-hidden min-h-screen flex justify-center items-center animated-gradient">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={id || "landing"}
-          variants={slideVariants}
-          initial="initial"
-          animate="animate"
-          exit="exit"
-          className="absolute top-0 left-0 w-full h-full flex justify-center items-center"
-        >
-          {getComponent()}
-        </motion.div>
-      </AnimatePresence>
+      <div
+        key={route}
+        className={`absolute top-0 left-0 w-full h-full flex justify-center items-center slide-card ${
+          direction === 1 ? "slide-left" : "slide-right"
+        }`}
+      >
+        {getComponent()}
+      </div>
     </div>
   );
 };

@@ -7,9 +7,7 @@ import toast from "react-hot-toast";
 
 const { Option } = Select;
 
-export default function Signup() {
-  const [searchParams] = useSearchParams();
-  const role = searchParams.get("role"); // returns 'technician' or 'customer'
+export default function Signup({setRoute, role, setRole}) {
   const navigate = useNavigate();
   const { setUser } = useAuth();
 
@@ -123,17 +121,19 @@ export default function Signup() {
 
             <p className="text-sm text-center text-black roboto m-0 p-0">
               Already have an account?{" "}
-              <a
-                href={role === "customer" ? "/login?role=customer" : "/login?role=technician"}
-                className="text-blue-900 hover:underline"
+              <button
+                type="button"
+                onClick={() => setRoute("login")}
+                className="text-blue-900 hover:underline bg-transparent border-none cursor-pointer"
               >
                 Login
-              </a>
+              </button>
             </p>
+
 
             <button
               type="button"
-              onClick={() => navigate("/")}
+              onClick={() => setRoute("/")}
               className="text-black roboto m-0 p-0 h-fit hover:underline"
             >
               Go Back
