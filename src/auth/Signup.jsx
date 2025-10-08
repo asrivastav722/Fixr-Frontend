@@ -56,7 +56,7 @@ export default function Signup({setRoute, role, setRole}) {
   };
 
   return (
-      <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 w-full max-w-md text-center">
+      <div className="bg-white backdrop-blur-md shadow-2xl rounded-2xl px-4 py-4 w-full max-w-md h-fit max-h-[90vh] overflow-auto text-center">
         <p className="text-left roboto font-medium text-lg text-black mb-4">
           {role === "customer" ? "Customer Signup" : "Technician Signup"}
         </p>
@@ -69,11 +69,11 @@ export default function Signup({setRoute, role, setRole}) {
           validateTrigger={false}
         >
           <Form.Item label="Full Name" name="name" className="m-0 p-0">
-            <Input placeholder="Enter your full name" />
+            <Input  placeholder="Enter your full name" />
           </Form.Item>
 
           <Form.Item label="Email" name="email" className="m-0 p-0">
-            <Input placeholder="Enter your email" />
+            <Input id="signupmail" placeholder="Enter your email" />
           </Form.Item>
 
           <Form.Item label="Phone" name="phone" className="m-0 p-0">
@@ -81,7 +81,7 @@ export default function Signup({setRoute, role, setRole}) {
           </Form.Item>
 
           <Form.Item label="Password" name="password" className="m-0 p-0">
-            <Input.Password placeholder="Enter your password" />
+            <Input.Password id="signuppas" placeholder="Enter your password" />
           </Form.Item>
 
           {role === "technician" && (
