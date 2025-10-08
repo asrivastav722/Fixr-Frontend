@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Landing from "./Landing";
 import Signup from "./Signup";
 import Login from "./Login";
-import "./authSlide.css"; // We'll define CSS transitions here
+import "./authSlide.css";
 
 const slides = ["landing", "signup", "login"];
 
@@ -10,9 +10,27 @@ const AuthRoute = () => {
   const [role, setRole] = useState("customer");
   const [current, setCurrent] = useState(0);
 
+  // Sync slide with history
+  useEffect(() => {
+    // Push initial state
+    window.history.replaceState({ slide: current }, "");
+
+    const handlePopState = (event) => {
+      if (event.state?.slide !== undefined) {
+        setCurrent(event.state.slide);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, []);
+
   const goTo = (target) => {
     const index = slides.indexOf(target);
-    if (index !== -1) setCurrent(index);
+    if (index !== -1) {
+      setCurrent(index);
+      window.history.pushState({ slide: index }, ""); // Push new state
+    }
   };
 
   const getComponent = (index) => {
