@@ -6,7 +6,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(135deg, #facc15, #fb923c, #f97316); /* animated-gradient if you have */
+  background: linear-gradient(270deg, #dbe919, #fb923c, #eaf916); /* yellow → orange shades */
+  background-size: 600% 600%;
+  animation: gradientBG 5s ease infinite;
 }
 
 .slides-wrapper {
@@ -23,4 +25,26 @@
   
   justify-content: center;
   align-items: center;
+}
+
+@keyframes toast-slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
