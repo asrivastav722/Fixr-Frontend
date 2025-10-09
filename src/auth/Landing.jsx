@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import loader from "../assets/loader.gif"
 
 export default function Landing({ setRoute, role, setRole }) {
   const { user, loading } = useAuth();
@@ -17,8 +18,8 @@ export default function Landing({ setRoute, role, setRole }) {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-gray-600 text-lg">Loading...</div>
+      <div className="flex items-center justify-center min-h-screen">
+        <img height={50} width={50} src={loader}/>
       </div>
     );
   }

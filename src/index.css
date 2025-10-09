@@ -10,6 +10,12 @@
 /* Bootstrap (after Tailwind to avoid reset conflicts) */
 @import "bootstrap/dist/css/bootstrap.min.css";
 
+body{
+  background: linear-gradient(270deg, #dbe919, #fb923c, #eaf916); /* yellow → orange shades */
+  background-size: 600% 600%;
+  animation: gradientBG 5s ease infinite;
+}
+
 .poppins {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
