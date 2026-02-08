@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.barlow{
+    font-family: 'Barlow-Condensed';
+}
+.poppins{
+    font-family: 'Poppins' !important;
+}

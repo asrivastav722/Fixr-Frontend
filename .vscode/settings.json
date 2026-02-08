@@ -3,5 +3,11 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "circleci.persistedProjectSelection": [
+    "gh/showStageDev/ss_frontend",
+    "gh/showStageDev/ss_backend",
+    "gh/showStageDev/ss_website",
+    "gh/showStageDev/ss-cms-frontend"
+  ]
 }
