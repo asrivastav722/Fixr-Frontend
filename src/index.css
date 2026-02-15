@@ -5,16 +5,8 @@
 @import "swiper/css";
 @import "swiper/css/effect-coverflow";
 @import "swiper/css/pagination";
-
-
 /* Bootstrap (after Tailwind to avoid reset conflicts) */
 @import "bootstrap/dist/css/bootstrap.min.css";
-
-body{
-  background: linear-gradient(270deg, #a019e9, #3ca2fb, #162df9); /* yellow → orange shades */
-  background-size: 600% 600%;
-  animation: gradientBG 5s ease infinite;
-}
 
 .poppins {
   font-family: "Poppins", sans-serif;
@@ -32,7 +24,7 @@ label{
 }
 input{
     font-family: "Roboto Condensed", sans-serif !important;
-    font-size: 14px !important;
+    font-size: 14px ;
     padding: 8px 10px !important;
 }
 .ant-form-item-explain-error{
