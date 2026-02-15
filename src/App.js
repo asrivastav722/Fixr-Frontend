@@ -1,60 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import PhoneScreen from './components/PhoneScreen.jsx';
-import OTPScreen from './components/OTPScreen.jsx';
+import React from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom'; // REMOVED BrowserRouter
+import { Toaster } from 'react-hot-toast';
+import PhoneScreen from './components/OnBoardingScreen.jsx';
 import LocationScreen from './components/LocationScreen.jsx';
 import MainApp from './components/MainApp.jsx';
 
 const App = () => {
-  const [step, setStep] = useState('loading'); 
-  const [phone, setPhone] = useState('');
-  const [isGuest, setIsGuest] = useState(false);
-
-  useEffect(() => {
-    // Check if user is already verified
-    const token = localStorage.getItem('token');
-    const savedPhone = localStorage.getItem('userPhone');
-
-    if (token && savedPhone) {
-      setPhone(savedPhone);
-      setStep('location'); // Jump straight to location
-    } else {
-      setStep('phone');
-    }
-  }, []);
-
-  const handleOTPVerified = (data) => {
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('userPhone', data.user.phone);
-    setStep('location');
-  };
-
-  if (step === 'loading') return <div className="h-screen flex items-center justify-center">Loading...</div>;
-
-  switch (step) {
-    case 'phone':
-      return <PhoneScreen 
-                onSkip={() => { setIsGuest(true); setStep('location'); }} 
-                onSendOTP={(num) => { setPhone(num); setStep('otp'); }} 
-              />;
-    case 'otp':
-      return <OTPScreen 
-                phone={phone} 
-                onVerified={handleOTPVerified} 
-                onBack={() => setStep('phone')} 
-              />;
-    case 'location':
-      return <LocationScreen 
-                phone={isGuest ? null : phone} 
-                onFinished={(coords) => {
-                  // Pass the fetched coordinates into the app
-                  setStep('app');
-                }} 
-              />;
-    case 'app':
-      return <MainApp isGuest={isGuest} userPhone={phone} />;
-    default:
-      return <PhoneScreen />;
-  }
+  return (
+    <>
+      <Toaster position="top-center" />
+      <Routes>
+        <Route path="/login" element={<PhoneScreen />} />
+        <Route path="/login/:id" element={<PhoneScreen />} />
+        <Route path="/location" element={<LocationScreen />} />
+        <Route path="/app" element={<MainApp />} />
+        
+        {/* Redirect to login if path doesn't exist */}
+        <Route path="*" element={<Navigate to="/login" />} />
+      </Routes>
+    </>
+  );
 };
 
 export default App;

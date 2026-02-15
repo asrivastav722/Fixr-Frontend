@@ -1,26 +1,30 @@
 import React, { useState } from 'react';
 import { Button, Input, Form, Typography } from 'antd';
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-const OTPScreen = ({ phone, onVerified, onBack }) => {
+const OTPScreen = () => {
   const [loading, setLoading] = useState(false);
+  const { state } = useLocation();
+  const navigate = useNavigate();
+
+  if (!state?.phone) return <Navigate to="/login" />;
 
   const handleVerify = async (values) => {
     setLoading(true);
     try {
-      // 1. Verify with Firebase
-      const result = await window.confirmationResult.confirm(values.otp);
-      
-      // 2. Sync with your MongoDB
-      const res = await axios.post('http://localhost:5000/api/auth/firebase-sync', {
-        phone: result.user.phoneNumber
+      const res = await axios.post('http://localhost:5000/api/auth/verify-otp', {
+        phone: state.phone,
+        otp: values.otp
       });
 
-      toast.success("Verified!");
-      onVerified(res.data); // result has token and user
-    } catch (error) {
-      toast.error("Invalid OTP code");
+      localStorage.setItem('token', res.data.token);
+      localStorage.setItem('userPhone', state.phone);
+      toast.success("Login Successful!");
+      navigate('/location');
+    } catch (err) {
+      toast.error("Wrong OTP. Try 123456");
     } finally {
       setLoading(false);
     }
@@ -29,15 +33,16 @@ const OTPScreen = ({ phone, onVerified, onBack }) => {
   return (
     <div className="h-screen flex flex-col justify-center items-center p-6">
       <Typography.Title level={3}>Verify OTP</Typography.Title>
-      <p className="mb-6 text-gray-500">Sent to +{phone}</p>
+      <Typography.Text className="mb-6 text-gray-400 text-center">
+        Enter the code sent to {state.phone}
+      </Typography.Text>
       <Form onFinish={handleVerify} className="w-full max-w-xs">
         <Form.Item name="otp" rules={[{ required: true, len: 6 }]}>
-          <Input size="large" placeholder="000000" className="text-center tracking-widest font-bold" />
+          <Input size="large" placeholder="123456" className="text-center tracking-widest font-bold font-mono" />
         </Form.Item>
         <Button type="primary" htmlType="submit" block size="large" loading={loading} className="bg-blue-600">
-          Verify & Continue
+          Verify
         </Button>
-        <Button type="link" onClick={onBack} block className="mt-2 text-gray-400">Change Number</Button>
       </Form>
     </div>
   );
