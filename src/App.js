@@ -1,37 +1,60 @@
-import { Routes, Route } from "react-router-dom";
-import { AuthProvider } from "./context/AuthContext";
-import RoleProtectedRoute from "./components/RoleProtectedRoutes";
-import DashboardLayout from "./components/DashboardLayout";
+import React, { useState, useEffect } from 'react';
+import PhoneScreen from './components/PhoneScreen.jsx';
+import OTPScreen from './components/OTPScreen.jsx';
+import LocationScreen from './components/LocationScreen.jsx';
+import MainApp from './components/MainApp.jsx';
 
-import {  customerRoutes, technicianRoutes } from "./routes";
-import AuthRoute from "./auth/AuthRoute";
+const App = () => {
+  const [step, setStep] = useState('loading'); 
+  const [phone, setPhone] = useState('');
+  const [isGuest, setIsGuest] = useState(false);
 
-function App() {
-  return (
-    <AuthProvider>
-      <Routes>
-        <Route path="/" element={<AuthRoute />} />
-        <Route path="/:id" element={<AuthRoute />} />
+  useEffect(() => {
+    // Check if user is already verified
+    const token = localStorage.getItem('token');
+    const savedPhone = localStorage.getItem('userPhone');
 
+    if (token && savedPhone) {
+      setPhone(savedPhone);
+      setStep('location'); // Jump straight to location
+    } else {
+      setStep('phone');
+    }
+  }, []);
 
-        {/* Customer Routes */}
-        <Route element={<RoleProtectedRoute role="customer"><DashboardLayout /></RoleProtectedRoute>}>
-          {customerRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-        </Route>
+  const handleOTPVerified = (data) => {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('userPhone', data.user.phone);
+    setStep('location');
+  };
 
-        {/* Technician Routes */}
-        <Route element={<RoleProtectedRoute role="technician"><DashboardLayout /></RoleProtectedRoute>}>
-          {technicianRoutes.map(({ path, element }) => (
-            <Route key={path} path={path} element={element} />
-          ))}
-        </Route>
-      </Routes>
-    </AuthProvider>
-  );
-}
+  if (step === 'loading') return <div className="h-screen flex items-center justify-center">Loading...</div>;
+
+  switch (step) {
+    case 'phone':
+      return <PhoneScreen 
+                onSkip={() => { setIsGuest(true); setStep('location'); }} 
+                onSendOTP={(num) => { setPhone(num); setStep('otp'); }} 
+              />;
+    case 'otp':
+      return <OTPScreen 
+                phone={phone} 
+                onVerified={handleOTPVerified} 
+                onBack={() => setStep('phone')} 
+              />;
+    case 'location':
+      return <LocationScreen 
+                phone={isGuest ? null : phone} 
+                onFinished={(coords) => {
+                  // Pass the fetched coordinates into the app
+                  setStep('app');
+                }} 
+              />;
+    case 'app':
+      return <MainApp isGuest={isGuest} userPhone={phone} />;
+    default:
+      return <PhoneScreen />;
+  }
+};
 
 export default App;
-
-

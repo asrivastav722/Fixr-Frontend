@@ -11,7 +11,7 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 
 body{
-  background: linear-gradient(270deg, #dbe919, #fb923c, #eaf916); /* yellow → orange shades */
+  background: linear-gradient(270deg, #a019e9, #3ca2fb, #162df9); /* yellow → orange shades */
   background-size: 600% 600%;
   animation: gradientBG 5s ease infinite;
 }
@@ -51,8 +51,9 @@ input{
   padding: 5px !important;
 }
 .ant-select-selection-item{
-  background-color: black !important;
-  color: white !important;
+  
+  /* background-color: black !important; */
+  /* color: white !important; */
 }
 .anticon-close{
   color:white
