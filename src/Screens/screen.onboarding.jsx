@@ -2,39 +2,38 @@ import { Button, Form, Input } from "antd"
 
 const OnBoardingScreen = ({navigate,setPhone,phone,loading,handleSendOTP}) => {
     return <div className="h-screen w-screen d-flex align-items-center justify-center">
-        <div className="h-screen w-screen md:rounded-2xl md:border md:h-fit md:w-fit d-flex flex-col justify-between bg-gray-100 p-3 text-gray-600">
+        <div className="h-screen w-screen md:rounded-2xl md:border md:h-fit md:w-fit d-flex flex-col justify-between bg-white text-gray-600">
 
       {/* Skip button */}
 
-      <header className='d-flex justify-content-end'>
+      <header className='d-flex border-b justify-content-end p-3 poppins'>
         <Button 
           type="default" 
           onClick={() => navigate('/location', { state: { isGuest: true } })}
           size='large' 
-          className="roboto bg-gray-100 text-sm text-gray-600 border-gray-600 shadow-none"
+          className="poppins text-xs text-gray-900 font-medium shadow-none"
         >
           Skip
         </Button>
       </header>
 
       {/* Phone Field */}
-      <section className='d-flex flex-col h-full py-24 '>
-        <Form onFinish={handleSendOTP} layout="vertical" >
+        <Form className="d-flex flex-col justify-between h-full p-3" onFinish={handleSendOTP} layout="vertical" >
           <Form.Item label="Enter Your Phone Number" name="phone">
-            <Input onChange={(e)=>setPhone(e.target.value)} maxLength={10} prefix="+91" size="large" className='text-xl roboto' placeholder="XXXXXXXXXX" />
+            <Input onChange={(e)=>setPhone(e.target.value)} maxLength={10} prefix="+91" size="large" className='text-xs poppins' placeholder="XXXXXXXXXX" />
           </Form.Item>
-            <Button disabled={phone?.length!==10} type="primary" className='roboto w-full text-sm py-4' htmlType="submit" loading={loading} >
-              Sent OTP
-          </Button>
-        </Form>
-      </section>
 
-      {/* T&C */}
-      <footer className='d-flex justify-center align-items-center roboto text-xs'>
-        <p className='m-0 p-0'>Please visit our <a href='/' className='text-blue-500'> Terms & Conditions </a></p> 
-        
-      </footer>
-        
+          <footer className="text-center d-flex flex-col items-center gap-2">
+            <p className=' poppins text-xs m-0 p-0 d-flex align-items-center'>By Continuing, you agree our <a href='/' className='text-blue-500 px-1'> T&C </a> and <a href='/' className='text-blue-500 px-1'> Privacy Policy </a></p> 
+
+            <Button disabled={phone?.length!==10} type="primary" className='poppins w-full text-xs py-3' htmlType="submit" loading={loading} >
+              Continue
+          </Button>
+          </footer>
+        </Form>
+      
+
+     
         
     </div>
     </div>
