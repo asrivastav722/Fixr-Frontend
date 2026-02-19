@@ -11,7 +11,7 @@ const OnBoardingScreen = ({navigate,setPhone,phone,loading,handleSendOTP}) => {
           type="default" 
           onClick={() => navigate('/location', { state: { isGuest: true } })}
           size='large' 
-          className="poppins text-xs text-gray-900 font-medium shadow-none"
+          className="poppins text-[10px] text-gray-900 font-medium shadow-none"
         >
           Skip
         </Button>
@@ -24,9 +24,9 @@ const OnBoardingScreen = ({navigate,setPhone,phone,loading,handleSendOTP}) => {
           </Form.Item>
 
           <footer className="text-center d-flex flex-col items-center gap-2">
-            <p className=' poppins text-xs m-0 p-0 d-flex align-items-center'>By Continuing, you agree our <a href='/' className='text-blue-500 px-1'> T&C </a> and <a href='/' className='text-blue-500 px-1'> Privacy Policy </a></p> 
+            <p className=' poppins text-[10px] m-0 p-0 d-flex align-items-center'>By Continuing, you agree our <a href='/' className='text-blue-500 px-1'> T&C </a> and <a href='/' className='text-blue-500 px-1'> Privacy Policy </a></p> 
 
-            <Button disabled={phone?.length!==10} type="primary" className='poppins w-full text-xs py-3' htmlType="submit" loading={loading} >
+            <Button disabled={phone?.length!==10} type="primary" className='poppins w-full text-[10px] ' htmlType="submit" loading={loading} >
               Continue
           </Button>
           </footer>
