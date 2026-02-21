@@ -1,43 +1,45 @@
 {
   "expo": {
-    "name": "my-app",
-    "slug": "my-app",
+    "name": "Fixr",
+    "slug": "fixr",
     "version": "1.0.0",
+    "icon": "./src/assets/images/icon.png", // Main icon for iOS/Web
     "orientation": "portrait",
-    "icon": "./src/assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "fixr",
+    
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true
     },
+    "splash": {
+      "image": "./src/assets/images/icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#172554" 
+    },
     "android": {
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./src/assets/images/android-icon-foreground.png",
-        "backgroundImage": "./src/assets/images/android-icon-background.png",
-        "monochromeImage": "./src/assets/images/android-icon-monochrome.png"
+        "foregroundImage": "./src/assets/images/icon.png",
+        "backgroundColor": "#172554"        
+        // "backgroundColor": "#E6F4FE"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.electrolyte.fixr"
     },
     "web": {
       "bundler": "metro",
-      "output": "static",
-      "favicon": "./src/assets/images/favicon.png"
+      "output": "static"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./src/assets/images/splash-icon.png",
-          "imageWidth": 200,
+          "image": "./src/assets/images/icon.png",
+          "imageWidth": 120,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
-          }
+          "backgroundColor": "#172554"
         }
       ],
       "expo-font"
@@ -45,6 +47,14 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {
+        "origin":false
+      },
+      "eas": {
+        "projectId": "737674d3-efa1-4756-b452-43194eb9dda1"
+      }
     }
   }
 }
