@@ -1,9 +1,10 @@
 import { BarlowCondensed_400Regular, useFonts } from '@expo-google-fonts/barlow-condensed';
 import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import * as NavigationBar from 'expo-navigation-bar';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar, View } from 'react-native';
 import "./global.css";
 
 
@@ -22,21 +23,32 @@ export default function RootLayout() {
   };
 
   useEffect(() => {
+    NavigationBar?.setButtonStyleAsync("dark"); 
     if (fontsLoaded) {
       asyncHideSplashScreen();
     }
   }, [fontsLoaded]);
 
+
+
   if (!fontsLoaded) return null;
 
-  return <SafeAreaView className='flex-1'>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                }}
-              >
-                <Stack.Screen name="profile" />
-              </Stack>
-          </SafeAreaView>
+  return <View className="flex-1 bg-blue-950">
+      {/* translucent={true} allows content to flow behind status bar on Android */}
+      
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false,title:"" }} />
+        <Stack.Screen 
+          name="profile/[id]"
+          options={{
+            headerShown: true,
+            title: "",
+            headerTransparent: true,
+            headerShadowVisible: false,
+            headerTintColor: '#fff',
+          }} 
+        />
+      </Stack>
+    </View>
 }
 

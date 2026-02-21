@@ -18,6 +18,7 @@ export default function TabLayout() {
         tabBarLabelStyle: {
           fontFamily: 'Poppins',
           fontSize: 12,
+          
         },
       }}
     >

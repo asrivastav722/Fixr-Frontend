@@ -4,12 +4,16 @@ import { technicians } from "../utils/utils"
 import TechnicianCard from "./card.technician"
 
 const TechnicianCarousel = ({ title = "Hello" }) => {
+
+
+  const filteredTechs = technicians?.filter(tech => tech?.role?.toLowerCase().includes(title?.toLowerCase()));
+
   return (
     <View>
       {/* Title with consistent padding */}
       <View className="flex-row justify-between items-center w-full p-3">
         <Text className="text-lg font-semibold">
-          {title}
+          {`${title}s ${filteredTechs.length > 0 ? `(${filteredTechs.length})` : ''}`}
         </Text>
         
         <Pressable className="p-2 active:opacity-50">
@@ -19,7 +23,7 @@ const TechnicianCarousel = ({ title = "Hello" }) => {
 
       <FlatList
         horizontal
-        data={technicians}
+        data={filteredTechs}
         keyExtractor={(item) => item?.id.toString()}
         // Use this for the internal spacing of the list
         contentContainerClassName="px-3 gap-2" 
@@ -30,7 +34,7 @@ const TechnicianCarousel = ({ title = "Hello" }) => {
         renderItem={({ item }) => (
           // Set a fixed width or percentage so cards don't collapse
           <View className="w-[280px]">
-            <TechnicianCard technician={item} />
+            <TechnicianCard type={title} technician={item} />
           </View>
         )}
       />

@@ -9,9 +9,18 @@
     
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
+
     "ios": {
       "supportsTablet": true
     },
+    // "androidStatusBar": {
+    //   "translucent": true,
+    //   "backgroundColor": "#172554"
+    // },
+    // "androidNavigationBar": {
+    //   "visible": "leanback",
+    //   "backgroundColor": "#000000"
+    // },
     "splash": {
       "image": "./src/assets/images/icon.png",
       "resizeMode": "contain",

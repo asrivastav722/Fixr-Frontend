@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons'; // Ensure @expo/vector-icons is installed
 import { useNavigation } from 'expo-router';
 import React from 'react';
-import { Image, Pressable, ScrollView, StatusBar, Text, View } from 'react-native';
+import { Image, Pressable, ScrollView, Text, View } from 'react-native';
 
 export default function TechnicianProfile({ route }) {
   // Assuming you'll pass technician data via navigation
@@ -21,7 +21,6 @@ export default function TechnicianProfile({ route }) {
 
   return (
     <View className="bg-white flex-1">
-      <StatusBar translucent={true}></StatusBar>
       <ScrollView showsVerticalScrollIndicator={false}>
         {/* 1. HEADER IMAGE & BACK BUTTON */}
         <View className="relative h-72 w-full">
