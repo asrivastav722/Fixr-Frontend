@@ -2,14 +2,22 @@ import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
 import { CATEGORIES } from "../utils/utils";
 
-export default function CategoryPicker() {
-  const [selectedId, setSelectedId] = useState('1');
+export default function CategoryPicker({
+  setSelectCategory,
+  selectedCategory,
+  categoryList = CATEGORIES
+}) {
+  console.log("Selected Category in Picker:", categoryList);
+  const [selectedId, setSelectedId] = useState(null);
 
   return (
     <View className="py-2">
       <FlatList
         horizontal
-        data={CATEGORIES}
+        data={CATEGORIES.filter((cat) => categoryList.includes(cat.name.toLowerCase())).map((cat) => ({
+          ...cat,
+          name: cat.name.toLowerCase() // Ensure names are lowercase for consistency
+        }))}
         showsHorizontalScrollIndicator={false}
         contentContainerClassName="px-4 gap-4"
         keyExtractor={(item) => item.id}
@@ -19,7 +27,10 @@ export default function CategoryPicker() {
 
           return (
             <Pressable 
-              onPress={() => setSelectedId(item.id)}
+              onPress={() => {
+                setSelectedId(item.id);
+                setSelectCategory(item.name);
+              }}
               className="items-center"
             >
               {/* Icon Circle */}

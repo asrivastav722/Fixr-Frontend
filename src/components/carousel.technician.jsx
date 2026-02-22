@@ -1,29 +1,27 @@
 import { ArrowRight } from "lucide-react-native"
 import { FlatList, Pressable, Text, View } from "react-native"
-import { technicians } from "../utils/utils"
 import TechnicianCard from "./card.technician"
+import { router } from "expo-router"
 
-const TechnicianCarousel = ({ title = "Hello" }) => {
+const TechnicianCarousel = ({ title = "Hello",technicians }) => {
 
 
-  const filteredTechs = technicians?.filter(tech => tech?.role?.toLowerCase().includes(title?.toLowerCase()));
 
-  return (
-    <View>
+  return (  technicians.length>0 && <View>
       {/* Title with consistent padding */}
       <View className="flex-row justify-between items-center w-full p-3">
-        <Text className="text-lg font-semibold">
-          {`${title}s ${filteredTechs.length > 0 ? `(${filteredTechs.length})` : ''}`}
+        <Text className="text-lg font-semibold text-capitalize">
+          {`${title.charAt(0).toUpperCase() + title.slice(1)}s ${technicians.length > 0 ? `(${technicians.length})` : ''}`}
         </Text>
         
         <Pressable className="p-2 active:opacity-50">
-          <ArrowRight size={20} color="#111827" />
+          <ArrowRight onPress={()=>{router.push(`/role/${title}`)}} size={20} color="#111827" />
         </Pressable>
       </View>
 
       <FlatList
         horizontal
-        data={filteredTechs}
+        data={technicians}
         keyExtractor={(item) => item?.id.toString()}
         // Use this for the internal spacing of the list
         contentContainerClassName="px-3 gap-2" 

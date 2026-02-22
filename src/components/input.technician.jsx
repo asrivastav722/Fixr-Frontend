@@ -1,4 +1,4 @@
-import { Filter, MapPin, Search } from "lucide-react-native";
+import { Search } from "lucide-react-native";
 import { useEffect, useRef, useState } from "react";
 import { Animated, Pressable, Text, TextInput, View } from "react-native";
 
@@ -57,15 +57,15 @@ const TechnicianInput = () => {
             value={inputValue}
             onChangeText={setInputValue}
             className="flex-1 p-3 text-base text-gray-900 bg-transparent"
-            cursorColor="#172554"
+            cursorColor="#000000"
           />
         </View>
 
-        <Pressable className="bg-blue-950 px-3 rounded-2xl items-center justify-center active:opacity-80">
+        <Pressable className="bg-black px-3 rounded-2xl items-center justify-center active:opacity-80">
           <Search color="white"/>
         </Pressable>
       </View>
-      <View className="flex-row gap-2 items-stretch">
+      {/* <View className="flex-row gap-2 items-stretch">
       <Pressable className="border border-white rounded-2xl px-2 py-1 items-center flex-row flex-1">
           <MapPin size={14} color="white"/>
           <Text className="p-2 text-center text-white">Location</Text>
@@ -74,7 +74,7 @@ const TechnicianInput = () => {
           <Filter size={14} color="white"/>
           <Text className="p-2 text-center text-white">Filters</Text>
         </Pressable>
-      </View>
+      </View> */}
     </View>
   );
 };

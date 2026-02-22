@@ -6,30 +6,22 @@
     "icon": "./src/assets/images/icon.png", // Main icon for iOS/Web
     "orientation": "portrait",
     "scheme": "fixr",
-    
+
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
 
     "ios": {
       "supportsTablet": true
     },
-    // "androidStatusBar": {
-    //   "translucent": true,
-    //   "backgroundColor": "#172554"
-    // },
-    // "androidNavigationBar": {
-    //   "visible": "leanback",
-    //   "backgroundColor": "#000000"
-    // },
     "splash": {
       "image": "./src/assets/images/icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#172554" 
+      "backgroundColor": "#000000"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/icon.png",
-        "backgroundColor": "#172554"        
+        "backgroundColor": "#000000"
         // "backgroundColor": "#E6F4FE"
       },
       "edgeToEdgeEnabled": true,
@@ -48,7 +40,7 @@
           "image": "./src/assets/images/icon.png",
           "imageWidth": 120,
           "resizeMode": "contain",
-          "backgroundColor": "#172554"
+          "backgroundColor": "#000000"
         }
       ],
       "expo-font"
@@ -59,7 +51,7 @@
     },
     "extra": {
       "router": {
-        "origin":false
+        "origin": false
       },
       "eas": {
         "projectId": "737674d3-efa1-4756-b452-43194eb9dda1"
