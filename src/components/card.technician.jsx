@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import { ChevronRight, MapPin, Star } from "lucide-react-native";
-import { Pressable, Text, View } from "react-native";
+import { Image, Pressable, Text, View } from "react-native";
 import { CATEGORIES } from "../utils/utils";
 
 export default function TechnicianCard({ technician }) {
@@ -19,6 +19,24 @@ export default function TechnicianCard({ technician }) {
   const firstLetter = technician?.name
     ? technician.name.charAt(0).toUpperCase()
     : "?";
+  
+     const image = CATEGORIES.find(
+        cat => cat?.name?.toLowerCase() === technician?.profession?.toLowerCase()
+      );
+    
+    
+      const ImageWithProfile = technician?.profile_image ? (
+        <Image source={{ uri: technician.profile_image }} className='w-full h-full rounded-2xl' />
+      ) : (
+        Icon ? (
+            <Icon
+              size={28}
+              color={categoryMatch?.iconColor || "#6b7280"}
+            />
+          ) : (
+            <Text className="text-gray-500 font-bold text-xl">
+              {firstLetter}
+            </Text>))
 
   return (
     <View className="bg-white rounded-3xl p-4 mb-4 border border-gray-100 shadow-sm">
@@ -30,16 +48,7 @@ export default function TechnicianCard({ technician }) {
             categoryMatch?.color || "bg-gray-200"
           }`}
         >
-          {Icon ? (
-            <Icon
-              size={28}
-              color={categoryMatch?.iconColor || "#6b7280"}
-            />
-          ) : (
-            <Text className="text-gray-500 font-bold text-xl">
-              {firstLetter}
-            </Text>
-          )}
+          {ImageWithProfile}
         </View>
 
         {/* Info Section */}

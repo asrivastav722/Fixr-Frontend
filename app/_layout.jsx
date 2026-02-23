@@ -3,16 +3,14 @@ import { Poppins_400Regular } from '@expo-google-fonts/poppins';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
-import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import "./global.css";
-import { Platform, View } from 'react-native';
+import { Platform } from 'react-native';
 
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
 
-  const inset= useSafeAreaInsets()
   const [fontsLoaded] = useFonts({
     'Barlow-Condensed': BarlowCondensed_400Regular,
     'Poppins': Poppins_400Regular,

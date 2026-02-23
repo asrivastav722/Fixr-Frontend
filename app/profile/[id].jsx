@@ -66,11 +66,11 @@ export default function TechnicianProfile() {
                 {tech?.name}
               </Text>
               <Text className="text-blue-600 font-semibold text-lg">
-                {tech?.role}
+                {tech?.profession}
               </Text>
 
               <Text className="text-gray-500 mt-1">
-                {tech?.location?.area}, {tech?.location?.city}
+                {tech?.location?.address}, {tech?.location?.city}
               </Text>
             </View>
 
@@ -95,14 +95,14 @@ export default function TechnicianProfile() {
             <View className="items-center flex-1 border-x border-gray-100">
               <Text className="text-gray-400 text-xs uppercase">Reviews</Text>
               <Text className="text-gray-900 font-bold text-lg">
-                {tech?.reviews_count}
+                {tech?.total_reviews}
               </Text>
             </View>
 
             <View className="items-center flex-1">
-              <Text className="text-gray-400 text-xs uppercase">Jobs done</Text>
+              <Text className="text-gray-400 text-xs uppercase">Base Fees</Text>
               <Text className="text-gray-900 font-bold text-lg">
-                {tech?.stats?.jobs_completed}
+                {tech?.starting_price}
               </Text>
             </View>
 
@@ -131,7 +131,7 @@ export default function TechnicianProfile() {
                   className="bg-gray-100 px-4 py-2 rounded-2xl"
                 >
                   <Text className="text-gray-700 font-medium">
-                    {skill?.name}
+                    {skill}
                   </Text>
                 </View>
               ))}
@@ -145,7 +145,7 @@ export default function TechnicianProfile() {
             </Text>
 
             <View className="flex-row flex-wrap gap-3">
-              {tech?.verification?.is_verified && (
+              {tech?.is_verified && (
                 <View className="flex-row items-center bg-green-100 px-3 py-2 rounded-xl">
                   <Ionicons name="checkmark-circle" size={16} color="green" />
                   <Text className="ml-2 text-green-700 font-medium">
@@ -171,11 +171,11 @@ export default function TechnicianProfile() {
               Recent Reviews
             </Text>
 
-            {tech?.reviews?.slice(0, 3).map((review, index) => (
+            {tech?.reviews?.map((review, index) => (
               <View key={index} className="mb-4">
                 <View className="flex-row justify-between">
                   <Text className="font-semibold text-gray-800">
-                    {review?.user}
+                    {review?.user_name}
                   </Text>
                   <Text className="text-yellow-600 font-bold">
                     ⭐ {review?.rating}
@@ -197,7 +197,7 @@ export default function TechnicianProfile() {
         <View>
           <Text className="text-gray-400 text-sm">Inspection Fee</Text>
           <Text className="text-2xl font-black text-gray-900">
-            ₹{tech?.pricing?.inspection_fee}
+            ₹{tech?.starting_price}
           </Text>
         </View>
 

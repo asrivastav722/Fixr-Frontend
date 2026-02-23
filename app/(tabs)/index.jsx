@@ -1,10 +1,11 @@
 import * as Location from "expo-location";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, ScrollView, Text, View } from "react-native";
+import { ActivityIndicator, Pressable, ScrollView, Text, View } from "react-native";
 import TechnicianCarousel from "../../src/components/carousel.technician";
 import TechnicianInput from "../../src/components/input.technician";
 import TechnicianListing from "../../src/components/list.technicians";
 import { technicians } from "../../src/utils/utils";
+import { MapPin } from "lucide-react-native";
 
 export default function Homepage() {
 
@@ -58,9 +59,9 @@ export default function Homepage() {
 
   if (loadingLocation) {
     return (
-      <View className="flex-1 items-center justify-center bg-black">
-        <ActivityIndicator size="large" color="white" />
-        <Text className="text-white mt-4">Fetching your location...</Text>
+      <View className="flex-1 items-center justify-center bg-white">
+        <ActivityIndicator size="large" color="black" />
+        <Text className="text-black mt-4">Fetching your location...</Text>
       </View>
     );
   }
@@ -107,7 +108,6 @@ export default function Homepage() {
     return { role, data: techsInRole };
   });
 
-  console.log("Displayed IDs:", carousels);
 
   const remainingTechs = sortedTechs?.filter(
     tech => !displayedIds?.includes(tech?.id)
@@ -122,8 +122,13 @@ export default function Homepage() {
     console.log("Selected Category Techs:", selectedCategoryTechs);
 
   return ( <View className="flex-1 ">
-      <View className="bg-black">
-        <TechnicianInput />
+      <View className="bg-white shadow flex-row w-full justify-content-between justify-between items-center">
+        <Text className=" p-3 text-3xl font-semibold">Fixr</Text>
+        <Pressable>
+          {userLocation?.latitude}: {userLocation?.longitude}
+          <MapPin/>
+        </Pressable>
+        {/* <TechnicianInput /> */}
         {/* <CategoryPicker setSelectCategory = {setSelectedCategory} selectedCategory={selectedCategory} categoryList={techRoleList} /> */}
       </View>
 

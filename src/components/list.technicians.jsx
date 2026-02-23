@@ -3,7 +3,7 @@ import TechnicianCard from "./card.technician"
 
 
 const TechnicianList = ({title="Hello",technicians})=>{
-return <View className="flex-1">
+return technicians?.length > 0 && <View className="flex-1">
         <Text className="text-lg p-3 font-semibold">{title}</Text>
         <FlatList
           data={technicians}
