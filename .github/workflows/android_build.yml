@@ -15,10 +15,15 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-          cache: 'gradle'
+          # Removed cache: 'gradle' for the first run to prevent errors 
+          # since the android folder is generated dynamically.
 
       - name: Install Dependencies
         run: npm install --force
+
+      # CRITICAL STEP: This generates the /android folder for Expo projects
+      - name: Generate Android Folder
+        run: npx expo prebuild --platform android
 
       - name: Build APK
         run: |
@@ -30,4 +35,5 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
-          path: android/app/build/outputs/apk/release/app-release.apk
+          # Path for the generated APK
+          path: android/app/build/outputs/apk/release/app-release-unsigned.apk
