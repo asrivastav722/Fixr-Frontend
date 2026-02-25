@@ -5,24 +5,26 @@ import { Home, Search, Settings, User } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { Platform, Pressable, StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useTheme } from '../../src/context/ThemeContext';
 
 export default function TabLayout() {
-  const inset = useSafeAreaInsets();  
+  const inset = useSafeAreaInsets();
+  const {theme}=useTheme()
+  
+  useEffect(() => { 
+        NavigationBar?.setButtonStyleAsync(theme === "dark" ? "light" : "dark");
+  }, [theme]);
 
-  useEffect(() => {
-      NavigationBar?.setButtonStyleAsync("light"); 
-    }, []);
-
-  return (<View className='flex-1 bg-black' paddingTop={inset.top} paddingBottom={inset.bottom} >
-    <StatusBar barStyle="light-content" />
+  return (<View className='flex-1 bg-white dark:bg-black' paddingTop={inset.top} paddingBottom={inset.bottom} >
+    <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} className='bg-white dark:bg-black' />
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false, // Removes labels
-        tabBarActiveTintColor: '#000000', // Blue-950
-        tabBarInactiveTintColor: '#9ca3af', // Gray-400
+        tabBarActiveTintColor: theme === "dark" ? "#F3F4F6" : "#030712", // Blue-950
+        tabBarInactiveTintColor: theme === "dark" ? "#9ca3af" : "#9CA3AF", // Gray-400
         tabBarStyle: {
-          backgroundColor: 'white',
+          backgroundColor: theme === "dark" ? "#000000" : "#ffffff", // Matches the app background  
           borderTopWidth: 0,
           // Using Platform.select ensures it looks "regular" on both systems
           height:  Platform.select({ ios: 55, android: 50 }),
@@ -58,7 +60,6 @@ export default function TabLayout() {
             <Home 
               size={24} 
               color={color} 
-              fill={focused ? '#000000' : 'transparent'} // "Flooded" effect
             />
           ),
         }}
@@ -71,7 +72,6 @@ export default function TabLayout() {
             <Search 
               size={24} 
               color={color} 
-              strokeWidth={focused ? 3 : 2} // Subtle extra "pop" for search
             />
           ),
         }}
@@ -84,7 +84,6 @@ export default function TabLayout() {
             <User 
               size={24} 
               color={color} 
-              fill={focused ? '#000000' : 'transparent'} 
             />
           ),
         }}
@@ -97,7 +96,6 @@ export default function TabLayout() {
             <Settings 
               size={24} 
               color={color} 
-              fill={focused ? '#000000' : 'transparent'} 
             />
           ),
         }}

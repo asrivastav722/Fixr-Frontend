@@ -1,10 +1,12 @@
 import { BarlowCondensed_400Regular, useFonts } from '@expo-google-fonts/barlow-condensed';
+import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
 import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import * as NavigationBar from "expo-navigation-bar";
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
+import { ThemeProvider } from '../src/context/ThemeContext';
 import "./global.css";
-import { Platform } from 'react-native';
 
 
 SplashScreen.preventAutoHideAsync();
@@ -14,6 +16,9 @@ export default function RootLayout() {
   const [fontsLoaded] = useFonts({
     'Barlow-Condensed': BarlowCondensed_400Regular,
     'Poppins': Poppins_400Regular,
+    'Inter-Regular': Inter_400Regular,
+    'Inter-SemiBold': Inter_600SemiBold,
+    'Inter-Bold': Inter_700Bold
   });
 
   const asyncHideSplashScreen = async () => {
@@ -21,6 +26,7 @@ export default function RootLayout() {
   };
 
   useEffect(() => {
+    NavigationBar?.setButtonStyleAsync("dark");
     if (fontsLoaded) {
       asyncHideSplashScreen();
     }
@@ -28,22 +34,12 @@ export default function RootLayout() {
 
   if (!fontsLoaded) return null;
 
-  return <Stack >
-        <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
-        <Stack.Screen name="profile/[id]" options={{headerShown: Platform.OS === "ios",
-          headerTransparent: true,
-          headerBackTitle: "",
-          headerTitle: "",
-          headerBackTitleVisible: false,
-          headerBackButtonDisplayMode: "minimal",
-          headerTintColor: "#fff",}}/>
-        <Stack.Screen name="role/[role]" options={{headerShown: Platform.OS === "ios",
-          headerTransparent: true,
-          headerBackTitle: "",
-          headerTitle: "",
-          headerBackTitleVisible: false,
-          headerBackButtonDisplayMode: "minimal",
-          headerTintColor: "#fff",}}/>
-      </Stack>
+  return  <ThemeProvider>
+          <Stack >
+              <Stack.Screen name="(tabs)" options={{ headerShown: false}} />
+              <Stack.Screen name="profile/[id]" options={{ headerShown: false}}/>
+              <Stack.Screen name="role/[role]" options={{ headerShown: false}}/>
+          </Stack>
+      </ThemeProvider>
 }
 

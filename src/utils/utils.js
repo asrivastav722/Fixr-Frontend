@@ -51,12 +51,12 @@ export const technicians = [
   starting_price: 299,
   price_unit: "per visit",
   location: {
-    address: "Gomti Nagar, Lucknow",
-    city: "Lucknow",
+    address: "Gomti Nagar, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226010",
-    coordinates: { latitude: 27.1450112, longitude: 83.7582848 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 10,
   availability: {
@@ -102,13 +102,12 @@ export const technicians = [
   starting_price: 249,
   price_unit: "per visit",
   location: {
-    address: "Alambagh, Lucknow",
-    city: "Lucknow",
+    address: "Alambagh, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226005",
-    coordinates: { latitude: 27.1530112, 
-  longitude: 83.7502848  }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 8,
   availability: {
@@ -152,13 +151,12 @@ export const technicians = [
   starting_price: 599,
   price_unit: "per visit",
   location: {
-    address: "Indira Nagar, Lucknow",
-    city: "Lucknow",
+    address: "Indira Nagar, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226016",
-    coordinates: { latitude: 27.1900112, 
-  longitude: 83.7202848  }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 15,
   availability: {
@@ -203,12 +201,12 @@ export const technicians = [
   starting_price: 199,
   price_unit: "per visit",
   location: {
-    address: "Chinhat, Lucknow",
-    city: "Lucknow",
+    address: "Chinhat, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226028",
-    coordinates: { latitude: 26.8902, longitude: 81.0412 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 6,
   availability: {
@@ -256,12 +254,12 @@ export const technicians = [
   starting_price: 249,
   price_unit: "per visit",
   location: {
-    address: "Alambagh, Lucknow",
-    city: "Lucknow",
+    address: "Alambagh, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226005",
-    coordinates: { latitude: 26.7606, longitude: 80.8967 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 8,
   availability: {
@@ -306,12 +304,12 @@ export const technicians = [
   starting_price: 399,
   price_unit: "per job",
   location: {
-    address: "Indira Nagar, Lucknow",
-    city: "Lucknow",
+    address: "Indira Nagar, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226016",
-    coordinates: { latitude: 26.8781, longitude: 80.9990 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 12,
   availability: {
@@ -355,12 +353,12 @@ export const technicians = [
   starting_price: 199,
   price_unit: "per visit",
   location: {
-    address: "Chinhat, Lucknow",
-    city: "Lucknow",
+    address: "Chinhat, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226028",
-    coordinates: { latitude: 26.8902, longitude: 81.0412 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 7,
   availability: {
@@ -403,12 +401,12 @@ export const technicians = [
   starting_price: 499,
   price_unit: "per job",
   location: {
-    address: "Hazratganj, Lucknow",
-    city: "Lucknow",
+    address: "Hazratganj, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226001",
-    coordinates: { latitude: 26.8469, longitude: 80.9462 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 15,
   availability: {
@@ -441,207 +439,6 @@ export const technicians = [
   is_active: true
 },
 
-/* =========================
-   AC TECHNICIANS (4)
-========================= */
-
-{
-  id: "tech_009",
-  name: "Vikas Sharma",
-  phone: "+91 9988776655",
-  email: "vikas.sharma@example.com",
-  profile_image: "https://randomuser.me/api/portraits/men/31.jpg",
-  profession: "AC Technician",
-  skills: ["AC Installation","Gas Refill","AC Service","Cooling Issue Repair"],
-  experience_years: 10,
-  experience_type: "Residential & Commercial",
-  about: "Certified AC technician providing installation and maintenance services.",
-  starting_price: 499,
-  price_unit: "per visit",
-  location: {
-    address: "Indira Nagar, Lucknow",
-    city: "Lucknow",
-    state: "Uttar Pradesh",
-    country: "India",
-    pincode: "226016",
-    coordinates: { latitude: 26.8781, longitude: 80.9990 }
-  },
-  service_radius_km: 12,
-  availability: {
-    is_available_now: false,
-    working_days: ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-    working_hours: { start: "10:00", end: "19:00" }
-  },
-  emergency_available: true,
-  response_time_minutes: 22,
-  response_badge: "Quick Responder",
-  is_verified: true,
-  verification_badges: ["ID Verified","Background Checked"],
-  reliability_score: 93,
-  joined_at: "2024-06-10",
-  rating: 4.8,
-  total_reviews: 5,
-  reviews: [
-    { id: "rev_030", user_name: "Arjun", rating: 5, comment: "Best AC service.", date: "2025-02-11" },
-    { id: "rev_031", user_name: "Pooja", rating: 5, comment: "Cooling fixed quickly.", date: "2025-03-08" },
-    { id: "rev_032", user_name: "Rakesh", rating: 4, comment: "Good technician.", date: "2025-03-25" },
-    { id: "rev_033", user_name: "Anjali", rating: 5, comment: "Professional and clean work.", date: "2025-04-14" },
-    { id: "rev_034", user_name: "Nikhil", rating: 5, comment: "Highly skilled.", date: "2025-05-02" }
-  ],
-  languages: ["Hindi","English"],
-  portfolio: ["https://picsum.photos/200/300?9"],
-  contact_clicks: 210,
-  profile_views: 1100,
-  is_featured: true,
-  is_active: true
-},
-
-{
-  id: "tech_010",
-  name: "Sandeep Yadav",
-  phone: "+91 9876501234",
-  email: "sandeep.yadav@example.com",
-  profile_image: "https://randomuser.me/api/portraits/men/32.jpg",
-  profession: "AC Technician",
-  skills: ["Window AC Repair","Split AC Cleaning"],
-  experience_years: 5,
-  experience_type: "Residential",
-  about: "Affordable AC cleaning and repair specialist.",
-  starting_price: 349,
-  price_unit: "per visit",
-  location: {
-    address: "Gomti Nagar Extension, Lucknow",
-    city: "Lucknow",
-    state: "Uttar Pradesh",
-    country: "India",
-    pincode: "226010",
-    coordinates: { latitude: 26.8500, longitude: 80.9900 }
-  },
-  service_radius_km: 8,
-  availability: {
-    is_available_now: true,
-    working_days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-    working_hours: { start: "09:00", end: "18:00" }
-  },
-  emergency_available: false,
-  response_time_minutes: 30,
-  response_badge: "Responds Within 30 Min",
-  is_verified: false,
-  verification_badges: [],
-  reliability_score: 82,
-  joined_at: "2025-01-12",
-  rating: 4.2,
-  total_reviews: 3,
-  reviews: [
-    { id: "rev_035", user_name: "Meena", rating: 4, comment: "AC cleaned properly.", date: "2025-03-10" },
-    { id: "rev_036", user_name: "Karan", rating: 4, comment: "Affordable pricing.", date: "2025-04-05" },
-    { id: "rev_037", user_name: "Ritu", rating: 5, comment: "Satisfied service.", date: "2025-05-01" }
-  ],
-  languages: ["Hindi"],
-  portfolio: ["https://picsum.photos/200/300?10"],
-  contact_clicks: 120,
-  profile_views: 540,
-  is_featured: false,
-  is_active: true
-},
-
-{
-  id: "tech_011",
-  name: "Aman Verma",
-  phone: "+91 9765432109",
-  email: "aman.verma@example.com",
-  profile_image: "https://randomuser.me/api/portraits/men/33.jpg",
-  profession: "AC Technician",
-  skills: ["Commercial AC Setup","Gas Charging"],
-  experience_years: 9,
-  experience_type: "Commercial",
-  about: "Commercial AC expert with fast response time.",
-  starting_price: 599,
-  price_unit: "per visit",
-  location: {
-    address: "Hazratganj, Lucknow",
-    city: "Lucknow",
-    state: "Uttar Pradesh",
-    country: "India",
-    pincode: "226001",
-    coordinates: { latitude: 26.8469, longitude: 80.9462 }
-  },
-  service_radius_km: 14,
-  availability: {
-    is_available_now: true,
-    working_days: ["Monday","Tuesday","Wednesday","Thursday","Friday"],
-    working_hours: { start: "10:00", end: "19:00" }
-  },
-  emergency_available: true,
-  response_time_minutes: 18,
-  response_badge: "Fast Responder",
-  is_verified: true,
-  verification_badges: ["ID Verified"],
-  reliability_score: 91,
-  joined_at: "2024-05-01",
-  rating: 4.7,
-  total_reviews: 4,
-  reviews: [
-    { id: "rev_038", user_name: "Sahil", rating: 5, comment: "Excellent setup.", date: "2025-02-02" },
-    { id: "rev_039", user_name: "Ramesh", rating: 4, comment: "Good technician.", date: "2025-03-15" },
-    { id: "rev_040", user_name: "Pankaj", rating: 5, comment: "Fast and reliable.", date: "2025-04-01" },
-    { id: "rev_041", user_name: "Nisha", rating: 5, comment: "Very professional.", date: "2025-05-06" }
-  ],
-  languages: ["Hindi","English"],
-  portfolio: ["https://picsum.photos/200/300?11"],
-  contact_clicks: 195,
-  profile_views: 900,
-  is_featured: true,
-  is_active: true
-},
-
-{
-  id: "tech_012",
-  name: "Rohit Saxena",
-  phone: "+91 9654321870",
-  email: "rohit.saxena@example.com",
-  profile_image: "https://randomuser.me/api/portraits/men/34.jpg",
-  profession: "AC Technician",
-  skills: ["AC Maintenance","Cooling Coil Cleaning"],
-  experience_years: 4,
-  experience_type: "Residential",
-  about: "Dedicated AC maintenance professional.",
-  starting_price: 299,
-  price_unit: "per visit",
-  location: {
-    address: "Chinhat, Lucknow",
-    city: "Lucknow",
-    state: "Uttar Pradesh",
-    country: "India",
-    pincode: "226028",
-    coordinates: { latitude: 26.8902, longitude: 81.0412 }
-  },
-  service_radius_km: 6,
-  availability: {
-    is_available_now: false,
-    working_days: ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],
-    working_hours: { start: "09:00", end: "17:00" }
-  },
-  emergency_available: false,
-  response_time_minutes: 35,
-  response_badge: "Responds Within 1 Hour",
-  is_verified: false,
-  verification_badges: [],
-  reliability_score: 76,
-  joined_at: "2025-03-05",
-  rating: 4.0,
-  total_reviews: 2,
-  reviews: [
-    { id: "rev_042", user_name: "Asha", rating: 4, comment: "Good service.", date: "2025-04-01" },
-    { id: "rev_043", user_name: "Kunal", rating: 4, comment: "Satisfied.", date: "2025-04-20" }
-  ],
-  languages: ["Hindi"],
-  portfolio: ["https://picsum.photos/200/300?12"],
-  contact_clicks: 70,
-  profile_views: 310,
-  is_featured: false,
-  is_active: true
-},
 
 
 /* =========================
@@ -662,12 +459,12 @@ export const technicians = [
   starting_price: 499,
   price_unit: "per visit",
   location: {
-    address: "Indira Nagar, Lucknow",
-    city: "Lucknow",
+    address: "Indira Nagar, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226016",
-    coordinates: { latitude: 27.1450112, longitude: 83.7582848 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 12,
   availability: {
@@ -712,12 +509,12 @@ export const technicians = [
   starting_price: 349,
   price_unit: "per visit",
   location: {
-    address: "Gomti Nagar Extension, Lucknow",
-    city: "Lucknow",
+    address: "Gomti Nagar Extension, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226010",
-    coordinates: { latitude: 26.8500, longitude: 80.9900 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 8,
   availability: {
@@ -760,12 +557,12 @@ export const technicians = [
   starting_price: 599,
   price_unit: "per visit",
   location: {
-    address: "Hazratganj, Lucknow",
-    city: "Lucknow",
+    address: "Hazratganj, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226001",
-    coordinates: { latitude: 26.8469, longitude: 80.9462 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 14,
   availability: {
@@ -809,12 +606,12 @@ export const technicians = [
   starting_price: 299,
   price_unit: "per visit",
   location: {
-    address: "Chinhat, Lucknow",
-    city: "Lucknow",
+    address: "Chinhat, Balrampur",
+    city: "Balrampur",
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226028",
-    coordinates: { latitude: 26.8902, longitude: 81.0412 }
+    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
   },
   service_radius_km: 6,
   availability: {

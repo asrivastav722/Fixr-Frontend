@@ -39,7 +39,7 @@ export default function TechnicianCard({ technician }) {
             </Text>))
 
   return (
-    <View className="bg-white rounded-3xl p-4 mb-4 border border-gray-100 shadow-sm">
+    <View className="bg-white dark:bg-black rounded-3xl p-4 mb-4 border border-gray-100 dark:border-gray-800 shadow-sm">
       <View className="flex-row items-start">
         
         {/* Profile Icon */}
@@ -55,19 +55,19 @@ export default function TechnicianCard({ technician }) {
         <View className="flex-1 ml-4">
           <View className="flex-row justify-between items-start">
             <View className="flex-1 mr-2">
-              <Text className="text-lg font-bold text-gray-950 leading-tight">
+              <Text className="text-lg font-bold text-gray-950 dark:text-gray-300 leading-tight">
                 {technician?.name || "Unknown"}
               </Text>
 
-              <Text className="text-blue-600 font-medium text-sm mt-0.5">
+              <Text className="text-blue-600 dark:text-blue-400 font-medium text-sm mt-0.5">
                 {technician?.profession || "Technician"}
               </Text>
             </View>
 
             {/* Rating */}
-            <View className="flex-row items-center bg-yellow-50 px-2 py-1 rounded-lg">
+            <View className="flex-row items-center bg-yellow-50 dark:bg-yellow-950 px-2 py-1 rounded-lg">
               <Star size={14} color="#EAB308" fill="#EAB308" />
-              <Text className="ml-1 text-yellow-700 font-bold text-xs">
+              <Text className="ml-1 text-yellow-700 dark:text-yellow-300 font-bold text-xs">
                 {technician?.rating ?? "0.0"}
               </Text>
             </View>
@@ -77,12 +77,12 @@ export default function TechnicianCard({ technician }) {
           <View className="flex-row items-center mt-2 flex-wrap">
             <MapPin size={14} color="#6b7280" />
 
-            <Text className="text-gray-500 text-xs ml-1 mr-2">
+            <Text className="text-gray-500 dark:text-gray-400 text-xs ml-1 mr-2">
               {technician?.experience_years ?? 0} Years Experience
             </Text>
 
             {technician?.distance && (
-              <Text className="text-blue-600 text-xs font-semibold">
+              <Text className="text-blue-600 dark:text-blue-400 text-xs font-semibold">
                 • {technician.distance} km away
               </Text>
             )}
@@ -96,9 +96,9 @@ export default function TechnicianCard({ technician }) {
           {technician.skills.slice(0, 3).map((skill, index) => (
             <View
               key={index}
-              className="bg-gray-100 px-3 py-1.5 rounded-full"
+              className="bg-gray-100 dark:bg-gray-800 px-3 py-1.5 rounded-full"
             >
-              <Text className="text-gray-600 text-[10px] font-semibold uppercase tracking-wider">
+              <Text className="text-gray-600 dark:text-gray-300 text-[10px] font-semibold uppercase tracking-wider">
                 {skill?.name || skill}
               </Text>
             </View>
@@ -106,16 +106,16 @@ export default function TechnicianCard({ technician }) {
         </View>
       )}
 
-      <View className="h-[1px] bg-gray-100 w-full my-4" />
+      <View className="h-[1px] bg-gray-100 dark:bg-gray-800 w-full my-4" />
 
       {/* Footer */}
       <View className="flex-row justify-between items-center">
-        <Text className="text-gray-400 text-xs italic">
+        <Text className="text-gray-400 dark:text-gray-500 text-xs italic flex-1">
           Verified Professional
         </Text>
 
         <Pressable
-          className="flex-row items-center bg-black px-5 py-3 rounded-2xl active:opacity-80"
+          className="flex-row items-center bg-black dark:bg-gray-900 px-5 py-3 rounded-2xl active:opacity-80"
           onPress={() => {
             if (technician?.id) {
               router.push(`/profile/${technician.id}`);

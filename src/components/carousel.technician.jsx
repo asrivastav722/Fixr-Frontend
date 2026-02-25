@@ -3,19 +3,19 @@ import { FlatList, Pressable, Text, View } from "react-native"
 import TechnicianCard from "./card.technician"
 import { router } from "expo-router"
 
-const TechnicianCarousel = ({ title = "Hello",technicians }) => {
+const TechnicianCarousel = ({ title = "Hello",technicians,key }) => {
 
 
 
-  return (  technicians.length>0 && <View>
+  return (  technicians.length>0 && <View >
       {/* Title with consistent padding */}
       <View className="flex-row justify-between items-center w-full p-3">
-        <Text className="text-lg font-semibold text-capitalize">
+        <Text className="text-lg font-semibold text-capitalize dark:text-gray-200 text-gray-800">
           {`${title.charAt(0).toUpperCase() + title.slice(1)}s ${technicians.length > 0 ? `(${technicians.length})` : ''}`}
         </Text>
         
         <Pressable className="p-2 active:opacity-50">
-          <ArrowRight onPress={()=>{router.push(`/role/${title}`)}} size={20} color="#111827" />
+          <ArrowRight onPress={()=>{router.push(`/role/${title}`)}} size={20} color="#6b7280"  />
         </Pressable>
       </View>
 
@@ -29,12 +29,13 @@ const TechnicianCarousel = ({ title = "Hello",technicians }) => {
         // snapToInterval adjusts for card width + gap for a "premium" feel
         snapToAlignment="start"
         decelerationRate="fast"
-        renderItem={({ item }) => (
+        renderItem={({ item }) => {
+          return (
           // Set a fixed width or percentage so cards don't collapse
           <View className="w-[280px]">
             <TechnicianCard type={title} technician={item} />
           </View>
-        )}
+        )}}
       />
     </View>
   )
