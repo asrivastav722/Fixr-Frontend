@@ -1,8 +1,10 @@
 import {
+  ChevronLeft,
   ChevronRight,
   CreditCard,
   Globe,
   Lock,
+  Settings,
   Trash2,
   User
 } from "lucide-react-native";
@@ -10,17 +12,20 @@ import { useState } from "react";
 import {
   Pressable,
   ScrollView,
+  StatusBar,
   Switch,
   Text,
   View,
 } from "react-native";
-import { useTheme } from "../../src/context/ThemeContext";
-import ThemeModal from "../settings/modal.theme";
+import { useTheme } from "../src/context/ThemeContext";
+import ThemeModal from "./settings/modal.theme";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { router } from "expo-router";
 
 export default function SettingsPage() {
   const [modalVisible, setModalVisible] = useState(false);
-  const { theme } = useTheme();
-  console.log(theme)
+  const { activeScheme ,theme} = useTheme();
+  const inset =useSafeAreaInsets()
   // 🔥 Replace with global auth state
   const userRole = "both"; // customer | technician | both
   const isTechnician =
@@ -67,7 +72,21 @@ export default function SettingsPage() {
   );
 
   return (
-    <View className="flex-1 bg-gray-100 dark:bg-gray-900">
+    <View className="flex-1 bg-gray-100 dark:bg-gray-900 " paddingTop={inset.top}>
+
+      <View className="flex-row bg-white dark:bg-black items-center justify-start gap-3 w-full p-4" >
+        {/* Settings Button */}
+        <Pressable 
+          onPress={() => router.back()}
+          className=" rounded-full active:opacity-70"
+        >
+          <ChevronLeft size={30} color={activeScheme === 'dark' ? '#fff' : '#000'} />
+        </Pressable>
+        {/* Title */}
+        <Text className="text-2xl font-bold text-gray-950 dark:text-gray-100">
+          Settings
+        </Text>
+      </View>
       <ScrollView showsVerticalScrollIndicator={false}>
 
         {/* 👤 ACCOUNT */}

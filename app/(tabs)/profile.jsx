@@ -1,6 +1,8 @@
+import { router } from "expo-router";
 import {
   Mail,
-  Phone
+  Phone,
+  Settings
 } from "lucide-react-native";
 import { useState } from "react";
 import {
@@ -11,8 +13,10 @@ import {
   Text,
   View,
 } from "react-native";
+import { useTheme } from "../../src/context/ThemeContext";
 
 export default function MyProfilePage() {
+  const {activeScheme}=useTheme()
   // 🔥 Replace with global state / auth context later
   const [user, setUser] = useState({
     id: "u1",
@@ -52,12 +56,25 @@ export default function MyProfilePage() {
   };
 
   return (
-    <View className="flex-1 dark:bg-gray-900 bg-gray-100">
+    <View className="flex-1 dark:bg-gray-900 bg-gray-100 w-full">
       <ScrollView showsVerticalScrollIndicator={false}>
-      
+        <View className="flex-row bg-white dark:bg-black items-center justify-between w-full p-4" >
+          {/* Title */}
+          <Text className="text-2xl font-bold text-gray-950 dark:text-gray-100">
+            Profile
+          </Text>
+          
+          {/* Settings Button */}
+          <Pressable 
+            onPress={() => router.push("/settings")}
+            className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full active:opacity-70"
+          >
+            <Settings size={24}  color={activeScheme === 'dark' ? '#fff' : '#000'} />
+          </Pressable>
+        </View>
         {/* 👤 Profile Header */}
         <View className="bg-white dark:bg-black pt-2 pb-6 items-center">
-          <Text className="text-2xl font-semibold text-gray-950 dark:text-gray-100 w-full text-left pb-6 px-3">Profile</Text>
+          
           <Image
             source={{ uri: user.avatar }}
             className="w-28 h-28 rounded-3xl"

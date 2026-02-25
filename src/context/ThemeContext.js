@@ -1,49 +1,62 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useColorScheme } from "nativewind";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { Appearance } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useColorScheme } from "nativewind"; // Import this!
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  const { setColorScheme } = useColorScheme();
-  const [theme, setTheme] = useState("system"); // Default to system
+  // colorScheme here is the ACTUAL active theme (light or dark)
+  const { colorScheme, setColorScheme } = useColorScheme();
+  const [theme, setTheme] = useState("system"); // This is the SETTING (system, light, dark)
 
+  // 1. Load the saved setting on mount
   useEffect(() => {
-    loadTheme();
+    const initTheme = async () => {
+      const saved = await AsyncStorage.getItem("APP_THEME");
+      if (saved) {
+        setTheme(saved);
+        applyTheme(saved);
+      } else {
+        applyTheme("system");
+      }
+    };
+    initTheme();
   }, []);
 
-  useEffect(() => {
-    // 1. Determine what the actual mode should be
-    const targetTheme = theme === "system" 
-      ? Appearance.getColorScheme() || "light" 
-      : theme;
-
-    // 2. Tell NativeWind to switch
-    setColorScheme(targetTheme);
-
-    // 3. Listen for system changes if 'system' is selected
-    const listener = Appearance.addChangeListener(({ colorScheme }) => {
-      if (theme === "system") {
-        setColorScheme(colorScheme || "light");
-      }
-    });
-
-    return () => listener.remove();
-  }, [theme]);
-
-  const loadTheme = async () => {
-    const saved = await AsyncStorage.getItem("APP_THEME");
-    if (saved) setTheme(saved);
+  // 2. The Logic to apply themes correctly
+  const applyTheme = (mode) => {
+    if (mode === "system") {
+      const systemTheme = Appearance.getColorScheme() || "light";
+      setColorScheme(systemTheme);
+    } else {
+      setColorScheme(mode);
+    }
   };
+
+  // 3. Listen for System changes
+  useEffect(() => {
+      if (theme === "system") {
+        const systemTheme = Appearance.getColorScheme() 
+        setColorScheme(systemTheme);
+      }
+      else{
+        setColorScheme(theme)
+      }
+    }, [theme]);
 
   const changeTheme = async (newTheme) => {
     setTheme(newTheme);
+    applyTheme(newTheme);
     await AsyncStorage.setItem("APP_THEME", newTheme);
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, changeTheme }}>
+    <ThemeContext.Provider value={{ 
+      theme,           // The setting ('system' | 'light' | 'dark')
+      activeScheme: colorScheme, // The actual rendering mode ('light' | 'dark')
+      changeTheme 
+    }}>
       {children}
     </ThemeContext.Provider>
   );

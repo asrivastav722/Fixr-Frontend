@@ -1,3 +1,5 @@
+import * as Haptics from 'expo-haptics';
+
 export default function utils(){
   return null
 }
@@ -18,3 +20,14 @@ export const calculateDistance = (lat1, lon1, lat2, lon2) => {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   };
+
+/**
+ * Triggers haptic feedback based on the intensity mode.
+ * @param {('Light' | 'Medium' | 'Heavy' | 'Selection')} mode 
+ */
+
+export const triggerHaptic = (mode = "Light") => {
+  const hapticStyle = Haptics.ImpactFeedbackStyle[mode] || Haptics.ImpactFeedbackStyle.Light;
+  
+  Haptics.impactAsync(hapticStyle);
+};

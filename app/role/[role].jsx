@@ -106,7 +106,7 @@ export default function RoleTechniciansPage() {
         </View>
       )}
 
-      <ScrollView className="flex-1 bg-gray-50 dark:bg-gray-950 p-4">
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 bg-gray-50 dark:bg-gray-950 p-4">
         {filteredTechnicians.map(tech => (
           <TechnicianCard key={tech.id} technician={tech} />
         ))}

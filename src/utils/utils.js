@@ -45,6 +45,7 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/11.jpg",
   profession: "Electrician",
   skills: ["Wiring", "Fan Installation", "Switch Board Repair", "Inverter Setup"],
+  gender: "female",
   experience_years: 8,
   experience_type: "Residential & Commercial",
   about: "Experienced electrician specializing in home wiring and inverter installations. Known for punctual and clean work.",
@@ -56,7 +57,7 @@ export const technicians = [
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226010",
-    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
+    coordinates: { latitude: 27.485421, longitude: 82.261233 }
   },
   service_radius_km: 10,
   availability: {
@@ -96,7 +97,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/12.jpg",
   profession: "Electrician",
   skills: ["Switch Repair","MCB Fixing","Lighting Setup"],
-  experience_years: 5,
+  gender: "male",
+experience_years: 5,
   experience_type: "Residential",
   about: "Affordable and reliable electrician for small home fixes.",
   starting_price: 249,
@@ -107,7 +109,7 @@ export const technicians = [
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226005",
-    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
+    coordinates: { latitude: 27.321154, longitude: 82.102341 }
   },
   service_radius_km: 8,
   availability: {
@@ -145,7 +147,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/13.jpg",
   profession: "Electrician",
   skills: ["Industrial Wiring","Generator Setup"],
-  experience_years: 12,
+  gender: "male",
+experience_years: 12,
   experience_type: "Commercial",
   about: "Industrial and commercial electrical specialist.",
   starting_price: 599,
@@ -156,7 +159,7 @@ export const technicians = [
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226016",
-    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
+    coordinates: { latitude: 27.442311, longitude: 82.045612 }
   },
   service_radius_km: 15,
   availability: {
@@ -195,7 +198,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/14.jpg",
   profession: "Electrician",
   skills: ["Home Wiring","Ceiling Fan Repair"],
-  experience_years: 3,
+  gender: "male",
+experience_years: 3,
   experience_type: "Residential",
   about: "Young and energetic electrician providing affordable services.",
   starting_price: 199,
@@ -206,7 +210,7 @@ export const technicians = [
     state: "Uttar Pradesh",
     country: "India",
     pincode: "226028",
-    coordinates: { latitude: 27.409928834842148, longitude: 82.18511744848652 }
+    coordinates: { latitude: 27.521098, longitude: 82.152344 }
   },
   service_radius_km: 6,
   availability: {
@@ -248,7 +252,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/21.jpg",
   profession: "Plumber",
   skills: ["Pipe Repair","Leak Fixing","Bathroom Fitting","Tap Installation"],
-  experience_years: 6,
+  gender: "male",
+experience_years: 6,
   experience_type: "Residential",
   about: "Reliable plumber for leak repairs and bathroom fittings. Quick emergency support available.",
   starting_price: 249,
@@ -298,7 +303,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/22.jpg",
   profession: "Plumber",
   skills: ["Water Tank Cleaning","Drain Block Removal"],
-  experience_years: 9,
+  gender: "male",
+experience_years: 9,
   experience_type: "Residential & Commercial",
   about: "Specialist in drainage and tank cleaning services.",
   starting_price: 399,
@@ -347,7 +353,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/23.jpg",
   profession: "Plumber",
   skills: ["Tap Replacement","Bathroom Renovation"],
-  experience_years: 4,
+  gender: "male",
+experience_years: 4,
   experience_type: "Residential",
   about: "Affordable plumbing and bathroom fittings specialist.",
   starting_price: 199,
@@ -395,7 +402,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/24.jpg",
   profession: "Plumber",
   skills: ["Sewer Line Repair","Water Heater Installation"],
-  experience_years: 11,
+  gender: "male",
+experience_years: 11,
   experience_type: "Commercial",
   about: "Expert in large plumbing and water heater installations.",
   starting_price: 499,
@@ -453,7 +461,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/31.jpg",
   profession: "AC Technician",
   skills: ["AC Installation","Gas Refill","AC Service","Cooling Issue Repair"],
-  experience_years: 10,
+  gender: "male",
+experience_years: 10,
   experience_type: "Residential & Commercial",
   about: "Certified AC technician providing installation and maintenance services.",
   starting_price: 499,
@@ -503,7 +512,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/32.jpg",
   profession: "AC Technician",
   skills: ["Window AC Repair","Split AC Cleaning"],
-  experience_years: 5,
+  gender: "male",
+experience_years: 5,
   experience_type: "Residential",
   about: "Affordable AC cleaning and repair specialist.",
   starting_price: 349,
@@ -551,7 +561,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/33.jpg",
   profession: "AC Technician",
   skills: ["Commercial AC Setup","Gas Charging"],
-  experience_years: 9,
+  gender: "male",
+experience_years: 9,
   experience_type: "Commercial",
   about: "Commercial AC expert with fast response time.",
   starting_price: 599,
@@ -600,7 +611,8 @@ export const technicians = [
   profile_image: "https://randomuser.me/api/portraits/men/34.jpg",
   profession: "AC Technician",
   skills: ["AC Maintenance","Cooling Coil Cleaning"],
-  experience_years: 4,
+  gender: "male",
+experience_years: 4,
   experience_type: "Residential",
   about: "Dedicated AC maintenance professional.",
   starting_price: 299,
@@ -649,5 +661,4 @@ export const technicians = [
 export default function utils() {
   return null
 }
-
-
+export const INDIAN_CITIES = ["Mumbai", "Delhi", "Bangalore", "Hyderabad", "Ahmedabad", "Chennai", "Kolkata", "Surat", "Pune", "Jaipur", "Lucknow"];

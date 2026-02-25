@@ -11,7 +11,7 @@ import { CATEGORIES, technicians } from '../../src/utils/utils';
 
 
 export default function TechnicianProfile() {
-  const {theme} = useTheme()
+  const {activeScheme} = useTheme()
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const inset = useSafeAreaInsets()
@@ -34,8 +34,8 @@ export default function TechnicianProfile() {
   );
 
    useEffect(() => { 
-          NavigationBar?.setButtonStyleAsync(theme === "dark" ? "light" : "dark");
-    }, [theme]);
+          NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
+    }, [activeScheme]);
 
 
 
@@ -54,9 +54,9 @@ export default function TechnicianProfile() {
             className="absolute left-4 z-10 bg-white dark:bg-black/50 p-3 rounded-full shadow"
             onPress={() => router.back()}
           >
-            <Ionicons name="arrow-back" size={24} color={theme==="light" ? "#000" : "#E5E7EB"} />
+            <Ionicons name="arrow-back" size={24} color={activeScheme==="light" ? "#000" : "#E5E7EB"} />
           </Pressable>
-          .
+          
 
           {ImageWithProfile}
           <LinearGradient
