@@ -14,22 +14,22 @@ export default function CategoryPicker({
     <View className="py-2">
       <FlatList
         horizontal
-        data={CATEGORIES.filter((cat) => categoryList.includes(cat.name.toLowerCase())).map((cat) => ({
+        data={CATEGORIES?.filter((cat) => categoryList?.includes(cat?.name?.toLowerCase()))?.map((cat) => ({
           ...cat,
-          name: cat.name.toLowerCase() // Ensure names are lowercase for consistency
+          name: cat?.name?.toLowerCase() // Ensure names are lowercase for consistency
         }))}
         showsHorizontalScrollIndicator={false}
         contentContainerClassName="px-4 gap-4"
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => {
-          const Icon = item.icon;
-          const isSelected = selectedId === item.id;
+          const Icon = item?.icon;
+          const isSelected = selectedId === item?.id;
 
           return (
             <Pressable 
               onPress={() => {
-                setSelectedId(item.id);
-                setSelectCategory(item.name);
+                setSelectedId(item?.id);
+                setSelectCategory(item?.name);
               }}
               className="items-center"
             >

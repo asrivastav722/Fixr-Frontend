@@ -37,7 +37,7 @@ export default function RoleTechniciansPage() {
       ?.filter(tech =>
           tech?.profession?.toLowerCase() === formattedRole &&
           tech?.rating >= minRating &&
-          (search === "" || tech?.name?.toLowerCase().includes(search.toLowerCase()))
+          (search === "" || tech?.name?.toLowerCase().includes(search?.toLowerCase()))
       )
       ?.sort((a, b) => (b.rating || 0) - (a.rating || 0));
   }, [role, search, minRating]);

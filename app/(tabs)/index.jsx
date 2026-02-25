@@ -1,16 +1,16 @@
 import * as Haptics from "expo-haptics";
 import * as Location from "expo-location";
 import React, { useEffect, useMemo, useState } from "react";
-import { ScrollView, Text, View, Alert, Linking } from "react-native";
+import { Alert, Linking, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Project Components
 import LocationLoader from "../../src/components/card.loader.location";
 import TechnicianCarousel from "../../src/components/carousel.technician";
-import TechnicianListing from "../../src/components/list.technicians";
 import SearchHeader from "../../src/components/header.search";
-import LocationModal from "../../src/components/modal.location";
+import TechnicianListing from "../../src/components/list.technicians";
 import FilterModal from "../../src/components/modal.filter";
+import LocationModal from "../../src/components/modal.location";
 
 // Logic & Data
 import { calculateDistance } from "../../src/utils/functions";
@@ -93,7 +93,7 @@ export default function Homepage() {
       .filter(t => {
         // Switch: If user manually picked a city, use city string. Else use 20km radius.
         if (selectedCity) {
-          return t.location.city?.toLowerCase() === selectedCity.toLowerCase();
+          return t.location.city?.toLowerCase() === selectedCity?.toLowerCase();
         }
         return t.distance <= 20; 
       })
@@ -106,9 +106,9 @@ export default function Homepage() {
     return locationBasedTechs.filter(t => {
       // Search logic (Name, Profession, or specific Skill name)
       const matchesSearch = !searchQuery || 
-        t.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.profession?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        t.skills?.some(s => (s.name || s)?.toLowerCase().includes(searchQuery.toLowerCase()));
+        t.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+        t.profession?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
+        t.skills?.some(s => (s.name || s)?.toLowerCase()?.includes(searchQuery?.toLowerCase()));
       
       const matchesVerified = !filters.verified || t.is_verified === true;
       const matchesAvailability = !filters.availability || t.availability?.is_available_now === true;
@@ -157,7 +157,7 @@ export default function Homepage() {
   if (loadingLocation) return <LocationLoader />;
 
   return (
-    <View className="flex-1 bg-white dark:bg-black" style={{ paddingTop: insets.top }}>
+    <View className="flex-1 bg-white dark:bg-black" >
       <SearchHeader 
         categoryList={carousels?.map((item) => item.role)}
         selectedCity={displayAddress}
@@ -181,8 +181,8 @@ export default function Homepage() {
         </View>
 
         {searchQuery ? (
-          <View className="py-3">
-            <TechnicianListing technicians={processedTechs} title="" />
+          <View className="py-4">
+            <TechnicianListing technicians={processedTechs} />
           </View>
         ) : (
           <View className="pb-10">
