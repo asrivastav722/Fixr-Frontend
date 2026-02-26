@@ -5,14 +5,14 @@ import { Calendar, Home, MessageSquare, User } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { Platform, Pressable, StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from '../../src/context/ThemeContext';
+import { useTheme } from '@/context/ThemeContext';
 
 export default function TabLayout() {
   const inset = useSafeAreaInsets();
   const {activeScheme}=useTheme()
   
   useEffect(() => { 
-        NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
+    NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
   }, [activeScheme]);
 
   return (<View className='flex-1 bg-white dark:bg-black' paddingTop={inset.top} paddingBottom={inset.bottom} >
@@ -21,8 +21,10 @@ export default function TabLayout() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false, // Removes labels
-        tabBarActiveTintColor: activeScheme === "dark" ? "#F3F4F6" : "#030712", // Blue-950
-        tabBarInactiveTintColor: activeScheme === "dark" ? "#9ca3af" : "#9CA3AF", // Gray-400
+        tabBarActiveTintColor: activeScheme === "dark" ? "#F3F4F6" : "#030712", 
+        // Blue-950
+        tabBarInactiveTintColor: activeScheme === "dark" ? "#9ca3af" : "#9CA3AF", 
+        // Gray-400
         tabBarStyle: {
           backgroundColor: activeScheme === "dark" ? "#000000" : "#ffffff", // Matches the app background  
           borderTopWidth: 0,
@@ -57,7 +59,7 @@ export default function TabLayout() {
       <Tabs.Screen name="index" options={{ title: "Home", tabBarIcon: ({color}) => <Home color={color} /> }} />
       <Tabs.Screen name="bookings" options={{ title: "Bookings", tabBarIcon: ({color}) => <Calendar color={color} /> }} />
       <Tabs.Screen name="chat" options={{ title: "Messages", tabBarIcon: ({color}) => <MessageSquare color={color} /> }} />
-      <Tabs.Screen name="profile" options={{ title: "Profile", tabBarIcon: ({color}) => <User color={color} /> }} />
+      <Tabs.Screen name="user" options={{ title: "Profile", tabBarIcon: ({color}) => <User color={color} /> }} />
 
       
     </Tabs>

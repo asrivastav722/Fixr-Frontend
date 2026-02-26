@@ -1,60 +1,86 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useColorScheme } from "nativewind";
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { Appearance } from "react-native";
+import { Appearance, AppState } from "react-native";
+import { useSelector } from "react-redux";
 
 const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children }) => {
-  // colorScheme here is the ACTUAL active theme (light or dark)
   const { colorScheme, setColorScheme } = useColorScheme();
-  const [theme, setTheme] = useState("system"); // This is the SETTING (system, light, dark)
+  
+  // 1. Start with 'light' as requested. 
+  // Redux will eventually tell us if there's a saved preference.
+  const [themeSetting, setThemeSetting] = useState("light");
 
-  // 1. Load the saved setting on mount
+  // 2. Listen to Redux Hydration
+  // When RootLayout finishes the AsyncStorage.multiGet, this will trigger.
+  const reduxTheme = useSelector((state) => state.auth.theme);
+
   useEffect(() => {
-    const initTheme = async () => {
-      const saved = await AsyncStorage.getItem("APP_THEME");
-      if (saved) {
-        setTheme(saved);
-        applyTheme(saved);
+    if (reduxTheme) {
+      setThemeSetting(reduxTheme);
+      if (reduxTheme === "system") {
+        setColorScheme(Appearance.getColorScheme());
       } else {
-        applyTheme("system");
+        setColorScheme(reduxTheme);
+      }
+    }
+  }, [reduxTheme]);
+
+  // 3. Logic for System/OS Sync
+  useEffect(() => {
+    const syncWithOS = () => {
+      if (themeSetting === "system") {
+        const osValue = Appearance.getColorScheme();
+        setColorScheme(osValue); 
       }
     };
-    initTheme();
-  }, []);
 
-  // 2. The Logic to apply themes correctly
-  const applyTheme = (mode) => {
-    if (mode === "system") {
-      const systemTheme = Appearance.getColorScheme() || "light";
-      setColorScheme(systemTheme);
-    } else {
-      setColorScheme(mode);
+    syncWithOS();
+
+    const sub = Appearance.addChangeListener(({ colorScheme: newOSScheme }) => {
+      if (themeSetting === "system") {
+        setColorScheme(newOSScheme);
+      }
+    });
+
+    const stateSub = AppState.addEventListener("change", (state) => {
+      if (state === "active") syncWithOS();
+    });
+
+    return () => {
+      sub.remove();
+      stateSub.remove();
+    };
+  }, [themeSetting]);
+
+  // 4. Enhanced changeTheme function
+  const changeTheme = async (val) => {
+    setThemeSetting(val);
+    
+    // Save to Disk (AsyncStorage)
+    try {
+      await AsyncStorage.setItem("APP_THEME", val);
+    } catch (e) {
+      console.error("Failed to save theme to storage", e);
     }
-  };
-
-  // 3. Listen for System changes
-  useEffect(() => {
-      if (theme === "system") {
-        const systemTheme = Appearance.getColorScheme() 
-        setColorScheme(systemTheme);
-      }
-      else{
-        setColorScheme(theme)
-      }
-    }, [theme]);
-
-  const changeTheme = async (newTheme) => {
-    setTheme(newTheme);
-    applyTheme(newTheme);
-    await AsyncStorage.setItem("APP_THEME", newTheme);
+    
+    // Update NativeWind
+    if (val === "system") {
+      setColorScheme(Appearance.getColorScheme());
+    } else {
+      setColorScheme(val);
+    }
+    
+    // Note: If you want Redux to also stay in sync when the user 
+    // changes theme in Settings, you could dispatch an action here.
   };
 
   return (
     <ThemeContext.Provider value={{ 
-      theme,           // The setting ('system' | 'light' | 'dark')
-      activeScheme: colorScheme, // The actual rendering mode ('light' | 'dark')
+      theme: themeSetting, 
+      activeScheme: colorScheme, 
       changeTheme 
     }}>
       {children}

@@ -1,11 +1,11 @@
+import TechnicianCard from "@/components/card.technician";
+import { useTheme } from "@/context/ThemeContext";
+import { technicians } from "@/utils/utils";
 import { router, useLocalSearchParams } from "expo-router";
 import { ChevronLeft } from "lucide-react-native";
 import { useMemo, useState } from "react";
 import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import TechnicianCard from "../../src/components/card.technician";
-import { useTheme } from "../../src/context/ThemeContext";
-import { technicians } from "../../src/utils/utils";
 
 import * as Haptics from "expo-haptics";
 import { Search, SlidersHorizontal, X } from "lucide-react-native";
@@ -54,7 +54,7 @@ export default function RoleTechniciansPage() {
         {!isSearchActive ? (
           <>
             <View className="flex-row items-center">
-              <Pressable onPress={() => router.back()} className="mr-3">
+              <Pressable onPress={() => router?.back()} className="mr-3">
                 <ChevronLeft size={28} color={isDark ? "#fff" : "#000"} />
               </Pressable>
               <Text className="text-xl font-bold dark:text-white capitalize">

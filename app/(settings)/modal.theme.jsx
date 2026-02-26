@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Modal, View, Text, Pressable, TouchableWithoutFeedback } from 'react-native';
-import { useTheme } from '../../src/context/ThemeContext'; // Your context
+import { useTheme } from '@/context/ThemeContext'; // Your context
 import { Check, Moon, Sun, Monitor } from 'lucide-react-native';
 
 export default function ThemeModal({ visible, onClose }) {

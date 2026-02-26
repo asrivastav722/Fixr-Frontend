@@ -22,6 +22,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/icon.png",
         "backgroundColor": "#000000"
+        
         // "backgroundColor": "#E6F4FE"
       },
       "edgeToEdgeEnabled": true,

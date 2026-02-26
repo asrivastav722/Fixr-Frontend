@@ -1,6 +1,6 @@
 import { MapPinned, Target, View } from "lucide-react-native";
 import { FlatList, Modal, Pressable } from "react-native";
-import { INDIAN_CITIES } from "../utils/utils";
+import { INDIAN_CITIES } from "@/utils/utils";
 import { Text } from "react-native";
 import { useState } from "react";
 

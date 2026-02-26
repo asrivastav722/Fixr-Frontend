@@ -1,3 +1,5 @@
+import { useTheme } from '@/context/ThemeContext';
+import { CATEGORIES, technicians } from '@/utils/utils';
 import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -6,8 +8,6 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect } from 'react';
 import { Image, Linking, Platform, Pressable, ScrollView, StatusBar, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from '../../src/context/ThemeContext';
-import { CATEGORIES, technicians } from '../../src/utils/utils';
 
 
 export default function TechnicianProfile() {
@@ -52,7 +52,7 @@ export default function TechnicianProfile() {
                 top: (StatusBar.currentHeight ?? 0) + (Platform.OS === "ios" ? 40 : 20) 
               }}            
             className="absolute left-4 z-10 bg-white dark:bg-black/50 p-3 rounded-full shadow"
-            onPress={() => router.back()}
+            onPress={() => router?.back()}
           >
             <Ionicons name="arrow-back" size={24} color={activeScheme==="light" ? "#000" : "#E5E7EB"} />
           </Pressable>

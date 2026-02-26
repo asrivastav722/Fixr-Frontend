@@ -5,19 +5,22 @@ import { Alert, Linking, ScrollView, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 // Project Components
-import LocationLoader from "../../src/components/card.loader.location";
-import TechnicianCarousel from "../../src/components/carousel.technician";
-import SearchHeader from "../../src/components/header.search";
-import TechnicianListing from "../../src/components/list.technicians";
-import FilterModal from "../../src/components/modal.filter";
-import LocationModal from "../../src/components/modal.location";
+import LocationLoader from "@/components/card.loader.location";
+import TechnicianCarousel from "@/components/carousel.technician";
+import SearchHeader from "@/components/header.search";
+import TechnicianListing from "@/components/list.technicians";
+import FilterModal from "@/components/modal.filter";
+import LocationModal from "@/components/modal.location";
 
 // Logic & Data
-import { calculateDistance } from "../../src/utils/functions";
-import { technicians } from "../../src/utils/utils";
+import { calculateDistance } from "@/utils/functions";
+import { technicians } from "@/utils/utils";
+import * as NavigationBar from 'expo-navigation-bar'
+import { useTheme } from "@/context/ThemeContext";
 
 export default function Homepage() {
   const insets = useSafeAreaInsets();
+  const {activeScheme} =useTheme()
   
   // --- STATE ---
   const [searchQuery, setSearchQuery] = useState("");
@@ -152,6 +155,10 @@ export default function Homepage() {
       remainingTechs: processedTechs.filter(t => !displayedIds.has(t.id)) 
     };
   }, [processedTechs]);
+
+  useEffect(() => { 
+          NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
+    }, [activeScheme]);
 
   // --- RENDER ---
   if (loadingLocation) return <LocationLoader />;

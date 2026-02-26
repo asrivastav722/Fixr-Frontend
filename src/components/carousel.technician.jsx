@@ -1,7 +1,7 @@
+import { router } from "expo-router"
 import { ArrowRight } from "lucide-react-native"
 import { FlatList, Pressable, Text, View } from "react-native"
 import TechnicianCard from "./card.technician"
-import { router } from "expo-router"
 
 const TechnicianCarousel = ({ title = "Hello",technicians,key }) => {
 
@@ -15,7 +15,7 @@ const TechnicianCarousel = ({ title = "Hello",technicians,key }) => {
         </Text>
         
         <Pressable className="p-2 active:opacity-50">
-          <ArrowRight onPress={()=>{router.push(`/role/${title}`)}} size={20} color="#6b7280"  />
+          <ArrowRight onPress={()=>{router?.push(`/role/${title}`)}} size={20} color="#6b7280"  />
         </Pressable>
       </View>
 

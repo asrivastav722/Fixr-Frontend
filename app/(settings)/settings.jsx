@@ -1,10 +1,12 @@
+import { useTheme } from "@/context/ThemeContext";
+import { useLogout } from "@/hooks/useLogout";
+import { router } from "expo-router";
 import {
   ChevronLeft,
   ChevronRight,
   CreditCard,
   Globe,
   Lock,
-  Settings,
   Trash2,
   User
 } from "lucide-react-native";
@@ -12,20 +14,18 @@ import { useState } from "react";
 import {
   Pressable,
   ScrollView,
-  StatusBar,
   Switch,
   Text,
   View,
 } from "react-native";
-import { useTheme } from "../src/context/ThemeContext";
-import ThemeModal from "./settings/modal.theme";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { router } from "expo-router";
+import ThemeModal from "./modal.theme";
 
 export default function SettingsPage() {
   const [modalVisible, setModalVisible] = useState(false);
   const { activeScheme ,theme} = useTheme();
   const inset =useSafeAreaInsets()
+  const {logout}=useLogout()
   // 🔥 Replace with global auth state
   const userRole = "both"; // customer | technician | both
   const isTechnician =
@@ -43,7 +43,7 @@ export default function SettingsPage() {
     autoAccept: false,
     availability: true,
   });
-
+     
   const toggle = key =>
     setSettings(prev => ({
       ...prev,
@@ -77,7 +77,7 @@ export default function SettingsPage() {
       <View className="flex-row bg-white dark:bg-black items-center justify-start gap-3 w-full p-4" >
         {/* Settings Button */}
         <Pressable 
-          onPress={() => router.back()}
+          onPress={() => router?.back()}
           className=" rounded-full active:opacity-70"
         >
           <ChevronLeft size={30} color={activeScheme === 'dark' ? '#fff' : '#000'} />
@@ -253,10 +253,6 @@ export default function SettingsPage() {
               <ChevronRight size={18} color="#9ca3af" />
             </View>
           </Pressable>
-
-    
-
-
           <SettingRow label="Distance Unit (km/miles)" />
         </Section>
 
@@ -270,8 +266,8 @@ export default function SettingsPage() {
 
         {/* 🚪 LOGOUT */}
         <View className="px-6 mt-6 mb-10">
-          <Pressable className="bg-red-100 py-4 rounded-2xl items-center">
-            <Text className="text-red-600 font-bold">
+          <Pressable onPress={()=>logout(false)} className="bg-red-100 dark:bg-red-900/30 py-4 rounded-2xl items-center active:opacity-70">
+            <Text className="text-red-600 dark:text-red-400 font-bold">
               Logout
             </Text>
           </Pressable>

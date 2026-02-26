@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { FlatList, Pressable, Text, View } from "react-native";
-import { CATEGORIES } from "../utils/utils";
+import { CATEGORIES } from "@/utils/utils";
 
 export default function CategoryPicker({
   setSelectCategory,
