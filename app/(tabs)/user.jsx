@@ -9,24 +9,24 @@ import {
   UserCircle2,
   Zap
 } from "lucide-react-native";
-import React, { useState } from "react";
-import { Image, Pressable, ScrollView, Switch, Text, View } from "react-native";
+import React, { useMemo, useState } from "react";
+import { Image, Pressable, ScrollView, StyleSheet, Switch, Text, View } from "react-native";
 import { useSelector } from "react-redux"; // Hook into Redux
 
 export default function MyProfilePage() {
-  const router = useRouter();
-  const { isAuthenticated, theme, phone, isReady } = useSelector((state) => state.auth);
   
+  // 1. Get Auth Data from Redux instantly
+  const { isAuthenticated,theme,phone,isReady } = useSelector((state) => state.auth);
+  const router =useRouter()
   const [activeTab, setActiveTab] = useState("work"); 
   const [isTechMode, setIsTechMode] = useState(true);
-  const iconColor = theme === 'dark' ? '#fff' : '#000';
+  const iconColor = useMemo(() => (theme === 'dark' ? '#fff' : '#000'), [theme]);
 
-  // --- ADD THIS GUARD ---
-  // If Redux hasn't finished reading from AsyncStorage, 
-  // don't render anything yet to avoid triggering navigation errors.
-  if (!isReady) return null;
-
-  
+  const navigateToSettings = () => {
+    setTimeout(() => {
+      router.push("/(settings)/settings");
+    }, 0);
+  };
 
   // 2. Guest Guard (Synchronous - No flickering)
   if (!isAuthenticated) {
@@ -43,7 +43,7 @@ export default function MyProfilePage() {
         </Text>
         
         <Pressable 
-          onPress={() => router.push("/(auth)/entry")}
+          onPress={() => router?.push("/(auth)/entry")}
           className="bg-blue-600 w-full py-4 rounded-2xl flex-row justify-center items-center"
         >
           <LogIn color="white" size={20} />
@@ -57,30 +57,31 @@ export default function MyProfilePage() {
   return (
     <View className="flex-1 gap-3 bg-gray-50 dark:bg-black">
       {/* --- CUSTOM TOP BAR --- */}
-      <View className="flex-row items-center justify-between px-6 pt-12 pb-4 bg-white dark:bg-gray-950 rounded-b-[40px] shadow-sm">
+      <View className="flex-row items-center justify-between px-6 pt-12 pb-4 bg-white dark:bg-gray-950">
         <View>
-          <Text className="text-gray-400 text-xs font-bold uppercase tracking-widest">Technician</Text>
-          {/* Display phone if name isn't available yet */}
-          <Text className="text-xl font-black dark:text-white">Akash ({phone})</Text>
+          <Text className="text-gray-400 text-xs font-bold uppercase">Technician</Text>
+          <Text className="text-xl font-black dark:text-white">Akash ({phone || "NA"})</Text>
         </View>
+
+        {/* 2. Pure Tailwind Pressable */}
         <Pressable 
-            onPress={() => router?.push("/(settings)/settings")} 
-            className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-2xl items-center justify-center border border-gray-200 dark:border-gray-700"
+          onPress={navigateToSettings} 
+          className="w-12 h-12 bg-gray-100 dark:bg-gray-800 rounded-2xl items-center justify-center active:opacity-50"
         >
-          <Settings size={22} color={iconColor} />
+          <Settings size={22} color={theme === 'dark' ? '#fff' : '#000'} />
         </Pressable>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} className="mt-[-20px]">
         {/* --- PRO CARD --- */}
-        <View className="mx-6 bg-white dark:bg-gray-900 rounded-[30px] p-6 shadow-xl shadow-black/5 mt-4">
+        <View className="bg-white dark:bg-gray-900 shadow-xl shadow-black/5 p-6">
           <View className="flex-row items-center">
             <View className="relative">
                 <Image 
                     source={{ uri: "https://i.pravatar.cc/150?u=akash" }} 
                     className="w-20 h-20 rounded-[24px]" 
                 />
-                <View className="absolute -top-2 -right-2 bg-blue-500 p-1 rounded-lg border-2 border-white dark:border-gray-900">
+                <View className="absolute -top-2 -right-2 bg-blue-900 p-1 rounded-lg border-2 border-white dark:border-gray-900">
                     <Zap size={14} color="white" fill="white" />
                 </View>
             </View>
@@ -156,18 +157,64 @@ export default function MyProfilePage() {
 }
 
 // Sub-components
-const StatBlock = ({ label, value }) => (
-    <View className="items-center">
-        <Text className="text-gray-400 text-[9px] uppercase font-bold tracking-widest mb-1">{label}</Text>
-        <Text className="text-sm font-black dark:text-white">{value}</Text>
-    </View>
-);
+const StatBlock = React.memo(({ label, value }) => (
+  <View className="items-center">
+    <Text className="text-gray-400 text-[9px] uppercase font-bold tracking-widest mb-1">{label}</Text>
+    <Text className="text-sm font-black dark:text-white">{value}</Text>
+  </View>
+));
 
-const TabButton = ({ title, active, onPress }) => (
+const TabButton = React.memo(({ title, active, onPress, theme }) => {
+  return (
     <Pressable 
-        onPress={onPress}
-        className={`px-4 py-2 rounded-lg ${active ? 'bg-white dark:bg-gray-700 shadow-sm' : ''}`}
+      onPress={onPress}
+      // Keep static classes in className, move dynamic colors to style
+      className="px-4 py-2 rounded-lg"
+      style={{
+        backgroundColor: active 
+          ? (theme === 'dark' ? '#374151' : '#FFFFFF') 
+          : 'transparent',
+        shadowOpacity: active ? 0.1 : 0,
+      }}
     >
-        <Text className={`text-xs font-bold ${active ? 'text-blue-600 dark:text-white' : 'text-gray-500'}`}>{title}</Text>
+      <Text 
+        className="text-xs font-bold"
+        style={{
+          color: active 
+            ? (theme === 'dark' ? '#FFFFFF' : '#2563EB') 
+            : '#6B7280'
+        }}
+      >
+        {title}
+      </Text>
     </Pressable>
-);
+  );
+});
+
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 24,
+    paddingTop: 48,
+    paddingBottom: 16,
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
+    // Native shadow instead of Tailwind classes
+    elevation: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+  },
+  settingsButton: {
+    width: 48,
+    height: 48,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: 'rgba(0,0,0,0.05)',
+  }
+});

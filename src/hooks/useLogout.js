@@ -27,7 +27,7 @@ export const useLogout = () => {
         
         // Navigate back to entry
         // We use replace to ensure they can't "back" into the profile
-        router?.replace("/(auth)/entry");
+        router?.replace("/(tabs)/user");
       }
     } catch (e) {
       console.error("Logout failed", e);

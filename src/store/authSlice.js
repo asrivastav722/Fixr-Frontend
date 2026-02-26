@@ -27,6 +27,7 @@ const authSlice = createSlice({
       state.hasLaunched = true;
       state.phone = action.payload.phone;
       state.userId = action.payload.userId || "user_001";
+      state.isReady = true;
     },
     logout: (state) => {
       state.isAuthenticated = false;

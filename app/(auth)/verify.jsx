@@ -48,7 +48,7 @@ export default function OTPScreen() {
         }));
 
         // 5. Navigate
-        // router?.replace("/(tabs)");
+        router?.replace("/(tabs)");
       } catch (e) {
         console.error("Verification Storage Error", e);
       }

@@ -1,7 +1,7 @@
-import { CATEGORIES } from "@/utils/utils";
 import { useRouter } from "expo-router";
 import { ChevronRight, MapPin, Star } from "lucide-react-native";
 import { Image, Pressable, Text, View } from "react-native";
+import { CATEGORIES } from "@/utils/utils";
 
 export default function TechnicianCard({ technician }) {
   const router = useRouter();
@@ -26,24 +26,17 @@ export default function TechnicianCard({ technician }) {
     
     
       const ImageWithProfile = technician?.profile_image ? (
-      <View>
-        <Image 
-          source={{ uri: technician.profile_image }} 
-          className='w-full h-full rounded-2xl' 
-        />
-        {/* Remove the gap here */}
-        {Icon ? (
-          <Icon
-            size={28}
-            color={categoryMatch?.iconColor || "#6b7280"}
-          />
-        ) : (
-          <Text className="text-gray-500 font-bold text-xl">
-            {firstLetter}
-          </Text>
-        )}
-      </View>
-    ) : null;
+        <Image source={{ uri: technician.profile_image }} className='w-full h-full rounded-2xl' />
+      ) : (
+        Icon ? (
+            <Icon
+              size={28}
+              color={categoryMatch?.iconColor || "#6b7280"}
+            />
+          ) : (
+            <Text className="text-gray-500 font-bold text-xl">
+              {firstLetter}
+            </Text>))
 
   return (
     <View className="bg-white dark:bg-black rounded-3xl p-4 mb-4 border border-gray-100 dark:border-gray-800 shadow-sm">
@@ -125,7 +118,7 @@ export default function TechnicianCard({ technician }) {
           className="flex-row items-center bg-black dark:bg-gray-900 px-5 py-3 rounded-2xl active:opacity-80"
           onPress={() => {
             if (technician?.id) {
-              router?.push(`/profile/${technician.id}`);
+              router.push(`/profile/${technician.id}`);
             }
           }}
         >

@@ -74,7 +74,6 @@ export default function AppContent() {
     // Scenario A: Logged in or returning user trying to see onboarding
     if ((isAuthenticated || hasLaunched) && onEntryScreen) {
       router?.replace("/(tabs)");
-      console.log("HLLO")
     } 
     // Scenario B: Fresh user trying to skip to the app
     else if (!hasLaunched && !isAuthenticated && inAuthGroup) {
