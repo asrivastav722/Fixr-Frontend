@@ -1,0 +1,11 @@
+name: Create Production Build
+
+jobs:
+  build_andoid:
+    type: build
+    params:
+      platform: android
+  build_ios:
+    type: build
+    params:
+      platform: ios
