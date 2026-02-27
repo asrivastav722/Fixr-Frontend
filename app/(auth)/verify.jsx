@@ -11,7 +11,7 @@ import { login } from "@/store/authSlice";
 export default function OTPScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { activeScheme } = useTheme();
+  const {activeScheme}=useTheme()
   
   // 1. Get phone from Redux (set in entry.js)
   const { phone } = useSelector((state) => state.auth);
@@ -31,7 +31,7 @@ export default function OTPScreen() {
 
   const verifyOTP = async () => {
     // Mimicking backend check
-    if (otp === "000000") {
+    if (otp === "0000") {
       try {
         // 3. Save to "Database" (AsyncStorage)
         await Promise.all([
@@ -63,7 +63,7 @@ export default function OTPScreen() {
     
   // Auto-verify when 6 digits are reached
   useEffect(() => {
-    if (otp.length === 6) {
+    if (otp.length === 4) {
       verifyOTP();
     }
   }, [otp]);
@@ -71,13 +71,14 @@ export default function OTPScreen() {
   // UI Bar Styling
   useEffect(() => {
     if (Platform.OS === 'android') {
-      NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
+      NavigationBar?.setButtonStyleAsync("light");
     }
-  }, [activeScheme]);
+  }, []);
 
   return (
-    <View className="flex-1 bg-white dark:bg-black px-8 pt-20">
-      <Text className="text-3xl font-black dark:text-white">Verify Phone</Text>
+    <View className="flex-1 bg-white px-8 pt-20">
+      <Text className="text-3xl font-black ">Verify Phone</Text>
+      {/* <Stat */}
       
       <View className="flex-row items-center mt-2">
         <Text className="text-gray-500">+91 {phone || "0000000000"}</Text>
@@ -89,15 +90,15 @@ export default function OTPScreen() {
       {/* BOX OTP INPUT */}
       <Pressable 
         onPress={() => inputRef.current?.focus()} 
-        className="flex-row justify-between mt-12"
+        className="flex-row justify-between d-flex gap-2 mt-12"
       >
-        {[...Array(6)].map((_, i) => (
+        {[...Array(4)].map((_, i) => (
           <View 
             key={i} 
-            className={`w-12 h-16 border-2 rounded-2xl items-center justify-center bg-gray-50 dark:bg-gray-900 
-              ${otp.length === i ? 'border-blue-600' : 'border-gray-200 dark:border-gray-800'}`}
+            className={`w-full flex-1 h-20 border-2 rounded-xl items-center justify-center bg-gray-50  
+              ${otp.length === i ? 'border-blue-600' : 'border-gray-200 '}`}
           >
-            <Text className="text-2xl font-black dark:text-white">
+            <Text className="text-3xl text-gray-800 font-semibold ">
               {otp[i] || ""}
             </Text>
           </View>
@@ -116,7 +117,7 @@ export default function OTPScreen() {
 
       <Pressable 
         onPress={verifyOTP}
-        className={`mt-10 py-4 rounded-2xl items-center ${otp.length === 6 ? 'bg-blue-600' : 'bg-gray-300 dark:bg-gray-800'}`}
+        className={`mt-10 py-4 rounded-2xl items-center ${otp.length === 6 ? 'bg-blue-600' : 'bg-gray-300'}`}
         disabled={otp.length < 6}
       >
         <Text className="text-white font-bold text-lg">Verify & Continue</Text>
