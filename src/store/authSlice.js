@@ -1,13 +1,13 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from "@/utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 export const requestOtp = createAsyncThunk(
   "auth/requestOtp",
   async (phone, { rejectWithValue }) => {
     try {
-      const confirmation = await auth().signInWithPhoneNumber(`+91${phoneNumber}`);
-      return confirmation;
+      const response = await api.post("/auth/request-otp", { phone });
+      return response.data;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Failed to send OTP");
     }
