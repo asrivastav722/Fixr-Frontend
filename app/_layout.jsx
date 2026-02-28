@@ -4,6 +4,7 @@ import { store } from '@/store/store';
 import { Provider } from 'react-redux';
 import "./global.css";
 import { StatusBar } from 'react-native';
+import { AuthProvider } from '@/context/AuthContext';
 
 export default function RootLayout() {
   
@@ -11,8 +12,10 @@ export default function RootLayout() {
   return (
     <Provider store={store}>
       <ThemeProvider>
-        <StatusBar backgroundColor="white" barStyle='dark-content' ></StatusBar>
-        <AppContent />
+        <AuthProvider>
+          <StatusBar backgroundColor="white" barStyle='dark-content' ></StatusBar>
+          <AppContent />
+      </AuthProvider>
       </ThemeProvider>
     </Provider>
   );

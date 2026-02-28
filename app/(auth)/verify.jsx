@@ -1,22 +1,21 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import * as NavigationBar from "expo-navigation-bar";
 import { useRouter } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
-import { Alert, Platform, Pressable, Text, TextInput, View } from "react-native";
+import { Alert, Platform, Pressable, Text, TextInput, View, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import * as NavigationBar from "expo-navigation-bar";
 
 import { useTheme } from "@/context/ThemeContext";
-import { login } from "@/store/authSlice";
+import { hydrateAuth, loginWithOtp } from "@/store/authSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export default function OTPScreen() {
+export default function VerifyOTP() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const {activeScheme,changeTheme}=useTheme()
   
-  // 1. Get phone from Redux (set in entry.js)
-  const { phone } = useSelector((state) => state.auth);
+  // 1. Get phone and loading state from Redux
+  const { user, isVerifying:loading } = useSelector((state) => state.auth);
+  const phone = user?.phone || "";
   
-  // 2. Local state for the OTP typing (don't put typing-state in Redux)
   const [otp, setOtp] = useState("");
   const [timer, setTimer] = useState(30);
   const inputRef = useRef(null);
@@ -30,45 +29,37 @@ export default function OTPScreen() {
   }, [timer]);
 
   const verifyOTP = async () => {
-    // Mimicking backend check
-    if (otp === "0000") {
-      try {
-        // 3. Save to "Database" (AsyncStorage)
-        await Promise.all([
-          AsyncStorage.setItem("USER_SESSION", "active_user"),
-          AsyncStorage.setItem("HAS_LAUNCHED", "true"),
-          AsyncStorage.setItem("PHONE", phone || ""),
-          AsyncStorage.setItem("APP_THEME", activeScheme)
-        ]);
+    if (otp.length !== 4) return;
 
-        // 4. Update "Live State" (Redux)
-        dispatch(login({ 
-          phone: phone,
-          userId: "user_" + Math.floor(Math.random() * 1000) 
-        }));
-        changeTheme(activeScheme)
-        // 5. Navigate
-        router?.replace("/(tabs)");
-      } catch (e) {
-        console.error("Verification Storage Error", e);
-      }
-    } else {
+    try {
+      // 2. Real Backend Integration via Redux Thunk
+      // We unwrap() to handle the navigation only on success
+      await dispatch(loginWithOtp({ 
+        phone: phone, 
+        otp: otp, 
+        fullName: "Verified User" // Placeholder name for registration
+      })).unwrap();
+      await AsyncStorage("HAS_LAUNCHED","true")
+
+      // 3. Navigation is handled here after successful login/persist
+      router?.replace("/(tabs)");
+    } catch (err) {
+      // Error from backend (e.g., "Invalid OTP")
       Alert.alert(
-        "Invalid Code",
-        "The OTP you entered is incorrect. Please use 000000.",
+        "Verification Failed", 
+        err || "The OTP you entered is incorrect. Please use 0000.",
         [{ text: "Try Again", onPress: () => setOtp("") }]
       );
     }
   };
     
-  // Auto-verify when 6 digits are reached
+  // 4. Auto-verify when 4 digits are reached (updated from 6)
   useEffect(() => {
     if (otp.length === 4) {
       verifyOTP();
     }
   }, [otp]);
 
-  // UI Bar Styling
   useEffect(() => {
     if (Platform.OS === 'android') {
       NavigationBar?.setButtonStyleAsync("light");
@@ -77,8 +68,7 @@ export default function OTPScreen() {
 
   return (
     <View className="flex-1 bg-white px-8 pt-20">
-      <Text className="text-3xl font-black ">Verify Phone</Text>
-      {/* <Stat */}
+      <Text className="text-3xl font-black">Verify Phone</Text>
       
       <View className="flex-row items-center mt-2">
         <Text className="text-gray-500">+91 {phone || "0000000000"}</Text>
@@ -87,16 +77,16 @@ export default function OTPScreen() {
         </Pressable>
       </View>
 
-      {/* BOX OTP INPUT */}
+      {/* BOX OTP INPUT (Custom Stylized Boxes) */}
       <Pressable 
         onPress={() => inputRef.current?.focus()} 
-        className="flex-row justify-between d-flex gap-2 mt-12"
+        className="flex-row justify-between gap-3 mt-12"
       >
         {[...Array(4)].map((_, i) => (
           <View 
             key={i} 
-            className={`w-full flex-1 h-20 border-2 rounded-xl items-center justify-center bg-gray-50  
-              ${otp.length === i ? 'border-blue-600' : 'border-gray-200 '}`}
+            className={`flex-1 h-20 border-2 rounded-xl items-center justify-center bg-gray-50  
+              ${otp.length === i ? 'border-blue-600' : 'border-gray-200'}`}
           >
             <Text className="text-3xl text-gray-800 font-semibold ">
               {otp[i] || ""}
@@ -109,7 +99,7 @@ export default function OTPScreen() {
         ref={inputRef}
         value={otp}
         onChangeText={setOtp}
-        maxLength={6}
+        maxLength={4} // Updated to 4
         keyboardType="number-pad"
         autoFocus
         style={{ position: 'absolute', opacity: 0, height: 0 }}
@@ -117,10 +107,14 @@ export default function OTPScreen() {
 
       <Pressable 
         onPress={verifyOTP}
-        className={`mt-10 py-4 rounded-2xl items-center ${otp.length === 6 ? 'bg-blue-600' : 'bg-gray-300'}`}
-        disabled={otp.length < 6}
+        className={`mt-10 py-4 rounded-2xl items-center ${otp.length === 4 ? 'bg-blue-600' : 'bg-gray-300'}`}
+        disabled={otp.length < 4 || loading}
       >
-        <Text className="text-white font-bold text-lg">Verify & Continue</Text>
+        {loading ? (
+          <ActivityIndicator color="white" />
+        ) : (
+          <Text className="text-white font-bold text-lg">Verify & Continue</Text>
+        )}
       </Pressable>
 
       <View className="mt-8 flex-row justify-center">

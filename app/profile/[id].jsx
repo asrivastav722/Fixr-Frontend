@@ -26,9 +26,9 @@ export default function TechnicianProfile() {
   const handleCall = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     Linking.openURL(`tel:${tech?.contact?.phone}`);
-  };                
+  };
   const ImageWithProfile = tech?.profile_image ? (
-    <Image source={{ uri: tech.profile_image }} className='w-full h-     full ' />
+    <Image source={{ uri: tech.profile_image }} className='w-full h-full ' />
   ) : (
     <Icon size={60} color="black" />
   );
