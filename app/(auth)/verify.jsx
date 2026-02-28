@@ -11,7 +11,7 @@ import { login } from "@/store/authSlice";
 export default function OTPScreen() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const {activeScheme}=useTheme()
+  const {activeScheme,changeTheme}=useTheme()
   
   // 1. Get phone from Redux (set in entry.js)
   const { phone } = useSelector((state) => state.auth);
@@ -46,7 +46,7 @@ export default function OTPScreen() {
           phone: phone,
           userId: "user_" + Math.floor(Math.random() * 1000) 
         }));
-
+        changeTheme(activeScheme)
         // 5. Navigate
         router?.replace("/(tabs)");
       } catch (e) {
@@ -54,7 +54,7 @@ export default function OTPScreen() {
       }
     } else {
       Alert.alert(
-        "Invalid Code", 
+        "Invalid Code",
         "The OTP you entered is incorrect. Please use 000000.",
         [{ text: "Try Again", onPress: () => setOtp("") }]
       );

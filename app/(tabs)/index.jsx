@@ -1,10 +1,8 @@
 import * as Haptics from "expo-haptics";
-import * as Location from "expo-location";
 import React, { useEffect, useMemo, useState } from "react";
-import { Alert, Linking, ScrollView, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ScrollView, Text, View, RefreshControl } from "react-native";
+import * as NavigationBar from 'expo-navigation-bar';
 
-// Project Components
 import LocationLoader from "@/components/card.loader.location";
 import TechnicianCarousel from "@/components/carousel.technician";
 import SearchHeader from "@/components/header.search";
@@ -12,78 +10,47 @@ import TechnicianListing from "@/components/list.technicians";
 import FilterModal from "@/components/modal.filter";
 import LocationModal from "@/components/modal.location";
 
-// Logic & Data
 import { calculateDistance } from "@/utils/functions";
 import { technicians } from "@/utils/utils";
-import * as NavigationBar from 'expo-navigation-bar'
 import { useTheme } from "@/context/ThemeContext";
+import { useCurrentLocation } from "@/hooks/useCurrentLocation";
+import { useGeocoding } from "@/hooks/useGeocoding";
 
 export default function Homepage() {
-  const insets = useSafeAreaInsets();
-  const {activeScheme} =useTheme()
-  
-  // --- STATE ---
+  const { activeScheme } = useTheme();
+  const { getCoordsFromCity } = useGeocoding();
+
+  const { 
+    location: hookLocation, 
+    displayAddress: hookAddress, 
+    loading: loadingLocation, 
+    refresh 
+  } = useCurrentLocation({ fallbackName: "Balrampur center" });
+
   const [searchQuery, setSearchQuery] = useState("");
   const [displayAddress, setDisplayAddress] = useState("Locating...");
-  const [selectedCity, setSelectedCity] = useState(null); // null = Coordinate mode
+  const [selectedCity, setSelectedCity] = useState(null); 
+  const [manualCoords, setManualCoords] = useState(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [isLocOpen, setIsLocOpen] = useState(false);
-  const [userLocation, setUserLocation] = useState(null);
-  const [loadingLocation, setLoadingLocation] = useState(true);
   
   const [filters, setFilters] = useState({ 
-    exp: 0, 
-    rating: 0, 
-    verified: false, 
-    availability: false, 
-    gender: 'all', 
-    skills: [], 
-    fees: 5000 
+    exp: 0, rating: 0, verified: false, availability: false, gender: 'all', skills: [], fees: 5000 
   });
 
-  // --- 1. INITIALIZATION: Location & Permissions ---
   useEffect(() => {
-    (async () => {
-      let { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
-      
-      // Default fallback (Balrampur center)
-      let coords = { latitude: 27.4099, longitude: 82.1851 };
+    if (!loadingLocation && hookAddress && !selectedCity) {
+      setDisplayAddress(hookAddress);
+    }
+  }, [loadingLocation, hookAddress, selectedCity]);
 
-      if (status !== "granted") {
-        if (!canAskAgain) {
-          Alert.alert(
-            "Location Required",
-            "Please enable location in settings to see nearby experts.",
-            [{ text: "Settings", onPress: () => Linking.openSettings() }]
-          );
-        }
-        setDisplayAddress("Balrampur (Default)");
-      } else {
-        try {
-          const loc = await Location.getCurrentPositionAsync({ 
-            accuracy: Location.Accuracy.Balanced,
-          });
-          coords = { latitude: loc.coords.latitude, longitude: loc.coords.longitude };
-          setUserLocation(coords);
+  useEffect(() => { 
+    NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
+  }, [activeScheme]);
 
-          let reverse = await Location.reverseGeocodeAsync(coords);
-          if (reverse.length > 0) {
-            const addr = reverse[0];
-            // Format: "Building/Street, City"
-            const fullAddress = `${addr.name || ''} ${addr.street || ''}, ${addr.city || addr.subregion || ''}`.trim();
-            setDisplayAddress(fullAddress || "Current Location");
-          }
-        } catch (e) {
-          setDisplayAddress("Balrampur (Default)");
-        }
-      }
-      setLoadingLocation(false);
-    })();
-  }, []);
+  // Use manualCoords if user picked a city, otherwise use GPS hookLocation
+  const activeLocation = manualCoords ?? hookLocation ?? { latitude: 27.4099, longitude: 82.1851 };
 
-  const activeLocation = userLocation ?? { latitude: 27.4099, longitude: 82.1851 };
-
-  // --- 2. BASE LIST: Distance or City Logic ---
   const locationBasedTechs = useMemo(() => {
     return (technicians || [])
       .map(tech => {
@@ -94,20 +61,14 @@ export default function Homepage() {
         return { ...tech, distance: parseFloat(dist.toFixed(1)) };
       })
       .filter(t => {
-        // Switch: If user manually picked a city, use city string. Else use 20km radius.
-        if (selectedCity) {
-          return t.location.city?.toLowerCase() === selectedCity?.toLowerCase();
-        }
+        if (selectedCity) return t.location.city?.toLowerCase() === selectedCity?.toLowerCase();
         return t.distance <= 20; 
       })
       .sort((a, b) => a.distance - b.distance);
   }, [activeLocation, selectedCity]);
 
-  // --- 3. FILTERING: Applying search, skills, and criteria ---
   const processedTechs = useMemo(() => {
-    // return locationBasedTechs
     return locationBasedTechs.filter(t => {
-      // Search logic (Name, Profession, or specific Skill name)
       const matchesSearch = !searchQuery || 
         t.name?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
         t.profession?.toLowerCase()?.includes(searchQuery?.toLowerCase()) ||
@@ -115,56 +76,32 @@ export default function Homepage() {
       
       const matchesVerified = !filters.verified || t.is_verified === true;
       const matchesAvailability = !filters.availability || t.availability?.is_available_now === true;
-      const matchesExp = filters.exp === "Any" || t.experience_years >= filters.exp;
+      const matchesExp = filters.exp === 0 || t.experience_years >= filters.exp;
       const matchesRating = t.rating >= filters.rating;
       const matchesFees = t.starting_price <= filters.fees;
       const matchesGender = filters.gender === 'all' || t.gender?.toLowerCase() === filters.gender;
-      
-      // Multi-skill filter: check if tech has ANY of the selected filter skills
-      const matchesSkills = filters.skills.length === 0 || 
-        t.skills?.some(s => filters.skills.includes(s.name || s));
+      const matchesSkills = filters.skills.length === 0 || t.skills?.some(s => filters.skills.includes(s.name || s));
 
-      return matchesSearch 
-            && matchesVerified 
-            && matchesAvailability 
-            && matchesExp 
-            && matchesRating 
-            && matchesFees 
-            && matchesGender 
-            && matchesSkills;
+      return matchesSearch && matchesVerified && matchesAvailability && matchesExp && matchesRating && matchesFees && matchesGender && matchesSkills;
     });
   }, [locationBasedTechs, searchQuery, filters]);
 
-  // --- 4. CATEGORIZATION: For Carousels & Remaining List ---
   const { carousels, remainingTechs } = useMemo(() => {
-    // Only available pros get featured in carousels
     const available = processedTechs.filter(t => t.availability?.is_available_now);
-    
-    // Get top 3 unique professions from available pool
     const roles = [...new Set(available.map(t => t.profession))].slice(0, 3);
-    
     const displayedIds = new Set();
     const carData = roles.map(role => {
       const techsInRole = available.filter(t => t.profession === role);
       techsInRole.forEach(t => displayedIds.add(t.id));
       return { role, data: techsInRole };
     });
-
-    return { 
-      carousels: carData, 
-      remainingTechs: processedTechs.filter(t => !displayedIds.has(t.id)) 
-    };
+    return { carousels: carData, remainingTechs: processedTechs.filter(t => !displayedIds.has(t.id)) };
   }, [processedTechs]);
 
-  useEffect(() => { 
-          NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
-    }, [activeScheme]);
-
-  // --- RENDER ---
-  if (loadingLocation) return <LocationLoader />;
+  if (loadingLocation && !hookLocation) return <LocationLoader />;
 
   return (
-    <View className="flex-1 bg-white dark:bg-black" >
+    <View className="flex-1 bg-white dark:bg-black">
       <SearchHeader 
         categoryList={carousels?.map((item) => item.role)}
         selectedCity={displayAddress}
@@ -174,62 +111,44 @@ export default function Homepage() {
       />
 
       <ScrollView 
-        showsVerticalScrollIndicator={false} 
         className="flex-1 bg-gray-50 dark:bg-gray-950"
+        refreshControl={<RefreshControl refreshing={loadingLocation} onRefresh={() => { setSelectedCity(null); setManualCoords(null); refresh(); }} />}
       >
         <View className="px-4 pt-4">
            <Text className="text-xl font-bold dark:text-white">
-              {searchQuery ? `Results for "${searchQuery}"` : 
-               selectedCity ? `Experts in ${selectedCity}` : "Within 20km of you"}
+              {searchQuery ? `Results for "${searchQuery}"` : selectedCity ? `Experts in ${selectedCity}` : "Within 20km of you"}
            </Text>
-           {processedTechs.length === 0 && (
-             <Text className="text-gray-500 mt-2">No professionals found matching these filters.</Text>
-           )}
         </View>
 
         {searchQuery ? (
-          <View className="py-4">
-            <TechnicianListing technicians={processedTechs} />
-          </View>
+          <View className="py-4"><TechnicianListing technicians={processedTechs} /></View>
         ) : (
           <View className="pb-10">
-            {carousels.map((item, index) => (
-              <TechnicianCarousel key={index} title={item.role} technicians={item.data} />
-            ))}
-            
-            <TechnicianListing 
-              technicians={remainingTechs} 
-              title={remainingTechs.length > 0 ? `Other Experts Near You (${remainingTechs.length})` : ""} 
-            />
+            {carousels.map((item, index) => <TechnicianCarousel key={index} title={item.role} technicians={item.data} />)}
+            {remainingTechs.length > 0 && <TechnicianListing technicians={remainingTechs} title="Other Experts Near You" />}
           </View>
         )}
       </ScrollView>
 
-      {/* --- MODALS --- */}
       <LocationModal 
         visible={isLocOpen} 
         onClose={() => setIsLocOpen(false)} 
-        onSelect={(cityData) => {
+        onSelect={async (data) => {
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-          if (typeof cityData === 'string') {
-            setSelectedCity(cityData);
-            setDisplayAddress(cityData);
+          if (data.type === "city") {
+            const coords = await getCoordsFromCity(data.name);
+            setSelectedCity(data.name);
+            setDisplayAddress(data.name);
+            setManualCoords(coords);
           } else {
-            // "Use Current Location" returns reverseGeocode array
-            const addr = cityData[0];
-            const full = `${addr.name || ''} ${addr.street || ''}, ${addr.city || ''}`.trim();
-            setSelectedCity(null); 
-            setDisplayAddress(full || "Current Location");
+            setSelectedCity(null);
+            setManualCoords(null);
+            refresh();
           }
         }} 
       />
 
-      <FilterModal 
-        visible={isFilterOpen} 
-        onClose={() => setIsFilterOpen(false)} 
-        filters={filters} 
-        setFilters={setFilters} 
-      />
+      <FilterModal visible={isFilterOpen} onClose={() => setIsFilterOpen(false)} filters={filters} setFilters={setFilters} />
     </View>
   );
 }

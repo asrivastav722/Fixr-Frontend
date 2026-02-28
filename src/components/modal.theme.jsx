@@ -9,7 +9,7 @@ export default function ThemeModal({ visible, onClose }) {
   const options = [
     { id: 'light', label: 'Light Mode', icon: Sun },
     { id: 'dark', label: 'Dark Mode', icon: Moon },
-    { id: 'system', label: 'System Setting', icon: Monitor },
+    // { id: 'system', label: 'System Setting', icon: Monitor },
   ];
 
   return (

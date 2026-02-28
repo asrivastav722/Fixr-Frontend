@@ -42,3 +42,6 @@ app-example
 /ios
 /android
 sourcemap.html
+.env
+.env.local
+.env.development.local

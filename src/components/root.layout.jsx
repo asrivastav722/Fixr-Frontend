@@ -97,6 +97,7 @@ export default function AppContent() {
         <Stack.Screen name="(auth)/verify" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="(settings)/settings" />
+        <Stack.Screen name="health" />
       </Stack>
 
       {/* Dev Reset Button - Only visible in development */}

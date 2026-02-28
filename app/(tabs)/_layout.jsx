@@ -1,3 +1,4 @@
+import { useTheme } from '@/context/ThemeContext';
 import * as Haptics from 'expo-haptics';
 import * as NavigationBar from 'expo-navigation-bar';
 import { Tabs } from 'expo-router';
@@ -5,7 +6,6 @@ import { Calendar, Home, MessageSquare, User } from 'lucide-react-native';
 import { useEffect } from 'react';
 import { Platform, Pressable, StatusBar, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useTheme } from '@/context/ThemeContext';
 
 export default function TabLayout() {
   const inset = useSafeAreaInsets();

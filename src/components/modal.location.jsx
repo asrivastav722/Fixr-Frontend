@@ -1,63 +1,76 @@
-import { MapPinned, Target, View } from "lucide-react-native";
-import { FlatList, Modal, Pressable } from "react-native";
+import React, { useState } from "react";
+import { FlatList, Modal, Pressable, Text, View, TextInput, ActivityIndicator, Alert, Linking } from "react-native";
+import * as Location from "expo-location";
+import { MapPinned, Target, Search, X } from "lucide-react-native";
 import { INDIAN_CITIES } from "@/utils/utils";
-import { Text } from "react-native";
-import { useState } from "react";
 
-const LocationModal = ({ visible, onClose, onSelect }) => {
+export default function LocationModal({ visible, onClose, onSelect }) {
   const [isLocating, setIsLocating] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const filteredCities = INDIAN_CITIES.filter((city) =>
+    city.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const handleGetCurrentLocation = async () => {
     try {
       setIsLocating(true);
-      let { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
+      const { status, canAskAgain } = await Location.requestForegroundPermissionsAsync();
+
       if (status !== "granted") {
-      // 2. Use canAskAgain to decide the UI
-      if (!canAskAgain) {
-        // The user clicked "Don't Allow" and "Don't ask again" 
-        // We MUST send them to settings now.
-        alert(
-          "Location Permission Required",
-          "You've disabled location. Please enable it in your phone settings to see technicians near you.",
-          [{ text: "Open Settings", onPress: () => Linking.openSettings() }]
-        );
-      } else {
-        // We can try to ask again later or show a custom "Please allow" UI
-        console.log("Permission denied, but we can ask again later.");
+        if (!canAskAgain) {
+          Alert.alert("Permission Required", "Please enable location in settings.", [
+            { text: "Settings", onPress: () => Linking.openSettings() },
+            { text: "Cancel" }
+          ]);
+        }
+        return;
       }
 
-      let location = await Location.getCurrentPositionAsync({});
-      let reverse = await Location.reverseGeocodeAsync({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-
-      if (reverse.length > 0) {
-
-        onSelect(reverse);
-        onClose();
-      }
+      const location = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
+      onSelect({ type: "current", coords: location.coords });
+      onClose();
+    } catch (e) {
+      Alert.alert("Error", "Could not fetch location.");
+    } finally {
+      setIsLocating(false);
     }
-    } catch (e) { 
-      alert("Error fetching location"); 
-    } 
-    finally { setIsLocating(false); }
   };
 
   return (
-    <Modal animationType="fade" transparent visible={visible}>
-      <View className="flex-1 bg-black/60 justify-center p-6">
-        <View className="bg-white dark:bg-gray-900 rounded-3xl p-4 max-h-[70%]">
-          <Text className="text-lg font-bold mb-2 dark:text-white p-2">Select Location</Text>
-          <Pressable onPress={handleGetCurrentLocation} className="flex-row items-center p-4 bg-blue-50 dark:bg-blue-950/30 rounded-2xl mb-2">
-            <Target size={18} color="#3b82f6" />
-            <Text className="ml-3 font-bold text-blue-600">{isLocating ? "Locating..." : "Use Current Location"}</Text>
+    <Modal animationType="slide" transparent statusBarTranslucent visible={visible} onRequestClose={onClose}>
+      <View className="flex-1 bg-black/60 justify-end">
+        <View className="bg-white dark:bg-gray-900 rounded-t-[40px] p-6 h-[80%]">
+          <View className="flex-row justify-between items-center mb-4">
+            <Text className="text-xl font-bold dark:text-white">Select Location</Text>
+            <Pressable onPress={onClose} className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full">
+              <X size={20} color="#9ca3af" />
+            </Pressable>
+          </View>
+
+          <View className="flex-row items-center bg-gray-100 dark:bg-gray-800 px-4 rounded-2xl mb-4">
+            <Search size={18} color="#9ca3af" />
+            <TextInput
+              placeholder="Search city..."
+              placeholderTextColor="#9ca3af"
+              className="flex-1 h-12 ml-2 dark:text-white"
+              value={searchQuery}
+              onChangeText={setSearchQuery}
+            />
+          </View>
+
+          <Pressable onPress={handleGetCurrentLocation} className="flex-row items-center p-4 bg-blue-50 dark:bg-blue-900/20 rounded-2xl mb-4">
+            {isLocating ? <ActivityIndicator color="#3b82f6" /> : <Target size={20} color="#3b82f6" />}
+            <Text className="ml-3 font-bold text-blue-600 dark:text-blue-400">Use Current Location</Text>
           </Pressable>
+
           <FlatList 
-            data={INDIAN_CITIES}
-            renderItem={({item}) => (
-              <Pressable onPress={() => { onSelect(item); onClose(); }} className="flex-row items-center p-4 border-b border-gray-100 dark:border-gray-800">
-                <MapPinned size={18} color="#9ca3af" /><Text className="ml-3 dark:text-gray-200">{item}</Text>
+            data={filteredCities}
+            keyExtractor={(item) => item}
+            renderItem={({ item }) => (
+              <Pressable onPress={() => { onSelect({ type: "city", name: item }); onClose(); }} className="flex-row items-center py-4 border-b border-gray-50 dark:border-gray-800">
+                <MapPinned size={18} color="#9ca3af" />
+                <Text className="ml-4 text-gray-700 dark:text-gray-200">{item}</Text>
               </Pressable>
             )}
           />
@@ -65,5 +78,4 @@ const LocationModal = ({ visible, onClose, onSelect }) => {
       </View>
     </Modal>
   );
-};
-export default LocationModal
+}

@@ -15,7 +15,11 @@ module.exports = {
         body: ["Poppins"],
       },
       colors:{
-        primary:"#000000",
+        primary: "with-opacity(--color-primary)",
+        secondary: "with-opacity(--color-secondary)",
+        surface: "with-opacity(--color-surface)",
+        background: "with-opacity(--color-background)",
+        accent: "with-opacity(--color-accent)",
       }
     },
   },

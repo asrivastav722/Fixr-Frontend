@@ -16,7 +16,7 @@ import { useSelector } from "react-redux"; // Hook into Redux
 export default function MyProfilePage() {
   
   // 1. Get Auth Data from Redux instantly
-  const { isAuthenticated,theme,phone,isReady } = useSelector((state) => state.auth);
+  const { isAuthenticated,theme,phone } = useSelector((state) => state.auth);
   const router =useRouter()
   const [activeTab, setActiveTab] = useState("work"); 
   const [isTechMode, setIsTechMode] = useState(true);

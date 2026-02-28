@@ -56,7 +56,7 @@ export default function OnboardingScreen() {
   }, [theme]);
 
   return (
-    <View className="flex-1 bg-white " paddingTop={inset.top} >
+    <View className="flex-1 bg-white pb-24" paddingTop={inset.top} >
       <StatusBar translucent={true} backgroundColor="transparent" barStyle="dark-content"></StatusBar>
       {/* SKIP BUTTON */}
       <View className="flex-row justify-end px-6 pt-4">

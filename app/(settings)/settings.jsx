@@ -19,7 +19,7 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import ThemeModal from "./modal.theme";
+import ThemeModal from "../../src/components/modal.theme";
 
 export default function SettingsPage() {
   const [modalVisible, setModalVisible] = useState(false);
@@ -72,7 +72,7 @@ export default function SettingsPage() {
   );
 
   return (
-    <View className="flex-1 bg-gray-100 dark:bg-gray-900 " paddingTop={inset.top}>
+    <View className="flex-1 bg-gray-100 dark:bg-gray-900 " paddingTop={inset.top} paddingBottom={inset.bottom}>
 
       <View className="flex-row bg-white dark:bg-black items-center justify-start gap-3 w-full p-4" >
         {/* Settings Button */}

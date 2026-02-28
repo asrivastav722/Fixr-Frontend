@@ -23,6 +23,7 @@
     "@react-navigation/native": "^7.1.28",
     "@reduxjs/toolkit": "^2.11.2",
     "antd": "^6.2.2",
+    "axios": "^1.13.6",
     "expo": "~54.0.32",
     "expo-constants": "~18.0.13",
     "expo-font": "~14.0.11",
