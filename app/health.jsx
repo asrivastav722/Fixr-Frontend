@@ -8,11 +8,11 @@ export default function MyProfilePage() {
   const dispatch = useDispatch();
   
   // Select API state from Redux
-  const { status, message } = useSelector((state) => state.api);
+  const { status, message,isReady } = useSelector((state) => state.api);
 
   useEffect(() => {
     // Only fetch if we haven't succeeded yet
-    if (status === 'idle') {
+    if (isReady && status === 'idle') {
       dispatch(checkApiHealth());
     }
   }, [status]);

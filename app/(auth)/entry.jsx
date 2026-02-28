@@ -38,7 +38,6 @@ export default function OnboardingScreen() {
 
   const handleSkip = async () => {
     try {
-      await AsyncStorage.setItem("HAS_LAUNCHED","true")
       router?.replace("/(tabs)");
     } catch (e) {
       console.error("Skip failed", e);

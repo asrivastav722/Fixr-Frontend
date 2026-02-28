@@ -50,13 +50,28 @@ export const refreshUser = createAsyncThunk(
   }
 );
 
+export const updateUserSettings = createAsyncThunk(
+  "auth/updateProfile",
+  async (userData, { getState, rejectWithValue }) => {
+    try {
+      const { token } = getState().auth;
+      // Use your existing 'api' instance instead of raw axios
+      const response = await api.put("/auth/update-profile", userData, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      return response.data.user;
+    } catch (err) {
+      return rejectWithValue(err.response?.data?.message || "Update failed");
+    }
+  }
+);
+
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: null,
     token: null,
-    isAuthenticated: false, // NEW FLAG
-    haslaunched: false,
+    isAuthenticated: false,
     theme: 'light',
     isReady: false, 
     loading: false,     
@@ -66,47 +81,46 @@ const authSlice = createSlice({
     hydrateAuth: (state, action) => {
       state.user = action.payload.user ?? state.user;
       state.token = action.payload.token ?? state.token;
-      // isAuthenticated is true only if we have a valid token/user
       state.isAuthenticated = !!(action.payload.token && action.payload.user);
-      state.haslaunched = true;
       state.isReady = true;
     },
     logout: (state) => {
       state.user = null;
       state.token = null;
-      state.isAuthenticated = false; // Reset on logout
-      state.haslaunched = true;
+      state.isAuthenticated = false;
       state.isReady = true;
       AsyncStorage.removeItem("USER_TOKEN");
     },
   },
   extraReducers: (builder) => {
     builder
-      // 1. Login Logic
       .addCase(loginWithOtp.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isAuthenticated = true; // Set true on successful login
+        state.isAuthenticated = true;
         state.isReady = true;
       })
-      // 2. Refresh/Boot Logic (The specific check you asked for)
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.userloading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        // VALIDATION SUCCESS: Token is not expired and DB returned user
         state.isAuthenticated = true; 
         state.isReady = true;
       })
       .addCase(refreshUser.rejected, (state) => {
         state.userloading = false;
-        state.isAuthenticated = false; // Token expired or invalid
+        state.isAuthenticated = false;
         state.token = null;
         state.user = null;
         state.isReady = true; 
       })
-      // Standard loading states...
+      // --- Handle Profile Update ---
+      .addCase(updateUserSettings.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload; // Update user object in state
+        state.theme = action.payload.theme; // Sync theme
+      })
       .addMatcher(
         (action) => action.type.endsWith('/pending'),
         (state) => { state.loading = true; }

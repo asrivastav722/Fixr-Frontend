@@ -9,7 +9,11 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.electrolyte.fixr",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "splash": {
       "image": "./src/assets/images/icon.png",
@@ -46,7 +50,7 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true,
-      "tsconfigPaths":true
+      "tsconfigPaths": true
     },
     "extra": {
       "router": {

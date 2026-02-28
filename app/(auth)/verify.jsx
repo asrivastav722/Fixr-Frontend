@@ -39,7 +39,6 @@ export default function VerifyOTP() {
         otp: otp, 
         fullName: "Verified User" // Placeholder name for registration
       })).unwrap();
-      await AsyncStorage("HAS_LAUNCHED","true")
 
       // 3. Navigation is handled here after successful login/persist
       router?.replace("/(tabs)");

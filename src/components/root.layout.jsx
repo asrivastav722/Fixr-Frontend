@@ -43,6 +43,7 @@ export default function AppContent() {
         <Stack.Screen name="(auth)/verify" />
         <Stack.Screen name="(tabs)" />
         <Stack.Screen name="(settings)/settings" />
+        <Stack.Screen name="(settings)/settings/edit-profile" />
         <Stack.Screen name="health" />
       </Stack>
 
