@@ -6,8 +6,8 @@ export const requestOtp = createAsyncThunk(
   "auth/requestOtp",
   async (phone, { rejectWithValue }) => {
     try {
-      const response = await api.post("/auth/request-otp", { phone });
-      return response.data;
+      const confirmation = await auth().signInWithPhoneNumber(`+91${phoneNumber}`);
+      return confirmation;
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Failed to send OTP");
     }
@@ -55,20 +55,18 @@ const authSlice = createSlice({
   initialState: {
     user: null,
     token: null,
-    isAuthenticated: false,
+    isAuthenticated: false, // NEW FLAG
     haslaunched: false,
     theme: 'light',
     isReady: false, 
-    
-    // Granular Loading States
-    isRefreshing: false, // For boot-up /auth/me check
-    isOtpLoading: false, // For requesting the code
-    isVerifying: false,  // For verifying the code
+    loading: false,     
+    userloading: false  
   },
   reducers: {
     hydrateAuth: (state, action) => {
       state.user = action.payload.user ?? state.user;
       state.token = action.payload.token ?? state.token;
+      // isAuthenticated is true only if we have a valid token/user
       state.isAuthenticated = !!(action.payload.token && action.payload.user);
       state.haslaunched = true;
       state.isReady = true;
@@ -76,7 +74,7 @@ const authSlice = createSlice({
     logout: (state) => {
       state.user = null;
       state.token = null;
-      state.isAuthenticated = false;
+      state.isAuthenticated = false; // Reset on logout
       state.haslaunched = true;
       state.isReady = true;
       AsyncStorage.removeItem("USER_TOKEN");
@@ -84,50 +82,39 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // --- 1. Request OTP ---
-      .addCase(requestOtp.pending, (state) => {
-        state.isOtpLoading = true;
-      })
-      .addCase(requestOtp.fulfilled, (state) => {
-        state.isOtpLoading = false;
-      })
-      .addCase(requestOtp.rejected, (state) => {
-        state.isOtpLoading = false;
-      })
-
-      // --- 2. Verify OTP (Login) ---
-      .addCase(loginWithOtp.pending, (state) => {
-        state.isVerifying = true;
-      })
+      // 1. Login Logic
       .addCase(loginWithOtp.fulfilled, (state, action) => {
-        state.isVerifying = false;
+        state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isAuthenticated = true;
+        state.isAuthenticated = true; // Set true on successful login
         state.isReady = true;
       })
-      .addCase(loginWithOtp.rejected, (state) => {
-        state.isVerifying = false;
-      })
-
-      // --- 3. Refresh User (Boot sequence) ---
-      .addCase(refreshUser.pending, (state) => {
-        state.isRefreshing = true;
-      })
+      // 2. Refresh/Boot Logic (The specific check you asked for)
       .addCase(refreshUser.fulfilled, (state, action) => {
-        state.isRefreshing = false;
+        state.userloading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
-        state.isAuthenticated = true;
+        // VALIDATION SUCCESS: Token is not expired and DB returned user
+        state.isAuthenticated = true; 
         state.isReady = true;
       })
       .addCase(refreshUser.rejected, (state) => {
-        state.isRefreshing = false;
-        state.isAuthenticated = false;
+        state.userloading = false;
+        state.isAuthenticated = false; // Token expired or invalid
         state.token = null;
         state.user = null;
         state.isReady = true; 
-      });
+      })
+      // Standard loading states...
+      .addMatcher(
+        (action) => action.type.endsWith('/pending'),
+        (state) => { state.loading = true; }
+      )
+      .addMatcher(
+        (action) => action.type.endsWith('/rejected'),
+        (state) => { state.loading = false; }
+      );
   },
 });
 

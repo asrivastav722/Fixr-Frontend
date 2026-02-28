@@ -45,3 +45,5 @@ sourcemap.html
 .env
 .env.local
 .env.development.local
+push.sh
+clean.sh

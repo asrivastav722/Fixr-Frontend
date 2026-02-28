@@ -3,13 +3,11 @@
     "name": "Fixr",
     "slug": "fixr",
     "version": "1.0.0",
-    "icon": "./src/assets/images/icon.png", // Main icon for iOS/Web
+    "icon": "./src/assets/images/icon.png",
     "orientation": "portrait",
     "scheme": "fixr",
-
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
-
     "ios": {
       "supportsTablet": true
     },
@@ -22,8 +20,6 @@
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/images/icon.png",
         "backgroundColor": "#000000"
-        
-        // "backgroundColor": "#E6F4FE"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
@@ -44,11 +40,13 @@
           "backgroundColor": "#000000"
         }
       ],
-      "expo-font"
+      "expo-font",
+      "@react-native-google-signin/google-signin"
     ],
     "experiments": {
       "typedRoutes": true,
-      "reactCompiler": true
+      "reactCompiler": true,
+      "tsconfigPaths":true
     },
     "extra": {
       "router": {
