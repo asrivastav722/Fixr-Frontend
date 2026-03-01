@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { useRouter, useSegments } from 'expo-router';
-import { refreshUser, hydrateAuth } from '@/store/authSlice';
+import { hydrateAuth, refreshUser } from '@/store/authSlice';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter, useSegments } from 'expo-router';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 export const AuthProvider = ({ children }) => {
   const dispatch = useDispatch();
@@ -41,18 +41,18 @@ export const AuthProvider = ({ children }) => {
     if (!isReady || userloading) return; 
 
     const rootSegment = segments[0];
-    const inAuthGroup = rootSegment === "(auth)";
-    const inTabsGroup = rootSegment === "(tabs)";
+    const isPublicScreen = rootSegment === "(auth)" || rootSegment === "index"; // Add public screens here
+    const isInsideTabs = rootSegment === "(tabs)";
 
-    if (!isAuthenticated && inTabsGroup) {
-      // If flag is false (token expired or missing), send to login
-      router.replace("/(auth)/entry");
+    if (!isAuthenticated && !isPublicScreen) {
+        router.replace("/(auth)/entry");
     } 
-    else if (isAuthenticated && inAuthGroup) {
-      // If flag is true (backend validated), send to home
-      router.replace("/(tabs)");
+    // 2. If logged in and trying to access auth screens (Login/Register)
+    else if (isAuthenticated && isPublicScreen) {
+        router.replace("/(tabs)");
     }
-  }, [isAuthenticated, isReady, userloading]);
+    
+  } ,[isAuthenticated, isReady, userloading]);
 
   return children;
 };

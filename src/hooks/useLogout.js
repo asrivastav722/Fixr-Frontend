@@ -1,4 +1,3 @@
-import { useTheme } from "@/context/ThemeContext";
 import { logout } from "@/store/authSlice";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
@@ -8,7 +7,6 @@ import { useDispatch } from "react-redux";
 export const useLogout = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const {changeTheme}=useTheme()
 
   const performLogout = async (isReset) => {
     try {
@@ -26,7 +24,6 @@ export const useLogout = () => {
         // Standard option: Only wipes the user session
         await AsyncStorage.removeItem("USER_SESSION");
         dispatch(logout());
-        changeTheme("light")
         
         // Navigate back to entry
         // We use replace to ensure they can't "back" into the profile

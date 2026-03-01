@@ -15,7 +15,7 @@ export default function RootLayout() {
         <AuthProvider>
           <StatusBar backgroundColor="white" barStyle='dark-content' ></StatusBar>
           <AppContent />
-      </AuthProvider>
+        </AuthProvider>
       </ThemeProvider>
     </Provider>
   );

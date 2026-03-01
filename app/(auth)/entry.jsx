@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 // Actions
 import { hydrateAuth, requestOtp } from "@/store/authSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function OnboardingScreen() {
   const dispatch = useDispatch();

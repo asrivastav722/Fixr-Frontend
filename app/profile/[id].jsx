@@ -4,16 +4,15 @@ import { Ionicons } from '@expo/vector-icons';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as NavigationBar from 'expo-navigation-bar';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import React, { useEffect } from 'react';
-import { Image, Linking, Platform, Pressable, ScrollView, StatusBar, Text, View } from 'react-native';
+import { Image, Linking, Pressable, ScrollView, StatusBar, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 
 export default function TechnicianProfile() {
-  const {activeScheme} = useTheme()
+  const {theme} = useTheme()
   const { id } = useLocalSearchParams();
-  const router = useRouter();
   const inset = useSafeAreaInsets()
 
   const tech = technicians?.find(t => t?.id === id) || technicians[0];
@@ -34,36 +33,43 @@ export default function TechnicianProfile() {
   );
 
    useEffect(() => { 
-          NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
-    }, [activeScheme]);
+          NavigationBar?.setButtonStyleAsync(theme === "dark" ? "light" : "dark");
+    }, [theme]);
 
 
 
   return (
-    <View className={`flex-1 bg-white dark:bg-black`}  paddingBottom={inset.bottom} >
-      <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
+        <View className="flex-1 bg-white dark:bg-black">
+        {/* 1. Transparent Status Bar */}
+        <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
+        
+        {/* 2. Header Configuration */}
+        <Stack.Screen 
+          options={{
+            headerBackTitleStyle: { display:'none' },
+            headerShown: true,
+            headerTransparent: true, // MUST be true (boolean), not "transparent" (string)
+            headerTitle: tech?.name,         // Keep title empty so it doesn't overlap the image
+            headerBackTitle:"",
+            headerBackTitleVisible: false,
+            headerTintColor: '#fff', // Makes back button white to stand out against image
+            headerShadowVisible: false,            
+          }} 
+        />
 
-      <ScrollView showsVerticalScrollIndicator={false} >
-
-        {/* HEADER */}
-        <View className="h-72 w-screen " >
-          <Pressable
-              style={{ 
-                top: (StatusBar.currentHeight ?? 0) + (Platform.OS === "ios" ? 40 : 20) 
-              }}            
-            className="absolute left-4 z-10 bg-white dark:bg-black/50 p-3 rounded-full shadow"
-            onPress={() => router?.back()}
-          >
-            <Ionicons name="arrow-back" size={24} color={activeScheme==="light" ? "#000" : "#E5E7EB"} />
-          </Pressable>
-          
-
-          {ImageWithProfile}
-          <LinearGradient
-              colors={["rgba(0,0,0,0.7)", "rgba(0,0,0,0.4)", "transparent"]}
-              className="absolute top-0 left-0 right-0 h-32"
-            />
-        </View>
+        <ScrollView 
+          showsVerticalScrollIndicator={false}
+          // paddingBottom handled here for better scrolling
+          // contentContainerStyle={{ paddingBottom: inset.bottom }}
+        >
+          {/* 3. Image Container - No 'absolute' here so it stays at the top */}
+          <View className="h-80 w-full">
+              {ImageWithProfile}
+              <LinearGradient
+                  colors={["rgba(0,0,0,0.8)", "rgba(0,0,0,0.2)", "transparent"]}
+                  className="absolute top-0 left-0 right-0 h-40"
+                />
+            </View>
 
         {/* PROFILE CARD */}
         <View className="flex-1 bg-white dark:bg-black -mt-10 rounded-t-[40px] px-6 pt-8">
@@ -200,7 +206,7 @@ export default function TechnicianProfile() {
       </ScrollView>
 
       {/* FOOTER CALL BUTTON */}
-      <View style={{ bottom: inset.bottom }} className="absolute w-full bg-white dark:bg-black border-t border-gray-100 dark:border-gray-800 px-6 py-5 flex-row items-center justify-between">
+      <View style={{paddingBottom:inset.bottom}} className="absolute bottom-0 w-full bg-white dark:bg-black border-t border-gray-100 dark:border-gray-800 px-6 py-5 flex-row items-center justify-between">
 
         <View>
           <Text className="text-gray-400 dark:text-gray-300 text-sm">Inspection Fee</Text>

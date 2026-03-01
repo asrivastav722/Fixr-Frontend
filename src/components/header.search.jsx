@@ -2,7 +2,7 @@ import { MapPin, Search, SlidersHorizontal } from "lucide-react-native";
 import { Pressable, Text, TextInput, View } from "react-native";
 
 const SearchHeader = ({ onSearch, onFilterOpen, onLocationOpen, selectedCity }) => (
-  <View className="bg-white dark:bg-black px-4 py-4 shadow">
+  <View className="bg-white dark:bg-black px-4 py-4 ">
     <View className="flex-row justify-between items-center mb-4">
       <View>
         <Text className="text-3xl font-bold text-blue-950 dark:text-white">Fixr</Text>

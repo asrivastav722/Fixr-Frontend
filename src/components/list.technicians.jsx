@@ -6,6 +6,7 @@ const TechnicianList = ({title="",technicians})=>{
 return technicians?.length > 0 && <View className="flex-1 ">
         {title && <Text className="text-lg p-3 font-semibold text-black dark:text-white">{title}</Text>}
         <FlatList
+          showsVerticalScrollIndicator={false}
           data={technicians}
           keyExtractor={(item) => item?.id}
           renderItem={({ item,index }) => (

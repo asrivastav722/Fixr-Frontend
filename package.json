@@ -25,6 +25,7 @@
     "antd": "^6.2.2",
     "axios": "^1.13.6",
     "expo": "~54.0.32",
+    "expo-blur": "^55.0.8",
     "expo-constants": "~18.0.13",
     "expo-dev-client": "~6.0.20",
     "expo-firebase-auth": "^2.0.0",

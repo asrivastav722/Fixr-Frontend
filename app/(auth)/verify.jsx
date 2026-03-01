@@ -3,10 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Alert, Platform, Pressable, Text, TextInput, View, ActivityIndicator } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import * as NavigationBar from "expo-navigation-bar";
-
-import { useTheme } from "@/context/ThemeContext";
-import { hydrateAuth, loginWithOtp } from "@/store/authSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { loginWithOtp } from "@/store/authSlice";
 
 export default function VerifyOTP() {
   const router = useRouter();

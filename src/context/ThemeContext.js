@@ -1,8 +1,7 @@
-import { hydrateAuth } from "@/store/authSlice";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { createContext, useContext, useEffect } from "react";
 import { useColorScheme } from "nativewind";
-import React, { createContext, useContext, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { updateUserSettings } from "@/store/authSlice"; // Adjust path
 
 const ThemeContext = createContext();
 
@@ -10,45 +9,35 @@ export const ThemeProvider = ({ children }) => {
   const { colorScheme, setColorScheme } = useColorScheme();
   const dispatch = useDispatch();
   
-  // 1. Local state to track preference
-  const [themeSetting, setThemeSetting] = useState("light");
+  // Select the theme from the Redux user object
+  const theme = useSelector((state) => state.auth.user?.theme || "light");
 
-  // 2. Listen to Redux for Hydrated Theme
-  const reduxTheme = useSelector((state) => state.auth.theme);
-
+  // Sync NativeWind whenever the Redux theme changes (on load or after update)
   useEffect(() => {
-    // Only switch if reduxTheme is strictly 'light' or 'dark'
-    if (reduxTheme === "light" || reduxTheme === "dark") {
-      setThemeSetting(reduxTheme);
-      setColorScheme(reduxTheme);
+    if (theme !== colorScheme) {
+      setColorScheme(theme);
     }
-  }, [reduxTheme]);
+  }, [theme, colorScheme]);
 
-  // 3. Simplified Change Theme function
-  const changeTheme = async (val) => {
-    // Only accept light or dark
-    if (val !== "light" && val !== "dark") return;
+  const changeTheme = async (newTheme) => {
+    if (newTheme === theme) return;
 
-    setThemeSetting(val);
-    setColorScheme(val);
-
-    // Persist to Disk
+    // We use the 'type/value' pattern we discussed for the backend
+    // This triggers the API call and updates Redux automatically upon success
     try {
-      await AsyncStorage.setItem("APP_THEME", val);
-    } catch (e) {
-      console.error("Failed to save theme to storage", e);
+      await dispatch(updateUserSettings({ 
+        type: "theme", 
+        value: newTheme 
+      })).unwrap(); 
+      
+      // .unwrap() allows us to catch errors specifically from the thunk if needed
+    } catch (error) {
+      console.error("Theme sync failed:", error);
     }
-    
-    // Sync with Redux Store
-    dispatch(hydrateAuth({ theme: val }));
   };
 
   return (
-    <ThemeContext.Provider value={{ 
-      theme: themeSetting,        // The saved preference ('light' | 'dark')
-      activeScheme: colorScheme,  // What NativeWind is currently rendering
-      changeTheme 
-    }}>
+    <ThemeContext.Provider value={{ theme, changeTheme }}>
       {children}
     </ThemeContext.Provider>
   );

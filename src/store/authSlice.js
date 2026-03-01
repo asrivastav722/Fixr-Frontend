@@ -2,6 +2,7 @@ import api from "@/utils/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
+// 1. Request OTP
 export const requestOtp = createAsyncThunk(
   "auth/requestOtp",
   async (phone, { rejectWithValue }) => {
@@ -14,22 +15,21 @@ export const requestOtp = createAsyncThunk(
   }
 );
 
+// 2. Verify OTP & Login
 export const loginWithOtp = createAsyncThunk(
   "auth/loginWithOtp",
   async ({ phone, otp, fullName }, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/verify-otp", { phone, otp, fullName });
-      
-      // Persist only the token for security; user details can be re-fetched or hydrated
       await AsyncStorage.setItem("USER_TOKEN", response.data.token);
-      
-      return response.data; // { user: { id, phone, fullName, theme }, token }
+      return response.data; // Expected: { user: {...}, token: "..." }
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Auth Failed");
     }
   }
 );
 
+// 3. App Refresh/Initial Boot
 export const refreshUser = createAsyncThunk(
   "auth/refreshUser",
   async (_, { rejectWithValue }) => {
@@ -37,11 +37,9 @@ export const refreshUser = createAsyncThunk(
       const token = await AsyncStorage.getItem("USER_TOKEN");
       if (!token) throw new Error("No token found");
 
-      // Attach token manually for this specific "boot" call
       const response = await api.get("/auth/me", {
         headers: { Authorization: `Bearer ${token}` }
       });
-      
       return { user: response.data.user, token };
     } catch (err) {
       await AsyncStorage.removeItem("USER_TOKEN");
@@ -50,16 +48,19 @@ export const refreshUser = createAsyncThunk(
   }
 );
 
+// 4. FIXED: Update Profile (Matches Backend Switch Logic)
+// payload should be: { type: 'name' | 'theme' | 'availability', value: any }
 export const updateUserSettings = createAsyncThunk(
   "auth/updateProfile",
-  async (userData, { getState, rejectWithValue }) => {
+  async ({ type, value }, { getState, rejectWithValue }) => {
     try {
       const { token } = getState().auth;
-      // Use your existing 'api' instance instead of raw axios
-      const response = await api.put("/auth/update-profile", userData, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      return response.data.user;
+      const response = await api.put("/auth/update-profile", 
+        { type, value }, 
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      // Backend returns: { success: true, user: updatedUser }
+      return response.data.user; 
     } catch (err) {
       return rejectWithValue(err.response?.data?.message || "Update failed");
     }
@@ -72,15 +73,16 @@ const authSlice = createSlice({
     user: null,
     token: null,
     isAuthenticated: false,
-    theme: 'light',
     isReady: false, 
     loading: false,     
-    userloading: false  
+    userloading: false,
+    theme: 'light' // Track theme directly for easy access
   },
   reducers: {
     hydrateAuth: (state, action) => {
       state.user = action.payload.user ?? state.user;
       state.token = action.payload.token ?? state.token;
+      state.theme = action.payload.user?.theme ?? state.theme;
       state.isAuthenticated = !!(action.payload.token && action.payload.user);
       state.isReady = true;
     },
@@ -89,22 +91,30 @@ const authSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.isReady = true;
+      state.theme = 'light';
       AsyncStorage.removeItem("USER_TOKEN");
     },
   },
   extraReducers: (builder) => {
     builder
+      // LOGIN
       .addCase(loginWithOtp.fulfilled, (state, action) => {
         state.loading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.theme = action.payload.user?.theme || 'light';
         state.isAuthenticated = true;
         state.isReady = true;
+      })
+      // REFRESH
+      .addCase(refreshUser.pending, (state) => {
+        state.userloading = true;
       })
       .addCase(refreshUser.fulfilled, (state, action) => {
         state.userloading = false;
         state.user = action.payload.user;
         state.token = action.payload.token;
+        state.theme = action.payload.user?.theme || 'light';
         state.isAuthenticated = true; 
         state.isReady = true;
       })
@@ -115,18 +125,23 @@ const authSlice = createSlice({
         state.user = null;
         state.isReady = true; 
       })
-      // --- Handle Profile Update ---
+      // UPDATE PROFILE
       .addCase(updateUserSettings.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload; // Update user object in state
-        state.theme = action.payload.theme; // Sync theme
+        state.user = action.payload; // Full updated user from backend
+        state.theme = action.payload.theme; // Keep theme in sync
       })
+      // Global Loading Matchers
       .addMatcher(
-        (action) => action.type.endsWith('/pending'),
+        (action) => action.type.endsWith('/pending') && !action.type.includes('refreshUser'),
         (state) => { state.loading = true; }
       )
       .addMatcher(
         (action) => action.type.endsWith('/rejected'),
+        (state) => { state.loading = false; }
+      )
+      .addMatcher(
+        (action) => action.type.endsWith('/fulfilled'),
         (state) => { state.loading = false; }
       );
   },

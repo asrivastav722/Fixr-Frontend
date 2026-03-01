@@ -9,40 +9,28 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 export default function TabLayout() {
   const inset = useSafeAreaInsets();
-  const {activeScheme}=useTheme()
+  const {theme}=useTheme()
   
   useEffect(() => { 
-    NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
-  }, [activeScheme]);
+    NavigationBar?.setButtonStyleAsync(theme === "dark" ? "light" : "dark");
+  }, [theme]);
 
   return (<View className='flex-1 bg-white dark:bg-black' paddingTop={inset.top} paddingBottom={inset.bottom} >
-    <StatusBar barStyle={activeScheme === "dark" ? "light-content" : "dark-content"} className='bg-white dark:bg-black' />
+    <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} className='bg-white dark:bg-black' />
     <Tabs
       screenOptions={{
         headerShown: false,
-        tabBarShowLabel: false, // Removes labels
-        tabBarActiveTintColor: activeScheme === "dark" ? "#F3F4F6" : "#030712", 
-        // Blue-950
-        tabBarInactiveTintColor: activeScheme === "dark" ? "#9ca3af" : "#9CA3AF", 
-        // Gray-400
+        tabBarShowLabel: false,
+        tabBarActiveTintColor: theme === "dark" ? "#F3F4F6" : "#030712", 
+        tabBarInactiveTintColor: theme === "dark" ? "#9ca3af" : "#9CA3AF", 
         tabBarStyle: {
-          backgroundColor: activeScheme === "dark" ? "#000000" : "#ffffff", // Matches the app background  
+          backgroundColor: theme === "dark" ? "#000000" : "#ffffff",  
           borderTopWidth: 0,
-          // Using Platform.select ensures it looks "regular" on both systems
           height:  Platform.select({ ios: 55, android: 50 }),
           paddingBottom: Platform.OS === 'ios' ? 15 : 5,
           paddingTop: Platform.OS === 'ios' ? 10 : 5,
-          
-          // Sleek Shadow
-          
-          elevation: 0, // Android
-          shadowColor: '#000', // iOS
-          
-          // Floating look (optional: uncomment for a more modern vibe)
-          // marginHorizontal: 20,
-          // marginBottom: 20,
-          // borderRadius: 25,
-          // position: 'absolute', 
+          elevation: 0, 
+          shadowColor: '#000', 
         },
         // Adds Haptic Feedback on every tab press
         tabBarButton: (props) => (

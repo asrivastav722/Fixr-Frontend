@@ -15,9 +15,10 @@ import { technicians } from "@/utils/utils";
 import { useTheme } from "@/context/ThemeContext";
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
 import { useGeocoding } from "@/hooks/useGeocoding";
+import { Stack } from "expo-router";
 
 export default function Homepage() {
-  const { activeScheme } = useTheme();
+  const { theme } = useTheme();
   const { getCoordsFromCity } = useGeocoding();
 
   const { 
@@ -45,8 +46,8 @@ export default function Homepage() {
   }, [loadingLocation, hookAddress, selectedCity]);
 
   useEffect(() => { 
-    NavigationBar?.setButtonStyleAsync(activeScheme === "dark" ? "light" : "dark");
-  }, [activeScheme]);
+    NavigationBar?.setButtonStyleAsync(theme === "dark" ? "light" : "dark");
+  }, [theme]);
 
   // Use manualCoords if user picked a city, otherwise use GPS hookLocation
   const activeLocation = manualCoords ?? hookLocation ?? { latitude: 27.4099, longitude: 82.1851 };
@@ -98,17 +99,28 @@ export default function Homepage() {
     return { carousels: carData, remainingTechs: processedTechs.filter(t => !displayedIds.has(t.id)) };
   }, [processedTechs]);
 
+
+
+
   if (loadingLocation && !hookLocation) return <LocationLoader />;
 
   return (
     <View className="flex-1 bg-white dark:bg-black">
-      <SearchHeader 
-        categoryList={carousels?.map((item) => item.role)}
-        selectedCity={displayAddress}
-        onSearch={setSearchQuery} 
-        onFilterOpen={() => setIsFilterOpen(true)}
-        onLocationOpen={() => setIsLocOpen(true)}
-      />
+    <Stack.Screen 
+      options={{
+        headerShown: true,
+        
+        header: () => (
+              <SearchHeader 
+                categoryList={carousels?.map((item) => item.role)}
+                selectedCity={displayAddress}
+                onSearch={setSearchQuery} 
+                onFilterOpen={() => setIsFilterOpen(true)}
+                onLocationOpen={() => setIsLocOpen(true)}
+              />
+        ),
+      }} 
+    />
 
       <ScrollView 
         className="flex-1 bg-gray-50 dark:bg-gray-950"
