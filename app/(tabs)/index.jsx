@@ -1,7 +1,7 @@
 import * as Haptics from "expo-haptics";
-import React, { useEffect, useMemo, useState } from "react";
-import { ScrollView, Text, View, RefreshControl } from "react-native";
 import * as NavigationBar from 'expo-navigation-bar';
+import React, { useEffect, useMemo, useState } from "react";
+import { RefreshControl, ScrollView, Text, View } from "react-native";
 
 import LocationLoader from "@/components/card.loader.location";
 import TechnicianCarousel from "@/components/carousel.technician";
@@ -10,11 +10,11 @@ import TechnicianListing from "@/components/list.technicians";
 import FilterModal from "@/components/modal.filter";
 import LocationModal from "@/components/modal.location";
 
-import { calculateDistance } from "@/utils/functions";
-import { technicians } from "@/utils/utils";
 import { useTheme } from "@/context/ThemeContext";
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
 import { useGeocoding } from "@/hooks/useGeocoding";
+import { calculateDistance } from "@/utils/functions";
+import { technicians } from "@/utils/utils";
 import { Stack } from "expo-router";
 
 export default function Homepage() {
@@ -105,11 +105,10 @@ export default function Homepage() {
   if (loadingLocation && !hookLocation) return <LocationLoader />;
 
   return (
-    <View className="flex-1 bg-white dark:bg-black">
+    <View className="flex-1 bg-card px-4 pt-6 pb-4 border-b border-border-subtle">
     <Stack.Screen 
       options={{
         headerShown: true,
-        
         header: () => (
               <SearchHeader 
                 categoryList={carousels?.map((item) => item.role)}
@@ -123,7 +122,7 @@ export default function Homepage() {
     />
 
       <ScrollView 
-        className="flex-1 bg-gray-50 dark:bg-gray-950"
+        className="flex-1 bg-primary"
         refreshControl={<RefreshControl refreshing={loadingLocation} onRefresh={() => { setSelectedCity(null); setManualCoords(null); refresh(); }} />}
       >
         <View className="px-4 pt-4">

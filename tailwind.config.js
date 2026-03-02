@@ -15,11 +15,13 @@ module.exports = {
         body: ["Poppins"],
       },
       colors:{
-        primary: "with-opacity(--color-primary)",
-        secondary: "with-opacity(--color-secondary)",
-        surface: "with-opacity(--color-surface)",
-        background: "with-opacity(--color-background)",
-        accent: "with-opacity(--color-accent)",
+        main: "var(--bg-app)",
+        surface: "var(--bg-card)",
+        field: "var(--bg-input)",
+        brand: "var(--text-brand)",
+        primary: "var(--text-main)",
+        secondary: "var(--text-sub)",
+        "border-main": "var(--border-main)",
       }
     },
   },

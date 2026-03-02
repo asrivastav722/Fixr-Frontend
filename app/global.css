@@ -1,6 +1,6 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities';
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 /* @theme {
 --color-gray-50   : #F9FAFB;
@@ -28,26 +28,155 @@
 --color-blue-950  : #0A1E63;
 } */
 
+/* FIXR GLOBAL THEME SYSTEM
+  Vibe: Industrial, Serious, Technical
+*/
+
 @layer base {
   :root {
-    --color-primary: 37 99 235;    /* #2563EB */
-    --color-secondary: 71 85 105;  /* #475569 */
-    --color-background: 248 250 252; /* #F8FAFC */
-    --color-surface: 255 255 255;  /* #FFFFFF */
-    --color-accent: 245 158 11;    /* #F59E0B */
+    /* --- 1. Backgrounds & Surfaces --- */
+    --bg-app: #ffffff;
+    --bg-card: #f8fafc; /* Slate-50 */
+    --bg-input: #f1f5f9; /* Slate-100 */
+    --border-main: #e2e8f0; /* Slate-200 */
+
+    /* --- 2. Brand & Accents (Industrial Tech) --- */
+    --text-brand: #dc2626; /* Fixr Red (Urgency/Action) */
+    --text-link: #2563eb; /* Blue-600 (Trust/Booking) */
+    --color-success: #16a34a;
+    --color-warning: #d97706;
+
+    /* --- 3. Typography Colors --- */
+    --text-main: #0f172a; /* Slate-900 (High Contrast) */
+    --text-sub: #475569; /* Slate-600 (Muted Body) */
+    --text-white: #ffffff;
+
+    /* --- 4. Font Sizes --- */
+    --size-hero: 36px;
+    --size-title: 24px;
+    --size-header: 18px;
+    --size-body: 16px;
+    --size-small: 14px;
+    --size-tiny: 12px;
   }
 
-  .dark {
-    --color-primary: 96 165 250;   /* #60A5FA */
-    --color-secondary: 148 163 184; /* #94A3B8 */
-    --color-background: 2 6 23;    /* #020617 */
-    --color-surface: 15 23 42;     /* #0F172A */
-    --color-accent: 251 191 36;    /* #FBBF24 */
+  @variant dark {
+    :root {
+      /* --- 1. Backgrounds & Surfaces (Deep Slate) --- */
+      --bg-app: #0f172a; /* Slate-900 */
+      --bg-card: #1e293b; /* Slate-800 */
+      --bg-input: #334155; /* Slate-700 */
+      --border-main: #334155;
+
+      /* --- 2. Brand & Accents --- */
+      --text-brand: #ef4444; /* Brighter red for dark contrast */
+      --text-link: #60a5fa; /* Softer blue for dark mode */
+      --color-success: #4ade80;
+      --color-warning: #fbbf24;
+
+      /* --- 3. Typography Colors --- */
+      --text-main: #f8fafc; /* Slate-50 */
+      --text-sub: #94a3b8; /* Slate-400 */
+    }
   }
 }
-.barlow{
-    font-family: 'Barlow-Condensed';
-}
-.poppins{
-    font-family: 'Poppins' !important;
+
+@layer components {
+  /* --- BACKGROUND UTILITIES --- */
+  .bg-main {
+    background-color: var(--bg-app);
+  }
+  .bg-surface {
+    background-color: var(--bg-card);
+  }
+  .bg-field {
+    background-color: var(--bg-input);
+  }
+  .border-fixr {
+    border-color: var(--border-main);
+    border-width: 1px;
+  }
+
+  /* --- TYPOGRAPHY STACK UTILITIES --- */
+
+  /* Industrial Headers (Barlow) */
+  .font-heading {
+    font-family: "Barlow-Condensed";
+  }
+  .text-hero {
+    font-family: "Barlow-Condensed";
+    font-size: var(--size-hero);
+    color: var(--text-main);
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+
+  /* Body Content (Poppins) */
+  .font-body {
+    font-family: "Poppins";
+  }
+  .text-base {
+    font-family: "Poppins";
+    font-size: var(--size-body);
+    color: var(--text-main);
+    line-height: 24px;
+  }
+  .text-dim {
+    font-family: "Poppins";
+    font-size: var(--size-small);
+    color: var(--text-sub);
+  }
+
+  /* UI Logic & Labels (Inter) */
+  .font-sans {
+    font-family: "Inter-Regular";
+  }
+  .font-semibold {
+    font-family: "Inter-SemiBold";
+  }
+  .font-bold {
+    font-family: "Inter-Bold";
+  }
+
+  .text-title {
+    font-family: "Inter-Bold";
+    font-size: var(--size-title);
+    color: var(--text-main);
+  }
+  .text-header {
+    font-family: "Inter-SemiBold";
+    font-size: var(--size-header);
+    color: var(--text-main);
+  }
+  .text-label {
+    font-family: "Inter-SemiBold";
+    font-size: var(--size-tiny);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-sub);
+  }
+
+  /* --- GLOBAL FIXR COMPONENTS --- */
+
+  .btn-primary {
+    @apply p-4 rounded-xl items-center justify-center active:opacity-80 shadow-sm;
+    background-color: var(--text-brand);
+  }
+
+  .input-fixr {
+    @apply p-4 rounded-xl border border-transparent;
+    background-color: var(--bg-input);
+    font-family: "Poppins";
+    color: var(--text-main);
+  }
+  /* Status Indicators */
+  .status-dot {
+    @apply h-2 w-2 rounded-full;
+  }
+  .dot-success {
+    background-color: var(--color-success);
+  }
+  .dot-warning {
+    background-color: var(--color-warning);
+  }
 }
