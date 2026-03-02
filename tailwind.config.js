@@ -14,15 +14,6 @@ module.exports = {
         heading: ["Barlow-Condensed"],
         body: ["Poppins"],
       },
-      colors:{
-        main: "var(--bg-app)",
-        surface: "var(--bg-card)",
-        field: "var(--bg-input)",
-        brand: "var(--text-brand)",
-        primary: "var(--text-main)",
-        secondary: "var(--text-sub)",
-        "border-main": "var(--border-main)",
-      }
     },
   },
   plugins: [],

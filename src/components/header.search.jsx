@@ -10,11 +10,11 @@ const SearchHeader = ({
   selectedCity = "Select Location" 
 }) => {
   return (
-    <View className="bg-main px-4 pt-6 pb-4 ">
+    <View className="bg-red-900 px-4 pt-6 pb-4">
       {/* Top Row: Brand & Location + Filter */}
       <View className="flex-row justify-between items-center mb-5">
         <View className="flex-1">
-          <Text className="text-3xl text-hero">
+          <Text className="text-3xl font">
             Fixr
           </Text>
           <Pressable 
@@ -24,7 +24,7 @@ const SearchHeader = ({
             className="flex-row items-center mt-1 active:opacity-60"
           >
             <MapPin size={14} color="#3b82f6" />
-            <Text className="text-dim text-xs ml-1 font-semibold">
+            <Text className="text-dim ml-1 font-semibold">
               {selectedCity}
             </Text>
           </Pressable>
@@ -34,7 +34,7 @@ const SearchHeader = ({
           onPress={onFilterOpen} 
           accessibilityRole="button"
           accessibilityLabel="Open filters"
-          className="p-3 bg-gray-100 dark:bg-zinc-800 rounded-2xl active:scale-95 transition-transform"
+          className="p-3 btn-secondary rounded-2xl active:scale-95 transition-transform"
         >
           <SlidersHorizontal size={20} color="#6b7280" />
         </Pressable>
