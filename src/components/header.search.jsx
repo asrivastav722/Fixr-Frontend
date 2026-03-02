@@ -10,13 +10,11 @@ const SearchHeader = ({
   selectedCity = "Select Location" 
 }) => {
   return (
-    <View className="bg-red-900 px-4 pt-6 pb-4">
+    <View className="bg-primary px-4 pt-6 pb-4">
       {/* Top Row: Brand & Location + Filter */}
       <View className="flex-row justify-between items-center mb-5">
         <View className="flex-1">
-          <Text className="text-3xl font">
-            Fixr
-          </Text>
+          <Text className="text-4xl roboto-bold ">Fixr</Text>
           <Pressable 
             onPress={onLocationOpen} 
             accessibilityRole="button"
@@ -24,7 +22,7 @@ const SearchHeader = ({
             className="flex-row items-center mt-1 active:opacity-60"
           >
             <MapPin size={14} color="#3b82f6" />
-            <Text className="text-dim ml-1 font-semibold">
+            <Text className="text-light ml-1 text-xs">
               {selectedCity}
             </Text>
           </Pressable>
@@ -34,26 +32,38 @@ const SearchHeader = ({
           onPress={onFilterOpen} 
           accessibilityRole="button"
           accessibilityLabel="Open filters"
-          className="p-3 btn-secondary rounded-2xl active:scale-95 transition-transform"
+          className="p-3 btn-gray rounded-2xl active:scale-90 transition-transform"
         >
           <SlidersHorizontal size={20} color="#6b7280" />
         </Pressable>
       </View>
 
       {/* Search Bar */}
-      <View className="flex-row items-center bg-gray-100 dark:bg-zinc-900 rounded-2xl px-4 py-1 border border-transparent focus:border-blue-500">
-        <Search size={18} color="#9ca3af" />
+      <View className="flex-row items-center btn-gray rounded-xl px-4 py-1 border border-transparent focus:border-blue-500">
+        {/* Icon uses your 'text-sub' color variable */}
+        <Search size={18} className="text-secondary" color="#9ca3af" />
+        
         <TextInput 
           value={searchQuery}
           placeholder="Search name, skill, or role..." 
-          className="flex-1 ml-3 h-10 text-gray-800 dark:text-zinc-100 text-base"
+          /* 1. Removed bg-red-900
+            2. Added font-sans for your global Poppins default
+            3. textAlignVertical: 'center' fixes Android alignment issues
+          */
+          className="flex-1 ml-3 h-12 text-primary font-sans text-base"
           placeholderTextColor="#9ca3af"
           onChangeText={onSearch}
           returnKeyType="search"
+          style={{ textAlignVertical: 'center' }} 
         />
+
         {searchQuery?.length > 0 && (
-          <Pressable onPress={() => onSearch("")} className="p-1">
-            <X size={16} color="#9ca3af" />
+          <Pressable 
+            onPress={() => onSearch("")} 
+            className="p-2 active:opacity-50"
+            accessibilityRole="button"
+          >
+            <X size={16} className="text-secondary" color="#9ca3af" />
           </Pressable>
         )}
       </View>

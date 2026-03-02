@@ -32,11 +32,32 @@
   Vibe: Industrial, Serious, Technical
 */
 
-.dark .bg-primary{ @apply bg-black}
-.primary{ background-color: red;}
+.bg-primary{ background-color: white}
+.dark .bg-primary{ background-color: black}
 
-secondary: {
-  DEFAULT:"#F3F4F6",
-  dark:"#030712"
-}
-      
+.bg-secondary{ background-color: #F3F4F6}
+.dark .bg-secondary{ background-color: #030712}
+
+
+
+.text-primary{ color: #030712}
+.dark .text-primary{ color: #F9FAFB}
+
+.text-heading{ color: #DBEAFE}
+.dark .text-heading{ color: #F9FAFB}
+
+
+
+.text-light{ @apply text-gray-500}
+.dark .text-light{ @apply text-gray-500} 
+
+.btn-gray{ @apply bg-gray-100}
+.dark .btn-gray{ @apply bg-gray-900}
+
+.barlow{ font-family: 'Barlow-Condensed' !important }
+.poppins{ font-family: 'Poppins' !important }
+.inter{ font-family: 'Inter-Regular' !important }
+.roboto{ font-family: 'Roboto-Condensed' !important }
+.roboto-semibold{ font-family: 'Roboto-Condensed-Semibold' !important }
+.roboto-bold{ font-family: 'Roboto-Condensed-Bold' !important }
+

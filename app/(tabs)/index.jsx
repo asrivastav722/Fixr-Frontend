@@ -2,14 +2,12 @@ import * as Haptics from "expo-haptics";
 import * as NavigationBar from 'expo-navigation-bar';
 import React, { useEffect, useMemo, useState } from "react";
 import { RefreshControl, ScrollView, Text, View } from "react-native";
-
 import LocationLoader from "@/components/card.loader.location";
 import TechnicianCarousel from "@/components/carousel.technician";
 import SearchHeader from "@/components/header.search";
 import TechnicianListing from "@/components/list.technicians";
 import FilterModal from "@/components/modal.filter";
 import LocationModal from "@/components/modal.location";
-
 import { useTheme } from "@/context/ThemeContext";
 import { useCurrentLocation } from "@/hooks/useCurrentLocation";
 import { useGeocoding } from "@/hooks/useGeocoding";
@@ -105,7 +103,7 @@ export default function Homepage() {
   if (loadingLocation && !hookLocation) return <LocationLoader />;
 
   return (
-    <View className="flex-1 bg-card px-4 pt-6 pb-4 border-b border-border-subtle">
+    <View className="flex-1 bg-secondary">
     <Stack.Screen 
       options={{
         headerShown: true,
@@ -122,7 +120,7 @@ export default function Homepage() {
     />
 
       <ScrollView 
-        className="flex-1 bg-primary"
+        className="flex-1 bg-secondary"
         refreshControl={<RefreshControl refreshing={loadingLocation} onRefresh={() => { setSelectedCity(null); setManualCoords(null); refresh(); }} />}
       >
         <View className="px-4 pt-4">

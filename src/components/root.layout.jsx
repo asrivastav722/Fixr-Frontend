@@ -1,13 +1,15 @@
+import { BarlowCondensed_400Regular, useFonts } from '@expo-google-fonts/barlow-condensed';
+import { Inter_400Regular } from '@expo-google-fonts/inter';
+import { Poppins_400Regular } from '@expo-google-fonts/poppins';
+import { Roboto_400Regular } from '@expo-google-fonts/roboto';
+import {
+  RobotoCondensed_400Regular, RobotoCondensed_600SemiBold, RobotoCondensed_700Bold
+} from '@expo-google-fonts/roboto-condensed';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect } from 'react';
 import { Pressable, Text } from 'react-native';
 import { useSelector } from 'react-redux';
-
-// Fonts
-import { BarlowCondensed_400Regular, useFonts } from '@expo-google-fonts/barlow-condensed';
-import { Inter_400Regular, Inter_600SemiBold, Inter_700Bold } from '@expo-google-fonts/inter';
-import { Poppins_400Regular } from '@expo-google-fonts/poppins';
 
 // State & Logic
 import { useLogout } from '@/hooks/useLogout';
@@ -16,16 +18,17 @@ SplashScreen.preventAutoHideAsync();
 
 export default function AppContent() {
   const { logout } = useLogout();
-  
-  // Updated selectors to match minimal state
   const { isReady } = useSelector((state) => state.auth);
 
   const [fontsLoaded] = useFonts({
     'Barlow-Condensed': BarlowCondensed_400Regular,
     'Poppins': Poppins_400Regular,
+    'Roboto': Poppins_400Regular,
     'Inter-Regular': Inter_400Regular,
-    'Inter-SemiBold': Inter_600SemiBold,
-    'Inter-Bold': Inter_700Bold
+    'Roboto' :Roboto_400Regular,
+    'Roboto-Condensed':RobotoCondensed_400Regular,
+    'Roboto-Condensed-SemiBold':RobotoCondensed_600SemiBold,
+    'Roboto-Condensed-Bold':RobotoCondensed_700Bold,
   });
 
   useEffect(() => {
