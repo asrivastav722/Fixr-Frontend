@@ -103,7 +103,7 @@ export default function Homepage() {
   if (loadingLocation && !hookLocation) return <LocationLoader />;
 
   return (
-    <View className="flex-1 bg-secondary">
+    <View className="flex-1 bg-white dark:bg-black">
     <Stack.Screen 
       options={{
         headerShown: true,
@@ -111,6 +111,7 @@ export default function Homepage() {
               <SearchHeader 
                 categoryList={carousels?.map((item) => item.role)}
                 selectedCity={displayAddress}
+                searchQuery={searchQuery}
                 onSearch={setSearchQuery} 
                 onFilterOpen={() => setIsFilterOpen(true)}
                 onLocationOpen={() => setIsLocOpen(true)}
@@ -120,7 +121,7 @@ export default function Homepage() {
     />
 
       <ScrollView 
-        className="flex-1 bg-secondary"
+        className="flex-1 bg-gray-100 dark:bg-zinc-900"
         refreshControl={<RefreshControl refreshing={loadingLocation} onRefresh={() => { setSelectedCity(null); setManualCoords(null); refresh(); }} />}
       >
         <View className="px-4 pt-4">

@@ -2,20 +2,22 @@ import { router } from "expo-router"
 import { ArrowRight } from "lucide-react-native"
 import { FlatList, Pressable, Text, View } from "react-native"
 import TechnicianCard from "./card.technician"
+import { useTheme } from "@/context/ThemeContext"
 
 const TechnicianCarousel = ({ title = "Hello",technicians,key }) => {
-
+  const {theme} = useTheme()
+  const isDark = theme === 'dark'
 
 
   return (  technicians.length>0 && <View >
       {/* Title with consistent padding */}
-      <View className="flex-row justify-between items-center w-full p-3">
-        <Text className="text-lg font-semibold text-capitalize dark:text-gray-200 text-gray-800">
+      <View className="flex-row justify-between items-center w-full p-3 border border-transparent">
+        <Text className="text-lg font-bold text-capitalize dark:text-zinc-200 text-zinc-950">
           {`${title.charAt(0).toUpperCase() + title.slice(1)}s ${technicians.length > 0 ? `(${technicians.length})` : ''}`}
         </Text>
         
         <Pressable className="p-2 active:opacity-50">
-          <ArrowRight onPress={()=>{router?.push(`/role/${title}`)}} size={20} color="#6b7280"  />
+          <ArrowRight onPress={()=>{router?.push(`/role/${title}`)}} size={20} color={!isDark?'#09090b':'#fafafa'}  />
         </Pressable>
       </View>
 

@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+const plugin = require("tailwindcss/plugin");
+
 module.exports = {
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
   content: ["./App.tsx","./app/_layout.jsx","./app/**/*.{js,jsx,ts,tsx}", "./src/**/*.{js,jsx,ts,tsx}"],
@@ -16,5 +18,12 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(function ({ addVariant }) {
+      addVariant("ios", "&:ios");
+      addVariant("android", "&:android");
+      addVariant("web", "&:web");
+      addVariant("native", "&:native"); // Targets both iOS & Android
+    }),
+  ],
 }

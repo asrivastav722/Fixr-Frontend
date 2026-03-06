@@ -1,7 +1,17 @@
 import * as NavigationBar from "expo-navigation-bar";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
-import { Platform, Pressable, StatusBar, Text, TextInput, View } from "react-native";
+import { View, 
+  Text, 
+  TextInput, 
+  Pressable, 
+  StatusBar, 
+  KeyboardAvoidingView, 
+  ScrollView, 
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  ActivityIndicator} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -44,54 +54,83 @@ export default function OnboardingScreen() {
   };
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
-      NavigationBar?.setButtonStyleAsync("dark");
-    }
-  }, [theme]);
+      NavigationBar?.setButtonStyleAsync("dark"); 
+  }, [inset]);
 
   return (
-    <View className="flex-1 bg-white pb-24" style={{ paddingTop: inset.top }}>
-      <StatusBar translucent={true} backgroundColor="transparent" barStyle="dark-content" />
-      
-      {/* SKIP BUTTON */}
-      <View className="flex-row justify-end px-6 pt-4">
-        <Pressable onPress={handleSkip} className="bg-gray-100 px-4 py-2 rounded-full">
-          <Text className="text-gray-600 font-bold text-xs uppercase tracking-widest">
-            Skip
-          </Text>
-        </Pressable>
-      </View>
-
-      <View className="flex-1 px-8 justify-center pb-[100px]">
-        <Text className="text-5xl font-black tracking-tighter">Fixr.</Text>
-        <Text className="text-gray-500 text-lg mt-2">Professional services at your door.</Text>
-
-        <View className="mt-12 flex-row items-center bg-gray-100 rounded-2xl px-4 py-5 border border-gray-200">
-          <Text className="text-lg font-bold mr-2">+91</Text>
-          <View className="w-[1px] h-6 bg-gray-300 mr-3" />
-          <TextInput
-            placeholder="00000 00000"
-            placeholderTextColor="#9CA3AF"
-            keyboardType="phone-pad"
-            maxLength={10}
-            value={phone}
-            onChangeText={handlePhoneChange}
-            className="flex-1 text-lg font-bold"
-          />
-        </View>
-
-        <Pressable 
-          onPress={handleSendCode}
-          className={`mt-6 py-4 rounded-2xl items-center shadow-lg ${phone?.length === 10 ? 'bg-blue-600 shadow-blue-500/30' : 'bg-gray-300'}`}
-          disabled={phone?.length < 10}
+    <KeyboardAvoidingView 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      className="flex-1 bg-white"
+    >
+        <StatusBar barStyle="dark-content" backgroundColor="white"  />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <ScrollView 
+          contentContainerStyle={{ flexGrow: 1 }}
+          bounces={false}
+          keyboardShouldPersistTaps="handled"
         >
-          <Text className="text-white font-bold text-lg">{loading ? "Sending..." : "Continue"}</Text>
-        </Pressable>
+          <View className="flex-1 bg-white" style={{ paddingTop: inset.top }}>
+            
+            {/* SKIP BUTTON */}
+            <View className="flex-row justify-end px-6 pt-2">
+              <Pressable 
+                onPress={handleSkip} 
+                className="bg-zinc-100 px-5 py-2.5 rounded-full active:bg-zinc-200"
+              >
+                <Text className="text-[10px]  text-blue-600 uppercase tracking-[1.5px]">
+                  Skip
+                </Text>
+              </Pressable>
+            </View>
 
-        <Text className="text-center text-gray-400 text-xs mt-8">
-          Enter your number to sync your bookings and profile.
-        </Text>
-      </View>
-    </View>
+            <View className="flex-1 px-8 justify-center pb-12">
+              {/* BRANDING */}
+              <Text className="text-5xl font-bold text-zinc-950 tracking-tighter">
+                Fixr.
+              </Text>
+              <Text className="text-zinc-500 mt-3  text-lg leading-6">
+                Professional services at{"\n"}your door.
+              </Text>
+
+              {/* PHONE INPUT */}
+              <View className="mt-12 flex-row items-center bg-zinc-50 rounded-2xl px-5 py-4 border border-zinc-200 mb-8">
+                <Text className="text-zinc-900 mr-2">+91</Text>
+                <View className="w-[1px] h-6 bg-zinc-300 mr-4" />
+                <TextInput
+                  placeholder="00000 00000"
+                  placeholderTextColor="#a1a1aa"
+                  keyboardType="phone-pad"
+                  maxLength={10}
+                  value={phone}
+                  onChangeText={handlePhoneChange}
+                  className="flex-1 text-zinc-900 p-0 "
+                />
+              </View>
+
+              {/* PRIMARY BUTTON */}
+              <Pressable 
+                onPress={handleSendCode}
+                disabled={phone?.length < 10 || loading}
+                className={`py-5 rounded-2xl items-center shadow-lg shadow-zinc-400 ${
+                  phone?.length < 10 ? 'bg-zinc-300' : 'bg-black'
+                } active:scale-[0.98]`}
+              >
+                {loading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text className="text-white font-black text-xs uppercase tracking-[2px]">
+                    Continue
+                  </Text>
+                )}
+              </Pressable>
+
+              <Text className="text-center text-zinc-400  text-xs mt-8 px-6 leading-5">
+                Enter your number to sync your bookings and profile.
+              </Text>
+            </View>
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 }

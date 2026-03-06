@@ -1,6 +1,6 @@
 import { GuestView } from "@/components/card.guest";
 import { useTheme } from "@/context/ThemeContext";
-import { useRouter,Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import {
   ChevronRight,
   Mail,
@@ -17,70 +17,89 @@ import { useSelector } from "react-redux";
 
 
 export default function MyProfilePage() {
-  const { user,  isAuthenticated,isReady } = useSelector((state) => state.auth);
-  const {theme}=useTheme()
+  const { user, isAuthenticated, isReady } = useSelector((state) => state.auth);
+  const { theme } = useTheme()
   const router = useRouter();
   const isDark = theme === 'dark';
+
+  // Shared Theme Colors
+  const colors = {
+    bg: isDark ? "#09090b" : "#ffffff",
+    card: isDark ? "#18181b" : "#fafafa",
+    border: isDark ? "#27272a" : "#f4f4f5",
+    textMain: isDark ? "#fafafa" : "#09090b",
+    textSub: isDark ? "#a1a1aa" : "#71717a",
+    accent: "#2563eb",
+  };
+
   if (!isReady) return null
 
   if (!isAuthenticated) return <GuestView/>;
 
   return (
-    <View className="flex-1 bg-white dark:bg-black">
+    <View className="flex-1 ">
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
-      <Stack.Screen 
-            options={{
-              headerShown: true,
-              header: () => (<View className="flex-row items-center justify-between p-3 bg-white dark:bg-black border-b border-gray-100">
-                          <View className="flex-row items-center gap-3 flex-1">
-                            <Text className="text-gray-800 dark:text-gray-100 font-semibold text-xl capitalize flex-1">{user?.roles?.[0]}</Text>
-                          </View>
-                          <Pressable 
-                            onPress={() => router.push("/(settings)/settings")}
-                            className="p-2 rounded-full bg-gray-50 dark:bg-gray-900 border border-gray-100 dark:border-gray-800"
-                          >
-                            <Settings size={24} color={isDark ? '#fff' : '#000'} />
-                          </Pressable>
-                        </View>    
-              ),
-            }} 
-          />
-
-
       
+      <Stack.Screen 
+        options={{
+          headerShown: true,
+          header: () => (
+            <View 
+              className="flex-row items-center justify-between p-4 bg-white dark:bg-zinc-950 border-b  border-zinc-200 dark:border-zinc-800"
+            >
+              <Text className="text-2xl font-bold text-zinc-900 dark:text-zinc-50 capitalize">
+                {user?.roles?.[0] || "Account"}
+              </Text>
+              
+              <Pressable 
+                onPress={() => router.push("/(settings)/settings")}
+                className="p-3 rounded-2xl bg-zinc-100 dark:bg-zinc-900 border border-gray-200 dark:border-gray-800 active:scale-95 transition-all"
+              >
+                <Settings size={20} color={colors.textMain} />
+              </Pressable>
+            </View>    
+          ),
+        }} 
+      />
 
-      <ScrollView showsVerticalScrollIndicator={false} className="px-5">
-        <View className="flex-col gap-4 py-4">
-          <View className="flex-row items-center align-center p-4 border-b border-gray-100">
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 bg-zinc-100 dark:bg-zinc-900 p-3">
+        {/* 1. IDENTITY SECTION */}
+        <View className="items-center py-8 px-5 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 rounded-2xl">
+          <View className="relative">
             <Image 
               source={{ uri: user?.profileImage }} 
-              className="w-20 h-20 rounded-2xl bg-gray-200 dark:bg-gray-800"
+              className="w-28 h-28 rounded-3xl bg-zinc-200 dark:bg-zinc-800 border-4 border-white dark:border-zinc-900 shadow-xl"
             />
-            <View className="ml-4 flex-1 gap-2">
-
-              <View className="gap-3 items-center flex-row">
-                <Text className=" dark:text-gray-400 font-semibold text-xl ">{user?.fullName}</Text>
-                <ShieldCheck size={18} color="#3B82F6" />
-              </View>
-
-              <View className="flex-row items-center ">
-                {user?.roles?.map((role,index)=>{
-                  return <View key={index} className="bg-blue-600/10 px-2 py-1 rounded-full border border-blue-600/20">
-                      <Text className="text-blue-600 text-xs capitalize ">{role}</Text>
-                    </View>
-                })}
-              </View>
-
-              <View className="flex-row items-center ">
-                <MapPin size={12} color="#71717a" />
-                <Text className="text-gray-500 text-[10px] ml-1 font-bold uppercase tracking-tighter">
-                  {user?.location?.coordinates?.[0] } {user?.location?.coordinates?.[1]}
-                </Text>
-              </View>
-
+            <View className="absolute -bottom-1 -right-1 bg-blue-600 rounded-full p-1.5 border-4 border-white dark:border-zinc-900">
+              <ShieldCheck size={16} color="white" />
             </View>
           </View>
-          <ContactCard user={user}/>
+
+          <View className="items-center mt-5">
+            <Text className="text-2xl font-poppins font-bold text-zinc-900 dark:text-zinc-50">
+              {user?.fullName}
+            </Text>
+            
+            <View className="flex-row items-center mt-2 gap-2">
+              {user?.roles?.map((role, index) => (
+                <View key={index} className="bg-blue-50 dark:bg-blue-900/20 px-3 py-1 rounded-lg border border-blue-100 dark:border-blue-800/30">
+                  <Text className="text-blue-600 dark:text-blue-400 text-[10px] font-bold uppercase tracking-widest">
+                    {role}
+                  </Text>
+                </View>
+              ))}
+            </View>
+          </View>
+        </View>
+
+        {/* 2. CONTACT & LOCATION SECTION */}
+        <ContactCard user={user} colors={colors} />
+
+        {/* 3. FOOTER TRUST */}
+        <View className="items-center pb-12 pt-4">
+          <Text className="text-zinc-400 dark:text-zinc-600 text-[10px] font-roboto font-bold uppercase tracking-[2px]">
+            Fixr Verified Professional
+          </Text>
         </View>
       </ScrollView>
     </View>
@@ -88,78 +107,80 @@ export default function MyProfilePage() {
 }
 
 
-const ContactCard= ( {user} )=>{
-  // Destructuring for cleaner code
+const ContactCard = ({ user, colors }) => {
   const { email, phone, location } = user || {};
   const { address, city, coordinates } = location || {};
 
   return (
-    <View className="p-3">      
-      <Text className="font-semibold"> Contact </Text>
+    <View>      
+      <Text className=" font-bold text-zinc-900 dark:text-zinc-50 text-sm py-3 border border-transparent">
+        Contact Info
+      </Text>
 
-      {email && <ContactRow 
-        icon={<Mail size={18} color="#71717a" />} 
-        label="Email" 
-        value={email || "not.linked@fixr.com"}
-        onPress={() => Linking.openURL(`mailto:${email}`)}
-      />}
-      <ContactRow 
-        icon={<Phone size={18} color="#71717a" />} 
-        label="Phone" 
-        value={phone || "+91 00000 00000"} 
-        onPress={() => Linking.openURL(`tel:${phone}`)}
-      />
-
-      {/* LOCATION ROW */}
-      <View className="flex-row items-center py-2 border-b border-gray-50 dark:border-gray-900/50 active:bg-gray-50 dark:active:bg-gray-900">
-         <View className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800/50 items-center justify-center">
-          <MapPin size={18} color="#3B82F6" />
-          </View>
+      <View className="bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-2xl">
+        {email && (
+          <ContactRow 
+            icon={<Mail size={18} color={colors.accent} />} 
+            label="Email Address" 
+            value={email}
+            onPress={() => Linking.openURL(`mailto:${email}`)}
+          />
+        )}
         
-        
-        <View className="ml-4 flex-1">
-          <Text className="text-xs text-gray-400 capitalize tracking-widest">Saved Address</Text>
-          <Text className="text-sm font-bold dark:text-white mt-0.5 leading-5">
-            {address ? `${address}, ` : ""}{city || "City Not Set"}
-          </Text>
-          
-          {/* COORDINATES CHIP */}
-          {coordinates && (
-            <View className="flex-row items-center mt-2">
-              <View className="bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
-                <Text className="text-[9px] font-mono font-bold text-emerald-600">
-                  {coordinates?.[1]?.toFixed(4)}° N, {coordinates?.[0]?.toFixed(4)}° E
-                </Text>
-              </View>
-            </View>
-          )}
-        </View>
+        <ContactRow 
+          icon={<Phone size={18} color={colors.accent} />} 
+          label="Phone Number" 
+          value={phone || "+91 00000 00000"} 
+          onPress={() => Linking.openURL(`tel:${phone}`)}
+        />
 
+        {/* LOCATION ROW */}
         <Pressable 
-          className="p-2 bg-gray-50 dark:bg-gray-800 rounded-lg"
+          className="flex-row items-center p-3 rounded-2xl active:bg-zinc-100 dark:active:bg-zinc-800"
           onPress={() => Linking.openURL(`https://www.google.com/maps/search/?api=1&query=${coordinates?.[1]},${coordinates?.[0]}`)}
         >
-          <Navigation size={16} color="#71717a" />
+          <View className="w-12 h-12 rounded-2xl bg-zinc-200 dark:bg-zinc-900 items-center justify-center shadow-sm">
+            <MapPin size={20} color={colors.accent} />
+          </View>
+          
+          <View className="ml-4 flex-1">
+            <Text className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-widest">Saved Office</Text>
+            <Text className="text-sm font-roboto-bold text-zinc-900 dark:text-zinc-100 mt-0.5 leading-5">
+              {address ? `${address}, ` : ""}{city || "City Not Set"}
+            </Text>
+            
+            {coordinates && (
+              <View className="flex-row items-center mt-2">
+                <View className="bg-emerald-500/10 px-2 py-1 rounded-md border border-emerald-500/20">
+                  <Text className="text-[9px] font-mono font-bold text-emerald-600">
+                    {coordinates?.[1]?.toFixed(4)}° N, {coordinates?.[0]?.toFixed(4)}° E
+                  </Text>
+                </View>
+              </View>
+            )}
+          </View>
+
+          <View className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded-xl">
+            <Navigation size={16} color={colors.textSub} />
+          </View>
         </Pressable>
       </View>
-
     </View>
   );
 }
 
-// Reusable Internal Component
 const ContactRow = ({ icon, label, value, onPress }) => (
   <Pressable 
     onPress={onPress}
-    className="flex-row items-center py-2 border-b border-gray-50 dark:border-gray-900/50 active:bg-gray-50 dark:active:bg-gray-900"
+    className="flex-row items-center p-3 rounded-2xl active:bg-zinc-100 dark:active:bg-zinc-800 border-b border-zinc-200 dark:border-zinc-800"
   >
-    <View className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-800/50 items-center justify-center">
+    <View className="w-12 h-12 rounded-2xl bg-zinc-200 dark:bg-zinc-900 items-center justify-center">
       {icon}
     </View>
     <View className="ml-4 flex-1">
-      <Text className="text-xs text-gray-400 capitalize tracking-widest">{label}</Text>
-      <Text className="text-sm font-bold dark:text-white mt-0.5">{value}</Text>
+      <Text className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-widest">{label}</Text>
+      <Text className="text-sm font-roboto-bold text-zinc-900 dark:text-zinc-100 mt-0.5">{value}</Text>
     </View>
-    <ChevronRight size={14} color="#d1d5db" />
+    <ChevronRight size={16} color="#d1d5db" />
   </Pressable>
 );

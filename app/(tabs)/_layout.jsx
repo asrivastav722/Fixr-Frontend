@@ -10,27 +10,31 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 export default function TabLayout() {
   const inset = useSafeAreaInsets();
   const {theme}=useTheme()
+  const isDark = theme === "dark"
   
+
   useEffect(() => { 
-    NavigationBar?.setButtonStyleAsync(theme === "dark" ? "light" : "dark");
+    NavigationBar?.setButtonStyleAsync(isDark ? "light" : "dark");
   }, [theme]);
 
-  return (<View className='flex-1 bg-white dark:bg-black' paddingTop={inset.top} paddingBottom={inset.bottom} >
-    <StatusBar barStyle={theme === "dark" ? "light-content" : "dark-content"} className='bg-white dark:bg-black' />
-    <Tabs
+  return (<View className='flex-1 bg-white dark:bg-zinc-950' paddingTop={inset.top} paddingBottom={inset.bottom} >
+    <StatusBar barStyle={isDark ? "light-content" : "dark-content"} className='bg-white dark:bg-zinc-950' />
+    <Tabs className="border"
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: false,
-        tabBarActiveTintColor: theme === "dark" ? "#F3F4F6" : "#030712", 
-        tabBarInactiveTintColor: theme === "dark" ? "#9ca3af" : "#9CA3AF", 
+        tabBarActiveTintColor: isDark ? "#F3F4F6" : "#030712", 
+        tabBarInactiveTintColor: isDark ? "#9ca3af" : "#9CA3AF", 
         tabBarStyle: {
-          backgroundColor: theme === "dark" ? "#000000" : "#ffffff",  
-          borderTopWidth: 0,
+          backgroundColor: isDark ? "#09090B" : "#ffffff",  
           height:  Platform.select({ ios: 55, android: 50 }),
           paddingBottom: Platform.OS === 'ios' ? 15 : 5,
           paddingTop: Platform.OS === 'ios' ? 10 : 5,
           elevation: 0, 
           shadowColor: '#000', 
+          borderTopWidth: 1,           // Thickness of the border
+          borderTopColor: isDark? '#27272A' : '#E4E4E7'          // Thickness of the border
+        
         },
         // Adds Haptic Feedback on every tab press
         tabBarButton: (props) => (

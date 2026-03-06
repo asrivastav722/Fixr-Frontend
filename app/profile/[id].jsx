@@ -39,7 +39,7 @@ export default function TechnicianProfile() {
 
 
   return (
-        <View className="flex-1 bg-white dark:bg-black">
+        <View className="flex-1 bg-white dark:bg-zinc-950">
         {/* 1. Transparent Status Bar */}
         <StatusBar barStyle="light-content" backgroundColor="transparent" translucent={true}/>
         
@@ -49,8 +49,8 @@ export default function TechnicianProfile() {
             headerBackTitleStyle: { display:'none' },
             headerShown: true,
             headerTransparent: true, // MUST be true (boolean), not "transparent" (string)
-            headerTitle: tech?.name,         // Keep title empty so it doesn't overlap the image
-            headerBackTitle:"",
+            headerTitle: "",         // Keep title empty so it doesn't overlap the image
+            headerBackTitle:"Back",
             headerBackTitleVisible: false,
             headerTintColor: '#fff', // Makes back button white to stand out against image
             headerShadowVisible: false,            
@@ -72,51 +72,51 @@ export default function TechnicianProfile() {
             </View>
 
         {/* PROFILE CARD */}
-        <View className="flex-1 bg-white dark:bg-black -mt-10 rounded-t-[40px] px-6 pt-8">
+        <View className="flex-1 bg-white dark:bg-zinc-950 -mt-10 rounded-t-[40px] px-6 pt-8">
 
           {/* NAME + RATING */}
           <View className="flex-row justify-between items-start">
             <View>
-              <Text className="text-3xl font-bold text-gray-950 dark:text-white font-barlow">
+              <Text className="text-3xl font-bold text-zinc-950 dark:text-white font-barlow">
                 {tech?.name}
               </Text>
               <Text className="text-blue-600 dark:text-blue-400 font-semibold text-lg">
                 {tech?.profession}
               </Text>
 
-              <Text className="text-gray-500 dark:text-gray-400 mt-1">
+              <Text className="text-zinc-500 dark:text-zinc-400 mt-1">
                 {tech?.location?.address}, {tech?.location?.city}
               </Text>
             </View>
 
             <View className="bg-yellow-100 dark:bg-yellow-900 px-3 py-1 rounded-full flex-row items-center">
               <Ionicons name="star" size={16} color="#EAB308" />
-              <Text className="font-bold text-yellow-700  ml-1">
+              <Text className="font-bold text-yellow-800 dark:text-yellow-400 ml-1">
                 {tech?.rating}
               </Text>
             </View>
           </View>
 
           {/* QUICK STATS */}
-          <View className="flex-row justify-between my-6 border-y border-gray-100 dark:border-gray-800 py-4">
+          <View className="flex-row justify-between my-6 border-y border-zinc-100 dark:border-zinc-800 py-4">
 
             <View className="items-center flex-1">
-              <Text className="text-gray-400 dark:text-gray-500 text-xs uppercase">Experience</Text>
-              <Text className="text-gray-900 dark:text-white font-bold text-lg">
+              <Text className="text-zinc-400 dark:text-zinc-500 text-xs uppercase">Experience</Text>
+              <Text className="text-zinc-900 dark:text-white font-bold text-lg">
                 {tech?.experience_years} yrs
               </Text>
             </View>
 
-            <View className="items-center flex-1 border-x border-gray-100 dark:border-gray-800">
-              <Text className="text-gray-400 dark:text-gray-500 text-xs uppercase">Reviews</Text>
-              <Text className="text-gray-900 dark:text-white font-bold text-lg">
+            <View className="items-center flex-1 border-x border-zinc-100 dark:border-zinc-800">
+              <Text className="text-zinc-400 dark:text-zinc-500 text-xs uppercase">Reviews</Text>
+              <Text className="text-zinc-900 dark:text-white font-bold text-lg">
                 {tech?.total_reviews}
               </Text>
             </View>
 
             <View className="items-center flex-1">
-              <Text className="text-gray-400 dark:text-gray-500 text-xs uppercase">Base Fees</Text>
-              <Text className="text-gray-900 dark:text-white font-bold text-lg">
+              <Text className="text-zinc-400 dark:text-zinc-500 text-xs uppercase">Base Fees</Text>
+              <Text className="text-zinc-900 dark:text-white font-bold text-lg">
                 {tech?.starting_price}
               </Text>
             </View>
@@ -125,17 +125,17 @@ export default function TechnicianProfile() {
 
           {/* ABOUT */}
           <View className="mb-6">
-            <Text className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-2 font-barlow">
+            <Text className="text-xl font-bold text-zinc-900 dark:text-zinc-200 mb-2 font-barlow">
               About
             </Text>
-            <Text className="text-gray-600 dark:text-gray-400 leading-6">
+            <Text className="text-zinc-600 dark:text-zinc-400 leading-6">
               {tech?.about}
             </Text>
           </View>
 
           {/* SKILLS */}
           <View className="mb-6">
-            <Text className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-3 font-barlow">
+            <Text className="text-xl font-bold text-zinc-900 dark:text-zinc-200 mb-3 font-barlow">
               Specialities
             </Text>
 
@@ -143,9 +143,9 @@ export default function TechnicianProfile() {
               {tech?.skills?.map((skill, index) => (
                 <View
                   key={index}
-                  className="bg-gray-100 dark:bg-blue-950 px-4 py-2 rounded-2xl"
+                  className="bg-zinc-100 dark:bg-zinc-800 px-4 py-2 rounded-xl border border-zinc-200 dark:border-zinc-600"
                 >
-                  <Text className="text-gray-700 dark:text-gray-300 font-medium">
+                  <Text className="text-zinc-700 dark:text-zinc-300 font-medium">
                     {skill}
                   </Text>
                 </View>
@@ -155,7 +155,7 @@ export default function TechnicianProfile() {
 
           {/* VERIFICATION */}
           <View className="mb-6">
-            <Text className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-3 font-barlow">
+            <Text className="text-xl font-bold text-zinc-900 dark:text-zinc-200 mb-3 font-barlow">
               Verification
             </Text>
 
@@ -182,21 +182,21 @@ export default function TechnicianProfile() {
 
           {/* REVIEWS LIST */}
           <View style={{ paddingBottom: 100 }}>
-            <Text className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-4 font-barlow">
+            <Text className="text-xl font-bold text-zinc-900 dark:text-zinc-200 mb-4 font-barlow">
               Recent Reviews
             </Text>
 
             {tech?.reviews?.map((review, index) => (
               <View key={index} className="mb-4">
                 <View className="flex-row justify-between">
-                  <Text className="font-semibold text-gray-800 dark:text-gray-400">
+                  <Text className="font-semibold text-zinc-800 dark:text-zinc-400">
                     {review?.user_name}
                   </Text>
                   <Text className="text-yellow-600 dark:text- font-bold">
                     ⭐ {review?.rating}
                   </Text>
                 </View>
-                <Text className="text-gray-600 dark:text-gray-500mt-1">
+                <Text className="text-zinc-600 dark:text-zinc-500mt-1">
                   {review?.comment}
                 </Text>
               </View>
@@ -206,10 +206,10 @@ export default function TechnicianProfile() {
       </ScrollView>
 
       {/* FOOTER CALL BUTTON */}
-      <View style={{paddingBottom:inset.bottom}} className="absolute bottom-0 w-full bg-white dark:bg-black border-t border-gray-100 dark:border-gray-800 px-6 py-5 flex-row items-center justify-between">
+      <View style={{paddingBottom:inset.bottom}} className="absolute bottom-0 w-full bg-white dark:bg-zinc-950 border-t border-zinc-100 dark:border-zinc-800 px-6 py-5 flex-row items-center justify-between">
 
         <View>
-          <Text className="text-gray-400 dark:text-gray-300 text-sm">Inspection Fee</Text>
+          <Text className="text-zinc-400 dark:text-zinc-300 text-sm">Inspection Fee</Text>
           <Text className="text-2xl font-bold text-black dark:text-white">
             ₹{tech?.starting_price}
           </Text>
@@ -217,9 +217,9 @@ export default function TechnicianProfile() {
 
         <Pressable
           onPress={handleCall}
-          className="bg-black dark:bg-white px-8 py-4 rounded-2xl active:scale-95"
+          className="dark:bg-zinc-200 bg-zinc-950 px-8 py-4 rounded-2xl active:scale-95 "
         >
-          <Text className="text-white dark:text-black font-bold text-lg">
+          <Text className="text-white dark:text-zinc-950 font-bold text-sm tracking-widest uppercase ">
             Call Now
           </Text>
         </Pressable>

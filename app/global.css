@@ -25,12 +25,50 @@
 --color-blue-700  : #1D4ED8;
 --color-blue-800  : #1E40AF;
 --color-blue-900  : #1E3A8A;
---color-blue-950  : #0A1E63;
+--color-blue-950  : #172554;
 } */
+
+/* WeightHex CodeTypical Use Case50#fafafaPage backgrounds (Light Mode)100#f4f4f5Secondary backgrounds / Input fields200#e4e4e7Soft borders / Dividers300#d4d4d8Disabled buttons / Borders400#a1a1aaPlaceholder text / Secondary icons500#71717aSecondary text / Captions600#52525bMain body text (Light Mode)700#3f3f46High-contrast text / Dark borders800#27272aDark mode input backgrounds900#18181bMain text (Dark Mode) / Dark headers950#09090bPage backgrounds (Dark Mode / OLED) */
 
 /* FIXR GLOBAL THEME SYSTEM
   Vibe: Industrial, Serious, Technical
 */
+
+/* TEXT GRAY */
+
+/* #09090B */
+
+/* --color-zinc-50	#fafafa	Main page background (Light Mode)
+--color-zinc-100	#f4f4f5	Secondary backgrounds / Input fields
+--color-zinc-200	#e4e4e7	Soft borders / Subtle dividers
+--color-zinc-300	#d4d4d8	Disabled buttons / Tertiary borders
+--color-zinc-400	#a1a1aa	Placeholder text / Secondary icons
+--color-zinc-500	#71717a	Secondary text / Captions / Labels
+--color-zinc-600	#52525b	Body text (Light Mode)
+--color-zinc-700	#3f3f46	High-contrast text / Dark mode borders
+--color-zinc-800	#27272a	Dark mode input backgrounds
+--color-zinc-900	#18181b	Main text (Dark Mode) / Dark mode cards
+--color-zinc-950	#09090b */
+
+
+
+.shade-blue{ color: #1D4ED8 !important}
+
+
+
+
+
+
+
+
+.bg-main{ background-color: #1D4ED8 !important; }
+.bg-main{ background-color: #3B82F6 !important; }
+
+.text-gray{ @apply text-gray-500 }
+
+
+.text-main{ color: #1D4ED8 !important; }
+.dark .text-main{ color: #1D4ED8 !important; }
 
 .bg-primary{ background-color: white}
 .dark .bg-primary{ background-color: black}

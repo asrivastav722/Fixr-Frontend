@@ -8,6 +8,8 @@ import { Pressable, ScrollView, Text, TextInput, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import * as Haptics from "expo-haptics";
+import { Stack } from "expo-router";
+import { StatusBar } from "expo-status-bar";
 import { Search, SlidersHorizontal, X } from "lucide-react-native";
 import { Modal } from "react-native";
 
@@ -47,10 +49,15 @@ export default function RoleTechniciansPage() {
   };
 
   return (
-    <View className="flex-1 dark:bg-black bg-white" style={{ paddingTop: inset.top,paddingBottom:inset.bottom }}>
-      
-      {/* --- HEADER --- */}
-      <View className="px-4 py-2 flex-row items-center justify-between border-b border-gray-100 dark:border-gray-800">
+    <View 
+      className="flex-1 bg-white dark:bg-zinc-950" 
+      >
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content" }></StatusBar>
+      <Stack.Screen
+        options={{
+          headerShown: true,
+          header: () => (
+            <View style={{ paddingTop: inset.top + 5}} className="p-3 flex-row items-center justify-between border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
         {!isSearchActive ? (
           <>
             <View className="flex-row items-center">
@@ -64,20 +71,20 @@ export default function RoleTechniciansPage() {
             <View className="flex-row gap-2">
               <Pressable 
                 onPress={() => { handleHeaderAction(); setIsSearchActive(true); }}
-                className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full"
+                className="p-3 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-900 rounded-2xl"
               >
                 <Search size={20} color={isDark ? "#fff" : "#000"} />
               </Pressable>
               <Pressable 
                 onPress={() => { handleHeaderAction(); setIsFilterVisible(true); }}
-                className="p-2 bg-gray-100 dark:bg-gray-800 rounded-full"
+                className="p-3 bg-zinc-100 dark:bg-zinc-800 rounded-2xl border border-zinc-200 dark:border-zinc-900"
               >
                 <SlidersHorizontal size={20} color={isDark ? "#fff" : "#000"} />
               </Pressable>
             </View>
           </>
         ) : (
-          <View className="flex-row items-center flex-1 bg-gray-100 dark:bg-gray-800 rounded-2xl px-3 py-1">
+          <View className="flex-row items-center flex-1 bg-zinc-100 dark:bg-zinc-800 rounded-2xl px-3 py-1">
             <Search size={18} color="#9ca3af" />
             <TextInput
               autoFocus
@@ -92,21 +99,28 @@ export default function RoleTechniciansPage() {
             </Pressable>
           </View>
         )}
-      </View>
+            </View>
+          ),
+        }}
+      />
+
+      
+      {/* --- HEADER --- */}
+      
 
       {/* --- RECOMMENDATIONS (Only when searching) --- */}
       {isSearchActive && search.length === 0 && (
         <View className="p-4 bg-white dark:bg-black">
-          <Text className="text-xs font-bold text-gray-400 uppercase mb-3">Recommended {formattedRole}s</Text>
+          <Text className="text-xs font-bold text-zinc-400 uppercase mb-3">Recommended {formattedRole}s</Text>
           {recommendations.map(item => (
-            <Pressable key={item.id} onPress={() => setSearch(item.name)} className="py-2 border-b border-gray-50 dark:border-gray-900">
+            <Pressable key={item.id} onPress={() => setSearch(item.name)} className="py-2 border-b border-zinc-50 dark:border-zinc-900">
               <Text className="dark:text-white">{item.name} ⭐ {item.rating}</Text>
             </Pressable>
           ))}
         </View>
       )}
 
-      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 bg-gray-50 dark:bg-gray-950 p-4">
+      <ScrollView showsVerticalScrollIndicator={false} className="flex-1 bg-zinc-100 dark:bg-zinc-900 p-4">
         {filteredTechnicians.map(tech => (
           <TechnicianCard key={tech.id} technician={tech} />
         ))}
@@ -115,7 +129,7 @@ export default function RoleTechniciansPage() {
       {/* --- FILTER MODAL --- */}
       <Modal visible={isFilterVisible} animationType="slide" backdropColor="black/50">
         <View className="flex-1 justify-end">
-          <View className="bg-white dark:bg-gray-900 p-6 rounded-t-3xl">
+          <View className="bg-white dark:bg-zinc-900 p-6 rounded-t-3xl">
             <View className="flex-row justify-between items-center mb-6">
               <Text className="text-xl font-bold dark:text-white">Filters</Text>
               <Pressable onPress={() => setIsFilterVisible(false)}>
@@ -123,15 +137,15 @@ export default function RoleTechniciansPage() {
               </Pressable>
             </View>
 
-            <Text className="font-semibold dark:text-gray-300 mb-3">Minimum Rating</Text>
+            <Text className="font-semibold dark:text-zinc-300 mb-3">Minimum Rating</Text>
             <View className="flex-row gap-2 mb-8">
               {[0, 3, 4, 4.5].map((val) => (
                 <Pressable 
                   key={val} 
                   onPress={() => setMinRating(val)}
-                  className={`px-4 py-2 rounded-xl border ${minRating === val ? 'bg-blue-950 border-blue-950' : 'border-gray-200 dark:border-gray-700'}`}
+                  className={`px-4 py-2 rounded-xl border ${minRating === val ? 'bg-blue-950 border-blue-950' : 'border-zinc-200 dark:border-zinc-700'}`}
                 >
-                  <Text className={minRating === val ? 'text-white' : 'text-gray-600 dark:text-gray-400'}>
+                  <Text className={minRating === val ? 'text-white' : 'text-zinc-600 dark:text-zinc-400'}>
                     {val === 0 ? 'All' : `${val}+ ⭐`}
                   </Text>
                 </Pressable>

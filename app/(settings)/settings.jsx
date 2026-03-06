@@ -6,6 +6,7 @@ import {
   Switch,
   Text,
   View,
+  Platform,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useRouter, Stack } from "expo-router";
@@ -16,102 +17,95 @@ import {
   Globe,
   Lock,
   Trash2,
-  User
+  User,
+  Bell,
+  Tool,
+  ShieldCheck,
+  CircleHelp
 } from "lucide-react-native";
+import { useSelector } from "react-redux";
 
 // Custom Hooks & Context
 import { useTheme } from "@/context/ThemeContext";
 import { useLogout } from "@/hooks/useLogout";
 import ThemeModal from "@/components/modal.theme";
-import { useSelector } from "react-redux";
 
 export default function SettingsPage() {
   const [modalVisible, setModalVisible] = useState(false);
   const { theme } = useTheme();
+  const isDark = theme === "dark";
   const router = useRouter();
   const inset = useSafeAreaInsets();
   const { logout } = useLogout();
 
-  // Get user roles from Redux state
   const user = useSelector((state) => state.auth.user);
   const roles = user?.roles || ['customer'];
   const isTechnician = roles.includes("technician");
 
   const [settings, setSettings] = useState({
     pushNotifications: true,
-    emailNotifications: true,
     jobAlerts: true,
-    messageAlerts: true,
-    twoFactor: false,
-    locationSharing: true,
-    profileVisible: true,
     autoAccept: false,
     availability: true,
   });
 
   const toggle = (key) =>
-    setSettings(prev => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
+    setSettings(prev => ({ ...prev, [key]: !prev[key] }));
 
-  // --- Sub-Components ---
+  // --- Amazon-style Section Wrapper ---
   const Section = ({ title, children }) => (
-    <View className="bg-white dark:bg-black mt-4 px-6 py-4">
-      <Text className="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest mb-3">
+    <View className="mb-6">
+      <Text className="px-6 mb-2 text-[10px] font-bold text-zinc-500 uppercase tracking-[2px]">
         {title}
       </Text>
-      {children}
+      <View className="bg-white dark:bg-zinc-950 border-y border-zinc-100 dark:border-zinc-800">
+        {children}
+      </View>
     </View>
   );
 
-  const SettingRow = ({ icon, label, right, onPress, subValue }) => (
+  // --- Professional Row Component ---
+  const SettingRow = ({ icon, label, right, onPress, subValue, isLast, isDestructive }) => (
     <Pressable 
       onPress={onPress} 
-      className="flex-row justify-between items-center py-4 border-b border-gray-50 dark:border-gray-900 last:border-0"
+      className={`flex-row justify-between items-center py-4 ml-6 pr-6 ${!isLast ? 'border-b border-zinc-50 dark:border-zinc-800' : ''} active:opacity-60`}
     >
       <View className="flex-row items-center flex-1">
-        {icon && <View className="w-8">{icon}</View>}
-        <Text className="text-base text-gray-700 dark:text-gray-300 font-medium">
+        {icon && <View className="mr-4">{icon}</View>}
+        <Text className={`text-base font-inter font-medium ${isDestructive ? 'text-red-500' : 'text-zinc-800 dark:text-zinc-200'}`}>
           {label}
         </Text>
       </View>
       <View className="flex-row items-center">
         {subValue && (
-          <Text className="text-gray-400 dark:text-gray-500 mr-2 capitalize">
+          <Text className="text-sm font-roboto text-zinc-400 dark:text-zinc-500 mr-2 capitalize">
             {subValue}
           </Text>
         )}
-        {right || <ChevronRight size={18} color="#9ca3af" />}
+        {right || <ChevronRight size={18} color={isDark ? "#3f3f46" : "#d4d4d8"} />}
       </View>
     </Pressable>
   );
-  
 
   return (
-    <View className="flex-1 bg-white dark:bg-gray-900" paddingBottom={inset.bottom}>
-      {/* Set StatusBar background to match header on Android */}
-      <StatusBar 
-        barStyle={theme === "dark" ? "light-content" : "dark-content"} 
-        backgroundColor={theme === "dark" ? "#000" : "#fff"}
-      />
+    <View className="flex-1 bg-white dark:bg-zinc-950">
+      <StatusBar barStyle={isDark ? "light-content" : "dark-content"} />
 
       <Stack.Screen
         options={{
           headerShown: true,
           header: () => (
             <View 
-              style={{ paddingTop: inset.top + 10}}
-              className="flex-row bg-white dark:bg-black items-center justify-start gap-3 w-full p-4 border-b border-gray-100 dark:border-gray-800"
+              style={{ paddingTop: Platform.OS === 'ios' ? inset.top : inset.top + 10 }}
+              className="flex-row bg-white dark:bg-zinc-950 items-center p-3 border-b border-zinc-100 dark:border-zinc-900"
             >
               <Pressable
                 onPress={() => router.back()}
-                className="rounded-full active:opacity-60 p-1"
+                className="p-2 mr-2  rounded-full active:scale-90"
               >
-                <ChevronLeft size={28} color={theme === 'dark' ? '#fff' : '#000'} />
+                <ChevronLeft size={24} color={isDark ? '#fff' : '#000'} />
               </Pressable>
-
-              <Text className="font-bold text-xl text-black dark:text-white">
+              <Text className="font-poppins font-bold text-xl text-zinc-900 dark:text-zinc-50">
                 Settings
               </Text>
             </View>
@@ -119,116 +113,126 @@ export default function SettingsPage() {
         }}
       />
 
-      <ScrollView
+      <ScrollView 
         showsVerticalScrollIndicator={false}
-        className="bg-gray-100 dark:bg-gray-900 pb-2"
+        contentContainerStyle={{ paddingBottom: inset.bottom + 40, paddingTop: 20 }}
+        className='bg-zinc-100 dark:bg-zinc-900'
       >
         {/* 👤 ACCOUNT */}
-        <Section title="Account">
+        <Section title="Profile & Security">
           <SettingRow
             onPress={() => router.push("/edit-profile")}
-            icon={<User size={20} color={theme === 'dark' ? '#94a3b8' : '#6b7280'} />}
-            label="Edit Profile"
+            icon={<User size={20} color={isDark ? '#a1a1aa' : '#71717a'} />}
+            label="Personal Information"
           />
           <SettingRow
-            icon={<Lock size={20} color={theme === 'dark' ? '#94a3b8' : '#6b7280'} />}
-            label="Change Password"
+            icon={<Lock size={20} color={isDark ? '#a1a1aa' : '#71717a'} />}
+            label="Login & Security"
           />
           <SettingRow
             icon={<Trash2 size={20} color="#ef4444" />}
-            label="Delete Account"
+            label="Close Account"
+            isDestructive
+            isLast
           />
         </Section>
 
         {/* 🔔 NOTIFICATIONS */}
-        <Section title="Notifications">
+        <Section title="Alert Preferences">
           <SettingRow
+            icon={<Bell size={20} color={isDark ? '#a1a1aa' : '#71717a'} />}
             label="Push Notifications"
             right={
               <Switch
                 value={settings.pushNotifications}
                 onValueChange={() => toggle("pushNotifications")}
-                trackColor={{ false: "#d1d5db", true: "#3b82f6" }}
+                trackColor={{ false: "#d4d4d8", true: "#3b82f6" }}
+                thumbColor={Platform.OS === 'android' ? '#fff' : ''}
               />
             }
           />
           <SettingRow
-            label="Job Alerts"
+            label="Service Reminders"
+            isLast
             right={
               <Switch
                 value={settings.jobAlerts}
                 onValueChange={() => toggle("jobAlerts")}
-                trackColor={{ false: "#d1d5db", true: "#3b82f6" }}
+                trackColor={{ false: "#d4d4d8", true: "#3b82f6" }}
+                thumbColor={Platform.OS === 'android' ? '#fff' : ''}
               />
             }
           />
         </Section>
 
-        {/* 🛠 TECHNICIAN SETTINGS */}
+        {/* 🛠 TECHNICIAN TOOLS */}
         {isTechnician && (
-          <Section title="Technician Tools">
+          <Section title="Pro Mode Dashboard">
             <SettingRow
-              label="Active for Hire"
+              icon={<ShieldCheck size={20} color="#10b981" />}
+              label="Availability Status"
               right={
                 <Switch
                   value={settings.availability}
                   onValueChange={() => toggle("availability")}
-                  trackColor={{ false: "#d1d5db", true: "#10b981" }}
+                  trackColor={{ false: "#d4d4d8", true: "#10b981" }}
                 />
               }
             />
             <SettingRow
-              label="Auto-Accept Jobs"
+              icon={<Tool size={20} color={isDark ? '#a1a1aa' : '#71717a'} />}
+              label="Auto-Accept Requests"
               right={
                 <Switch
                   value={settings.autoAccept}
                   onValueChange={() => toggle("autoAccept")}
-                  trackColor={{ false: "#d1d5db", true: "#3b82f6" }}
+                  trackColor={{ false: "#d4d4d8", true: "#3b82f6" }}
                 />
               }
             />
-            <SettingRow label="Service Radius" subValue="25 km" />
+            <SettingRow label="Service Radius" subValue="25 km" isLast />
           </Section>
         )}
 
         {/* 💳 PAYMENTS */}
-        <Section title="Payments">
+        <Section title="Finances">
           <SettingRow
-            icon={<CreditCard size={20} color={theme === 'dark' ? '#94a3b8' : '#6b7280'} />}
-            label="Saved Methods"
+            icon={<CreditCard size={20} color={isDark ? '#a1a1aa' : '#71717a'} />}
+            label="Payment Methods"
           />
           <SettingRow
-            icon={<CreditCard size={20} color={theme === 'dark' ? '#94a3b8' : '#6b7280'} />}
+            icon={<CreditCard size={20} color={isDark ? '#a1a1aa' : '#71717a'} />}
             label="Transaction History"
+            isLast
           />
         </Section>
 
         {/* 🌍 APP PREFERENCES */}
-        <Section title="Preferences">
+        <Section title="System">
           <SettingRow
             onPress={() => setModalVisible(true)}
-            icon={<Globe size={20} color={theme === 'dark' ? '#94a3b8' : '#6b7280'} />}
+            icon={<Globe size={20} color={isDark ? '#a1a1aa' : '#71717a'} />}
             label="Appearance"
             subValue={theme}
           />
-          <SettingRow label="Language" subValue="English" />
+          <SettingRow label="Language" subValue="English" isLast />
         </Section>
 
         {/* 📄 LEGAL */}
-        <Section title="Support">
-          <SettingRow label="Help Center" />
-          <SettingRow label="Privacy Policy" />
-          <SettingRow label="About Fixr" subValue="v1.0.4" />
+        <Section title="Help & Legal">
+          <SettingRow icon={<CircleHelp size={20} color="#71717a" />} label="Help Center" />
+          <SettingRow label="Terms of Service" />
+          <SettingRow label="About Fixr" subValue="v1.0.4" isLast />
         </Section>
 
         {/* 🚪 LOGOUT */}
-        <View className="px-6 mt-8">
+        <View className="px-6 mt-4">
           <Pressable 
             onPress={() => logout(false)} 
-            className="bg-red-50 dark:bg-red-900/20 py-4 rounded-2xl items-center active:opacity-60 border border-red-100 dark:border-red-900/40"
+            className="bg-white dark:bg-zinc-900 py-4 rounded-2xl items-center active:scale-[0.98] border border-zinc-200 dark:border-zinc-800 shadow-sm"
           >
-            <Text className="text-red-600 dark:text-red-400 font-bold text-base">
-              Log Out
+            <Text className="text-red-500 dark:text-red-400 font-inter font-bold text-base uppercase tracking-widest">
+              Sign Out
             </Text>
           </Pressable>
         </View>
