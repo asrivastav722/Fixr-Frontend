@@ -101,7 +101,7 @@ export default function SettingsPage() {
             >
               <Pressable
                 onPress={() => router.back()}
-                className="p-2 mr-2  rounded-full active:scale-90"
+                className="p-2 mr-2 rounded-full active:scale-90"
               >
                 <ChevronLeft size={24} color={isDark ? '#fff' : '#000'} />
               </Pressable>

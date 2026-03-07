@@ -13,8 +13,6 @@
     "**/*.js",
     "**/*.tsx",
     "**/*.jsx",
-    ".expo/types/**/*.ts",
-    "expo-env.d.ts",
     "nativewind-env.d.js",
     "app/_layout.jsx",
     "nativewind-env.d.ts"

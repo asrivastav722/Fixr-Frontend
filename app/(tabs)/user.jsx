@@ -144,7 +144,7 @@ const ContactCard = ({ user, colors }) => {
           </View>
           
           <View className="ml-4 flex-1">
-            <Text className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-widest">Saved Office</Text>
+            <Text className="text-[10px] text-zinc-400 dark:text-zinc-500 font-bold uppercase tracking-widest">Saved Address</Text>
             <Text className="text-sm font-roboto-bold text-zinc-900 dark:text-zinc-100 mt-0.5 leading-5">
               {address ? `${address}, ` : ""}{city || "City Not Set"}
             </Text>
